@@ -307,13 +307,22 @@ function AppCmd([string[]]$a) {
     if ($LASTEXITCODE -ne 0) { throw ("appcmd {0} failed: {1}" -f ($a -join " "), ($out -join " ")) }
     return $out
 }
+# appcmd prints "ERROR ( message:Cannot find APP ... )" on STDOUT for a missing app, so the old
+# "any output = exists" test said yes for /oipm and the go-live of 11 Oct stopped. Compare names instead.
+function Iis-SiteExists([string]$site) {
+    $names = @(& $AppCmd list site /text:name 2>$null | ForEach-Object { "$_".Trim() })
+    return ($names -contains $site)
+}
 function Iis-AppExists([string]$site, [string]$path) {
-    $o = & $AppCmd list app "$site$path" 2>$null
-    return [bool]$o
+    if (-not (Iis-SiteExists $site)) { return $false }
+    $paths = @(& $AppCmd list app /site.name:$site /text:path 2>$null | ForEach-Object { "$_".Trim() })
+    return ($paths -contains $path)
 }
 function Iis-Point([string]$site, [string]$path, [string]$phys) {
     if (-not $path) { AppCmd @("set", "vdir", "$site/", "/physicalPath:$phys") | Out-Null; return }
     if (Iis-AppExists $site $path) { AppCmd @("set", "vdir", "$site$path/", "/physicalPath:$phys") | Out-Null }
     else { AppCmd @("add", "app", "/site.name:$site", "/path:$path", "/physicalPath:$phys") | Out-Null }
+    $now = (& $AppCmd list vdir "$site$path/" /text:physicalPath 2>$null | Out-String).Trim()
+    if ($now -ne $phys) { Stop-With "IIS $site$path/ points to '$now', expected '$phys'" }
 }
 function Dist([hashtable]$a) { return (Join-Path $Root "$($a.Dir)\frontend\dist") }

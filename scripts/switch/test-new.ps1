@@ -57,7 +57,7 @@ try {
     Set-TestMode $cfg
     Restart-NewServices $cfg
     foreach ($a in $Apps) {
-        if (-not (Wait-Port $a.TestPort 90)) { Show-LogTail $a; Stop-With "$($a.Service) did not start on port $($a.TestPort) - see $($a.Dir)\backend\logs\stderr.log" }
+        if (-not (Wait-Service $cfg $a $a.TestPort 90)) { Show-LogTail $a; Stop-With "$($a.Service) did not start on port $($a.TestPort) - see $($a.Dir)\backend\logs\stderr.log" }
         Say "   $($a.Service) running on $($a.TestPort)" "Green"
     }
 
@@ -75,7 +75,7 @@ try {
         $x = [regex]::Replace($x, '(?s)<rule name="Force HTTPS".*?</rule>', '')     # test site is plain http
         Set-Content -LiteralPath $wc -Value $x -Encoding UTF8 -ErrorAction Stop
     }
-    if (Iis-AppExists $TestSite "/") { AppCmd @("delete", "site", $TestSite) | Out-Null }
+    if (Iis-SiteExists $TestSite) { AppCmd @("delete", "site", $TestSite) | Out-Null }
     AppCmd @("add", "site", "/name:$TestSite", "/bindings:http/*:$($cfg.TestPort):", "/physicalPath:$(Join-Path $testRoot 'portal')") | Out-Null
     foreach ($a in $Apps | Where-Object { $_.IisPath }) {
         AppCmd @("add", "app", "/site.name:$TestSite", "/path:$($a.IisPath)", "/physicalPath:$(Join-Path $testRoot $a.IisPath.Trim('/'))") | Out-Null
