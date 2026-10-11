@@ -55,3 +55,4 @@ scripts/switch/deploy-state.json
 scripts/switch/server-check.txt
 scripts/switch/projects.test.json
 scripts/switch/logs/
+shared/database/*.sql
