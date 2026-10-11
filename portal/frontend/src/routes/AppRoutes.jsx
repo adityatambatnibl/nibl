@@ -9,8 +9,6 @@ import DashboardPage from "../pages/Dashboard/DashboardPage";
 import LogoutPage from "../pages/Logout/LogoutPage";
 
 const ProfilePage = lazy(() => import("../pages/Profile/ProfilePage"));
-const AdminPage = lazy(() => import("../pages/Admin/AdminPage"));
-const ProjectsPage = lazy(() => import("../pages/Projects/ProjectsPage"));
 
 export default function AppRoutes() {
     return (
@@ -22,8 +20,6 @@ export default function AppRoutes() {
                 <Route path="/logout" element={<LogoutPage />} />
                 <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-                <Route path="/admin" element={<ProtectedRoute adminOnly><AdminPage /></ProtectedRoute>} />
-                <Route path="/projects" element={<ProtectedRoute adminOnly><ProjectsPage /></ProtectedRoute>} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Suspense>

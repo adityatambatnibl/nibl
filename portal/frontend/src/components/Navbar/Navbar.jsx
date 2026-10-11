@@ -23,9 +23,6 @@ export default function Navbar() {
                     <strong>{user?.full_name}</strong>
                 </div>
                 <button className="logout-button portal-nav-button" type="button" onClick={() => navigate("/profile")}>Profile</button>
-                {user?.is_admin && (
-                    <button className="logout-button portal-nav-button" type="button" onClick={() => navigate("/admin")}>Admin</button>
-                )}
                 <button className="logout-button" onClick={handleLogout} type="button">Logout</button>
             </div>
         </header>
