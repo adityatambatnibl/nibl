@@ -36,12 +36,51 @@
     background: linear-gradient(135deg, #a3261f, #5e0d0a);
 }
 
-/* Not approved / not available yet: the card still opens a pop-up explaining why. */
+/* Not approved / not available yet: the card still opens a pop-up explaining why.
+   Keeps the brand colour (only slightly dimmed) and shows a padlock badge + status pill. */
 .project-card.is-locked {
-    filter: saturate(0.55);
-    opacity: 0.86;
+    filter: brightness(0.9) saturate(0.85);
 }
 
 .project-card.is-locked:hover {
     transform: translateY(-3px);
+    filter: brightness(0.96) saturate(0.9);
 }
+
+.project-card .lock-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(4px);
+}
+
+.project-card .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    letter-spacing: inherit;
+}
+
+.project-card .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: 0 0 8px;
+    background: #cfd8dc;
+}
+
+.project-card .status-pending .status-dot,
+.project-card .status-missing .status-dot { background: #ffc857; box-shadow: 0 0 0 3px rgba(255, 200, 87, 0.25); }
+.project-card .status-rejected .status-dot,
+.project-card .status-inactive .status-dot { background: #ff8a80; box-shadow: 0 0 0 3px rgba(255, 138, 128, 0.25); }
