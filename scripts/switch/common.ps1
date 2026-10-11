@@ -3,7 +3,9 @@
 #  Dot-sourced by check-server.ps1, test-new.ps1, go-live.ps1, rollback.ps1.
 #  Nothing runs on its own here.
 # =============================================================================
-$ErrorActionPreference = "Stop"
+# "Continue": Windows PowerShell 5.1 turns any stderr text of nssm / psql / appcmd into a
+# fatal error under "Stop". Native tools are checked by exit code; key cmdlets use -ErrorAction Stop.
+$ErrorActionPreference = "Continue"
 $SwitchDir  = $PSScriptRoot
 $Root       = Split-Path -Parent (Split-Path -Parent $SwitchDir)     # ...\NIBL-APPLICATION-PORTAL
 $ConfigFile = Join-Path $SwitchDir "deploy-config.ps1"
@@ -43,7 +45,7 @@ function Load-Config {
     return $Cfg
 }
 
-function Save-State([hashtable]$s) { ($s | ConvertTo-Json -Depth 5) | Set-Content -LiteralPath $StateFile -Encoding UTF8 }
+function Save-State([hashtable]$s) { ($s | ConvertTo-Json -Depth 5) | Set-Content -LiteralPath $StateFile -Encoding UTF8 -ErrorAction Stop }
 function Load-State {
     if (-not (Test-Path -LiteralPath $StateFile)) { return @{} }
     $o = Get-Content -LiteralPath $StateFile -Raw | ConvertFrom-Json
@@ -146,7 +148,7 @@ function Set-EnvValue([string]$file, [string]$key, [string]$value) {
     $found = $false
     $lines = $lines | ForEach-Object { if ($_ -match "^\s*$key\s*=") { $found = $true; "$key=$value" } else { $_ } }
     if (-not $found) { $lines += "$key=$value" }
-    Set-Content -LiteralPath $file -Value $lines -Encoding utf8
+    Set-Content -LiteralPath $file -Value $lines -Encoding utf8 -ErrorAction Stop
 }
 
 function Copy-Newer([string]$src, [string]$dst, [string[]]$excludeDirs = @()) {
@@ -170,7 +172,7 @@ function Copy-Uploads([hashtable]$cfg) {
     foreach ($b in "applications\NPD\backend", "applications\AI-Drawing-Control\backend") {
         $f = Join-Path $Root "$b\.env"
         if (-not (Test-Path $f)) { continue }
-        if (-not (Test-Path "$f.before-move-data")) { Copy-Item -LiteralPath $f "$f.before-move-data" }
+        if (-not (Test-Path "$f.before-move-data")) { Copy-Item -LiteralPath $f "$f.before-move-data" -ErrorAction Stop }
         Set-EnvValue $f "STORAGE_BACKEND" "local"
         Set-EnvValue $f "STORAGE_DIR" "../data"
     }
@@ -211,7 +213,7 @@ function Set-TestMode([hashtable]$cfg) {
     # projects.json with the test ports
     $j = Get-Content -LiteralPath (Join-Path $Root "shared\configuration\projects.json") -Raw
     foreach ($a in $Apps) { $j = $j.Replace("127.0.0.1:$($a.LivePort)/", "127.0.0.1:$($a.TestPort)/") }
-    Set-Content -LiteralPath $projects -Value $j -Encoding UTF8
+    Set-Content -LiteralPath $projects -Value $j -Encoding UTF8 -ErrorAction Stop
 }
 
 function Clear-TestMode([hashtable]$cfg) {

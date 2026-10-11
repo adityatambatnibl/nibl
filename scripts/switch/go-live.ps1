@@ -47,7 +47,8 @@ try {
     Step "4/7  Copy files uploaded since the test"
     Copy-Uploads $cfg
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Root "scripts\prepare-production.ps1") -PublicUrl $cfg.PublicUrl -KeepPassword -NoRestart
-    if ($LASTEXITCODE -ne 0) { Stop-With "prepare-production.ps1 failed" }
+    # exit 2 = settings written, only FIX notes (e.g. weak DB password - changed after go-live). Only 1 is a real failure.
+    if ($LASTEXITCODE -eq 1) { Stop-With "prepare-production.ps1 failed" }
 
     Step "5/7  New services on the LIVE ports, mail and reminders ON"
     Clear-TestMode $cfg

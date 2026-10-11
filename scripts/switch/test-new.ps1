@@ -27,7 +27,7 @@ try {
         $p1 = Read-EnvValue $f "DB_PORT"; if ($p1) { $ports += $p1 }
         foreach ($k in "SUPABASE_DB_URL", "DATABASE_URL") { $u = Read-EnvValue $f $k; if ($u -match ':(\d+)/') { $ports += $Matches[1] } }
         if ($ports | Where-Object { $_ -ne "$($pg.Port)" }) {
-            Move-Item -LiteralPath $f "$f.from-other-pc-$stamp"
+            Move-Item -LiteralPath $f "$f.from-other-pc-$stamp" -ErrorAction Stop
             Say "   $($a.Dir)\backend\.env was for another PC (port $($ports -join ',')) - kept as .env.from-other-pc-$stamp" Yellow
         }
     }
@@ -42,7 +42,8 @@ try {
 
     Step "3/7  Production settings (.env) - database password NOT changed"
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Root "scripts\prepare-production.ps1") -PublicUrl $cfg.PublicUrl -KeepPassword -NoRestart
-    if ($LASTEXITCODE -ne 0) { Stop-With "prepare-production.ps1 failed" }
+    # exit 2 = settings written, only FIX notes (e.g. weak DB password - changed after go-live). Only 1 is a real failure.
+    if ($LASTEXITCODE -eq 1) { Stop-With "prepare-production.ps1 failed" }
 
     Step "4/7  Build the four screens"
     Build-Frontends
@@ -68,7 +69,7 @@ try {
         $x = Get-Content -LiteralPath $wc -Raw
         foreach ($b in $Apps) { $x = $x.Replace("127.0.0.1:$($b.LivePort)/", "127.0.0.1:$($b.TestPort)/") }
         $x = [regex]::Replace($x, '(?s)<rule name="Force HTTPS".*?</rule>', '')     # test site is plain http
-        Set-Content -LiteralPath $wc -Value $x -Encoding UTF8
+        Set-Content -LiteralPath $wc -Value $x -Encoding UTF8 -ErrorAction Stop
     }
     if (Iis-AppExists $TestSite "/") { AppCmd @("delete", "site", $TestSite) | Out-Null }
     AppCmd @("add", "site", "/name:$TestSite", "/bindings:http/*:$($cfg.TestPort):", "/physicalPath:$(Join-Path $testRoot 'portal')") | Out-Null
