@@ -17,6 +17,20 @@ try {
     $pg = Use-Pg $cfg
     Say ("PostgreSQL {0} on port {1}" -f $pg.Service, $pg.Port)
     Read-PgPassword | Out-Null
+
+    # Settings copied from a developer PC point at the wrong PostgreSQL (e.g. port 5433).
+    # Put them aside; setup writes fresh ones from the live apps' settings.
+    foreach ($a in $Apps) {
+        $f = Join-Path $Root "$($a.Dir)\backend\.env"
+        if (-not (Test-Path $f)) { continue }
+        $ports = @()
+        $p1 = Read-EnvValue $f "DB_PORT"; if ($p1) { $ports += $p1 }
+        foreach ($k in "SUPABASE_DB_URL", "DATABASE_URL") { $u = Read-EnvValue $f $k; if ($u -match ':(\d+)/') { $ports += $Matches[1] } }
+        if ($ports | Where-Object { $_ -ne "$($pg.Port)" }) {
+            Move-Item -LiteralPath $f "$f.from-other-pc-$stamp"
+            Say "   $($a.Dir)\backend\.env was for another PC (port $($ports -join ',')) - kept as .env.from-other-pc-$stamp" Yellow
+        }
+    }
     foreach ($db in $cfg.OipmDb, $cfg.NpdDb) { if (-not (Db-Exists $db)) { Stop-With "Live database '$db' not found on port $($pg.Port)." } }
 
     Step "1/7  Fresh copy of the LIVE data into nibl_* (live databases only read)"

@@ -41,7 +41,7 @@ if ($pwPlain) {
     try {
         $rows = Sql "postgres" "select datname || '  ' || pg_size_pretty(pg_database_size(datname)) from pg_database where not datistemplate order by 1"
         $rows -split "`n" | ForEach-Object { Say "   db  $_" }
-        foreach ($q in @(@("oipm", "public.users"), @("apqp", "apqp.user_apqp"), @("apqp", "apqp.projects"), @("nibl_portal", "public.users"), @("nibl_oipm", "public.users"), @("nibl_npd", "apqp.user_apqp"), @("nibl_drawing", "drawing.dc_drawings"))) {
+        foreach ($q in @(@("oipm", "public.users"), @("apqp", "apqp.user_apqp"), @("nibl_portal", "public.users"), @("nibl_oipm", "public.users"), @("nibl_npd", "apqp.user_apqp"), @("nibl_drawing", "drawing.dc_drawings"))) {
             if (Db-Exists $q[0]) {
                 $n = try { Sql $q[0] "select count(*) from $($q[1])" } catch { "table missing" }
                 Say ("   {0,-14} {1,-22} {2}" -f $q[0], $q[1], $n)
@@ -108,12 +108,15 @@ else {
     if (-not $arr) { Warn "IIS Application Request Routing (ARR) is NOT installed." } else { Say "   ARR installed" "Green" }
     $proxy = (& $AppCmd list config -section:system.webServer/proxy 2>$null | Out-String)
     if ($proxy -notmatch 'enabled="true"') { Warn "ARR proxy is not enabled (IIS Manager > server > ARR > Server Proxy Settings > Enable proxy)." } else { Say "   ARR proxy enabled" "Green" }
+    # Live site = a STARTED site on port 80/443 (stopped sites like "Default Web Site" are ignored).
     $sites = & $AppCmd list site /text:name 2>$null
     foreach ($n in $sites) {
+        $st = (& $AppCmd list site $n /text:state 2>$null | Out-String).Trim()
         $b = (& $AppCmd list site $n /text:bindings 2>$null | Out-String)
-        if (-not $iisSite -and ($b -match ':443:' -or $b -match ':nibl')) { $iisSite = $n; $publicUrl = $(if ($b -match 'https/') { "https://nibl" } else { "http://nibl" }) }
+        if ($st -ne "Started" -or $n -eq $TestSite) { continue }
+        if (-not $iisSite -and ($b -match ':443:' -or $b -match ':80:')) { $iisSite = $n; $publicUrl = $(if ($b -match 'https/') { "https://nibl" } else { "http://nibl" }) }
     }
-    if (-not $iisSite) { foreach ($n in $sites) { $b = (& $AppCmd list site $n /text:bindings 2>$null | Out-String); if ($b -match ':80:') { $iisSite = $n; $publicUrl = "http://nibl"; break } } }
+    if (-not $iisSite) { Warn "No started IIS site on port 80/443 found - set IisSite in deploy-config.ps1." }
     Say "   live site guessed: '$iisSite'  address: $publicUrl"
 }
 
