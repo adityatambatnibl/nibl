@@ -38,7 +38,7 @@
     },
     {
       "id": "ai-drawing-control",
-      "name": "AI Drawing",
+      "name": "Drawings",
       "subtitle": "Drawing Control",
       "description": "Controlled PDF drawings, approved on screen by every listed user.",
       "icon": "/logos/ai-drawing.svg",
