@@ -1,0 +1,57 @@
+{
+  "_help": "Application registry for the NIBL portal cards. Add one object per application. The portal re-reads this file automatically; no restart is needed. Fields: id, name, subtitle, description, icon, order, status (active | coming_soon | hidden), launch.url (where the card opens), launch.token_param (optional: the portal access token is passed in the URL hash under this name), backend.base_url plus provision_path / access_path / validate_path (see shared/documentation/ARCHITECTURE.md, section 'Application contract').",
+  "projects": [
+    {
+      "id": "oipm",
+      "name": "OIPM",
+      "subtitle": "One Person One Improvement",
+      "description": "Submit and track improvement ideas.",
+      "icon": "/logos/oipm.svg",
+      "order": 1,
+      "status": "active",
+      "launch": {
+        "url": "/oipm/"
+      },
+      "backend": {
+        "base_url": "http://127.0.0.1:8000/api/v1",
+        "provision_path": "/portal/users",
+        "access_path": "/portal/access/{user_id}",
+        "validate_path": "/portal/validate"
+      }
+    },
+    {
+      "id": "npd",
+      "name": "NPD",
+      "subtitle": "New Product Development",
+      "description": "APQP timelines and order development tracking.",
+      "icon": "/logos/npd.svg",
+      "order": 2,
+      "status": "active",
+      "launch": {
+        "url": "/npd/sso"
+      },
+      "backend": {
+        "base_url": "http://127.0.0.1:8001/api",
+        "provision_path": "/portal/users",
+        "access_path": "/portal/access/{user_id}"
+      }
+    },
+    {
+      "id": "ai-drawing-control",
+      "name": "AI Drawing",
+      "subtitle": "Drawing Control",
+      "description": "Controlled PDF drawings, approved on screen by every listed user.",
+      "icon": "/logos/ai-drawing.svg",
+      "order": 3,
+      "status": "active",
+      "launch": {
+        "url": "/ai-drawing-control/"
+      },
+      "backend": {
+        "base_url": "http://127.0.0.1:8002/api",
+        "provision_path": "/portal/users",
+        "access_path": "/portal/access/{user_id}"
+      }
+    }
+  ]
+}

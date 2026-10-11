@@ -1,0 +1,47 @@
+/* Workspace launcher with three cards (OIPM, NPD, AI Drawing Control).
+   Only applies when the third card is present; the two original cards keep
+   their look, just one column narrower on wide screens. */
+.module-content .project-cards.has-three {
+    max-width: 1280px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.module-content .project-cards.has-three .card-title {
+    font-size: clamp(44px, 4.4vw, 72px);
+}
+
+.module-content .project-cards.has-three .drawing-card .card-title {
+    font-size: clamp(36px, 3.3vw, 54px);
+    line-height: 1.05;
+}
+
+.drawing-card {
+    background: linear-gradient(135deg, #7d1410, #4f0907);
+}
+
+@media (max-width: 1000px) {
+    .module-content .project-cards.has-three {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .module-content .project-cards.has-three {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Any application without its own colour (constants/projects.js). */
+.generic-card {
+    background: linear-gradient(135deg, #a3261f, #5e0d0a);
+}
+
+/* Not approved / not available yet: the card still opens a pop-up explaining why. */
+.project-card.is-locked {
+    filter: saturate(0.55);
+    opacity: 0.86;
+}
+
+.project-card.is-locked:hover {
+    transform: translateY(-3px);
+}

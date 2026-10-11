@@ -1,0 +1,107 @@
+.multi-select-field {
+    position: relative;
+    min-width: 0;
+}
+
+.multi-select-field > label {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.multi-select-trigger {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid #d9dfe7;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #202633;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.multi-select-trigger:focus {
+    outline: none;
+    border-color: #c00000;
+    box-shadow: 0 0 0 3px rgba(192, 0, 0, 0.08);
+}
+
+.multi-select-values,
+.multi-select-placeholder {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.45;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.multi-select-placeholder {
+    color: #8993a3;
+}
+
+.multi-select-chevron {
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+}
+
+.multi-select-chevron.open {
+    transform: rotate(180deg);
+}
+
+.multi-select-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 5px);
+    z-index: 100;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 5px;
+    border: 1px solid #dfe3e9;
+    border-radius: 9px;
+    background: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.13);
+}
+
+.multi-select-option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #303846;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.multi-select-option:hover,
+.multi-select-option.selected {
+    background: #fff5f5;
+}
+
+.multi-select-checkbox {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 17px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #b9c1cd;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.multi-select-checkbox.checked {
+    border-color: #c00000;
+    background: #c00000;
+    color: #ffffff;
+}

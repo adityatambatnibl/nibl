@@ -1,0 +1,727 @@
+/* ============================================================
+   DRAFTS + ALL IMPROVEMENTS
+   Uses the existing Employee Dashboard visual language.
+   ============================================================ */
+
+.dashboard-lists-stack {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 22px;
+}
+
+
+/* ============================================================
+   REFERENCE LIST PANEL
+   Base styling comes from .employee-panel
+   ============================================================ */
+
+.dashboard-reference-list {
+    width: 100%;
+}
+
+
+/* ============================================================
+   SECTION LABEL
+   Same red eyebrow used by the dashboard
+   ============================================================ */
+
+.dashboard-reference-list .dashboard-list-eyebrow {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--nibl-red);
+
+    font-size: 8px;
+
+    font-weight: 850;
+
+    letter-spacing: 1.4px;
+
+    line-height: 1.2;
+}
+
+
+/* ============================================================
+   HEADER ACTIONS
+   ============================================================ */
+
+.dashboard-reference-list
+.dashboard-panel-header-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   REFRESH BUTTON
+   ============================================================ */
+
+.dashboard-reference-list
+.dashboard-list-refresh {
+    width: 36px;
+
+    height: 36px;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 0;
+
+    border:
+        1px solid #e2e5e9;
+
+    border-radius: 7px;
+
+    background:
+        #ffffff;
+
+    color:
+        #555;
+
+    cursor: pointer;
+
+    transition:
+        150ms ease;
+}
+
+
+.dashboard-reference-list
+.dashboard-list-refresh:hover {
+    background:
+        var(--nibl-red-light);
+
+    border-color:
+        #e4c8c5;
+
+    color:
+        var(--nibl-red);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ============================================================
+   COLLAPSE BUTTON
+   ============================================================ */
+
+.dashboard-reference-list
+.dashboard-list-toggle {
+    min-height: 36px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid #e2e5e9;
+
+    border-radius: 7px;
+
+    background:
+        #ffffff;
+
+    color:
+        #596576;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        150ms ease;
+}
+
+
+.dashboard-reference-list
+.dashboard-list-toggle:hover {
+    background:
+        var(--nibl-red-light);
+
+    border-color:
+        #e4c8c5;
+
+    color:
+        var(--nibl-red);
+}
+
+
+/* ============================================================
+   TABLE
+   Main colours / spacing come from Employee Dashboard CSS
+   ============================================================ */
+
+.dashboard-reference-table {
+    width: 100%;
+}
+
+
+/* ============================================================
+   TABLE HEADER
+   ============================================================ */
+
+.dashboard-reference-table th {
+    background:
+        #fff7f6;
+}
+
+
+/* ============================================================
+   TABLE ROW
+   ============================================================ */
+
+.dashboard-reference-table tbody tr {
+    transition:
+        background 150ms ease,
+        box-shadow 150ms ease;
+}
+
+
+.dashboard-reference-table tbody tr:hover {
+    background:
+        #fffafa;
+}
+
+
+/* ============================================================
+   PRIMARY TEXT
+   ============================================================ */
+
+.dashboard-reference-table
+.list-primary-text {
+    color:
+        #444;
+
+    font-size:
+        10px;
+
+    font-weight:
+        500;
+}
+
+
+/* ============================================================
+   ACTIVITY
+   ============================================================ */
+
+.dashboard-reference-table
+.list-activity-text {
+    display: block;
+
+    max-width: 260px;
+
+    overflow: hidden;
+
+    color:
+        #444;
+
+    font-size:
+        10px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   BENEFIT
+   ============================================================ */
+
+.dashboard-reference-table
+.list-benefit-text {
+    display: block;
+
+    max-width: 220px;
+
+    overflow: hidden;
+
+    color:
+        #444;
+
+    font-size:
+        10px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   DRAFT DATE / FIRST COLUMN
+   Reuses the exact dashboard icon structure
+   ============================================================ */
+
+.dashboard-reference-table
+.improvement-id-cell {
+    min-width: 150px;
+}
+
+
+.dashboard-reference-table
+.improvement-id-cell strong {
+    color:
+        #333;
+
+    font-size:
+        9px;
+
+    font-weight:
+        800;
+}
+
+
+.dashboard-reference-table
+.improvement-id-cell small {
+    color:
+        #aaa;
+
+    font-size:
+        8px;
+}
+
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+
+.dashboard-reference-table
+.improvement-actions-cell {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+}
+
+
+/* ============================================================
+   VIEW BUTTON
+   Uses same button style as My Improvements
+   ============================================================ */
+
+.dashboard-reference-table
+.view-improvement-button {
+    width: 30px;
+
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 0;
+
+    border:
+        none;
+
+    border-radius: 50%;
+
+    background:
+        #f5f5f5;
+
+    color:
+        #555;
+
+    cursor: pointer;
+
+    transition:
+        150ms ease;
+}
+
+
+.dashboard-reference-table
+.view-improvement-button:hover {
+    background:
+        var(--nibl-red-light);
+
+    color:
+        var(--nibl-red);
+
+    transform:
+        scale(1.07);
+}
+
+
+/* ============================================================
+   DELETE BUTTON
+   ============================================================ */
+
+.dashboard-reference-table
+.list-delete-button {
+    width: 30px;
+
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 0;
+
+    border:
+        1px solid #e7e7e7;
+
+    border-radius: 7px;
+
+    background:
+        #ffffff;
+
+    color:
+        #777;
+
+    cursor: pointer;
+
+    transition:
+        150ms ease;
+}
+
+
+.dashboard-reference-table
+.list-delete-button:hover {
+    border-color:
+        #e7caca;
+
+    background:
+        #fff1f1;
+
+    color:
+        #c52c2c;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ============================================================
+   STATUS
+   Reuses Employee Dashboard status colours
+   ============================================================ */
+
+.dashboard-reference-table
+.status-cell {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 5px;
+
+    max-width: 190px;
+}
+
+
+/* Pending = orange */
+
+.dashboard-reference-table
+.employee-status-badge.status-pending {
+    color:
+        #d87c00;
+
+    background:
+        #fff4dc;
+}
+
+
+/* In progress = blue */
+
+.dashboard-reference-table
+.employee-status-badge.status-progress {
+    color:
+        #2563c7;
+
+    background:
+        #eaf2ff;
+}
+
+
+/* Completed = green */
+
+.dashboard-reference-table
+.employee-status-badge.status-done {
+    color:
+        #318044;
+
+    background:
+        #eaf7ed;
+}
+
+
+/* Rejected = red */
+
+.dashboard-reference-table
+.employee-status-badge.status-rejected {
+    color:
+        #c52c2c;
+
+    background:
+        #ffeded;
+}
+
+
+/* Resubmission = amber */
+
+.dashboard-reference-table
+.employee-status-badge.status-resubmission {
+    color:
+        #a76400;
+
+    background:
+        #fff3d9;
+}
+
+
+/* ============================================================
+   REJECTED ROW
+   Same subtle red row treatment as My Improvements
+   ============================================================ */
+
+.dashboard-reference-table
+.improvement-row-rejected {
+    background:
+        rgba(197, 44, 44, 0.018);
+}
+
+
+.dashboard-reference-table
+.improvement-row-rejected:hover {
+    background:
+        #fff5f5 !important;
+}
+
+
+/* ============================================================
+   RESUBMISSION / ATTENTION ROW
+   ============================================================ */
+
+.dashboard-reference-table
+.improvement-row-attention {
+    background:
+        rgba(216, 124, 0, 0.018);
+}
+
+
+.dashboard-reference-table
+.improvement-row-attention:hover {
+    background:
+        #fffaf0 !important;
+}
+
+
+/* ============================================================
+   EMPTY / LOADING
+   ============================================================ */
+
+.dashboard-reference-list
+.table-empty-state {
+    min-height: 160px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    color:
+        #999;
+
+    background:
+        #ffffff;
+
+    font-size:
+        10px;
+
+    text-align:
+        center;
+}
+
+
+/* ============================================================
+   COLLAPSED
+   ============================================================ */
+
+.dashboard-reference-list
+.dashboard-list-collapsed {
+    min-height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        16px 18px;
+
+    color:
+        #999;
+
+    background:
+        #ffffff;
+
+    font-size:
+        10px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .dashboard-reference-list
+    .employee-panel-header {
+        padding:
+            13px 14px;
+    }
+
+
+    .dashboard-reference-list
+    .dashboard-panel-header-actions {
+        gap:
+            5px;
+    }
+
+
+    .dashboard-reference-table {
+        min-width:
+            950px;
+    }
+
+}
+
+
+@media (max-width: 640px) {
+
+    .dashboard-reference-list
+    .employee-panel-header {
+        align-items:
+            flex-start;
+    }
+
+
+    .dashboard-reference-list
+    .employee-panel-header h2 {
+        font-size:
+            13px;
+    }
+
+
+    .dashboard-reference-list
+    .employee-panel-header p {
+        font-size:
+            8px;
+    }
+
+
+    .dashboard-reference-list
+    .dashboard-list-toggle {
+        padding:
+            0 9px;
+    }
+
+}
+
+
+/* ============================================================
+   PLANT HEAD VISUAL LANGUAGE — DASHBOARD LISTS
+   Styling only. Existing layout and table structure preserved.
+============================================================ */
+
+.dashboard-reference-list {
+    border: 1px solid #e6caca;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(122, 17, 17, 0.055);
+    background: #ffffff;
+}
+
+.dashboard-reference-list .employee-panel-header {
+    border-top: 3px solid #b51212;
+    border-bottom: 1px solid #efd6d6;
+    background: linear-gradient(180deg, #fff4f4 0%, #ffffff 100%);
+}
+
+.dashboard-reference-list .employee-panel-header h2 {
+    color: #7f1111;
+    font-weight: 900;
+}
+
+.dashboard-reference-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.dashboard-reference-table th {
+    background: #b51212 !important;
+    color: #ffffff !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.22);
+    border-bottom: 2px solid #8f0d0d;
+    font-weight: 900;
+}
+
+.dashboard-reference-table th:last-child {
+    border-right: none;
+}
+
+.dashboard-reference-table td {
+    border-right: 1px solid #f0dddd;
+    border-bottom: 1px solid #f0dddd;
+}
+
+.dashboard-reference-table td:last-child {
+    border-right: none;
+}
+
+.dashboard-reference-table tbody tr:nth-child(even) {
+    background: #fffafa;
+}
+
+.dashboard-reference-table tbody tr:hover {
+    background: #fff1f1;
+}
+
+.dashboard-reference-table tbody tr:hover td {
+    border-bottom-color: #efd6d6;
+}
+
+.dashboard-reference-list .dashboard-list-refresh:hover,
+.dashboard-reference-list .dashboard-list-toggle:hover {
+    background: #fff0f0;
+    border-color: #e4c8c5;
+    color: #b51212;
+}
+
+.dashboard-reference-table .view-improvement-button:hover {
+    background: var(--nibl-red-light);
+    color: var(--nibl-red);
+}
+
+.dashboard-reference-table .list-delete-button:hover {
+    border-color: #e7caca;
+    background: #fff1f1;
+    color: #c52c2c;
+}

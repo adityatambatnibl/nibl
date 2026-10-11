@@ -1,0 +1,2712 @@
+/* ============================================================
+   OIPM - ADD IMPROVEMENT
+   Premium / Bright NRB UI
+   ============================================================ */
+
+.improvement-page {
+  min-height: 100vh;
+  width: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f4f5f7 0%,
+      #eef0f3 45%,
+      #e9ebee 100%
+    );
+
+  color: #172033;
+
+  padding: 28px 32px 60px;
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+
+.improvement-topbar {
+  max-width: 1280px;
+  margin: 0 auto 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: 1px solid #e3e6eb;
+  background: #ffffff;
+  color: #4b5563;
+
+  padding: 10px 15px;
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.back-button:hover:not(:disabled) {
+  background: #fff6f6;
+  border-color: #d71920;
+  color: #c9141b;
+
+  transform: translateX(-2px);
+
+  box-shadow:
+    0 4px 14px rgba(215, 25, 32, 0.08);
+}
+
+.back-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.improvement-topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #b51218;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   FORM CONTAINER
+   ============================================================ */
+
+.improvement-form {
+  max-width: 1280px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* ============================================================
+   PAGE HEADING
+   ============================================================ */
+
+.improvement-heading {
+  background: #ffffff;
+
+  border: 1px solid #e6e8ec;
+  border-radius: 16px;
+
+  padding: 26px 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+
+  box-shadow:
+    0 7px 25px rgba(15, 23, 42, 0.055);
+}
+
+.form-eyebrow {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #c4151c;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.improvement-heading h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.improvement-heading p {
+  margin: 8px 0 0;
+
+  color: #687386;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.form-owner-chip {
+  min-width: 220px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 11px 14px;
+
+  border: 1px solid #f0d7d8;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffafa,
+      #fff5f5
+    );
+
+  color: #c4151c;
+}
+
+.form-owner-chip > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.form-owner-chip strong {
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-owner-chip span {
+  color: #7b8492;
+  font-size: 11px;
+}
+
+
+/* ============================================================
+   ALERT
+   ============================================================ */
+
+.form-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  padding: 13px 15px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.form-alert.error {
+  background: #fff1f1;
+  border: 1px solid #f4c5c7;
+  color: #a90f16;
+}
+
+.form-alert span {
+  flex: 1;
+}
+
+
+/* ============================================================
+   CURRENT STATUS INFO
+   ============================================================ */
+
+.current-status-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  padding: 14px 17px;
+
+  border: 1px solid #f1d7d8;
+  border-left: 4px solid #d71920;
+
+  border-radius: 10px;
+
+  background: #fffafa;
+
+  color: #697386;
+
+  box-shadow:
+    0 3px 12px rgba(215, 25, 32, 0.035);
+}
+
+.current-status-info svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+
+  color: #c4151c;
+}
+
+.current-status-info p {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.current-status-info strong {
+  color: #252b36;
+}
+
+
+/* ============================================================
+   FORM SECTION
+   ============================================================ */
+
+.form-section {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e6eb;
+  border-radius: 15px;
+
+  box-shadow:
+    0 6px 22px rgba(15, 23, 42, 0.045);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-section:hover {
+  border-color: #dedfe3;
+
+  box-shadow:
+    0 9px 28px rgba(15, 23, 42, 0.065);
+}
+
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+
+.form-section-header {
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 15px 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #fffafa 100%
+    );
+
+  border-bottom: 1px solid #ececef;
+}
+
+.section-number {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #d71920,
+      #b90f16
+    );
+
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  box-shadow:
+    0 5px 12px rgba(215, 25, 32, 0.18);
+}
+
+.form-section-header h2 {
+  margin: 0;
+
+  color: #171b24;
+
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 750;
+}
+
+.form-section-header p {
+  margin: 3px 0 0;
+
+  color: #7a8494;
+
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   FORM GRID
+   ============================================================ */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 18px;
+
+  padding: 21px 22px;
+}
+
+.form-field-full {
+  grid-column: 1 / -1;
+}
+
+
+/* ============================================================
+   FORM FIELD
+   ============================================================ */
+
+.form-field {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-field label {
+  color: #343b49;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.required {
+  margin-left: 3px;
+
+  color: #d71920;
+
+  font-weight: 800;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dfe3e8;
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #202733;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  padding: 10px 12px;
+
+  outline: none;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.form-field input,
+.form-field select {
+  min-height: 42px;
+}
+
+.form-field textarea {
+  min-height: 95px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: #a4acb8;
+}
+
+.form-field input:hover,
+.form-field textarea:hover,
+.form-field select:hover {
+  border-color: #cfd4dc;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: #d71920;
+
+  box-shadow:
+    0 0 0 3px rgba(215, 25, 32, 0.09);
+
+  background: #fffdfd;
+}
+
+.form-field small {
+  color: #929aa7;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+
+/* ============================================================
+   READ ONLY
+   ============================================================ */
+
+.readonly-field {
+  min-height: 42px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  padding: 10px 12px;
+
+  border: 1px solid #e1e4e8;
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7f8fa,
+      #f2f4f6
+    );
+
+  color: #626b78;
+
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+
+/* ============================================================
+   SECTION HELPER
+   ============================================================ */
+
+.section-helper {
+  margin: 17px 22px 0;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  padding: 11px 13px;
+
+  background: #fffafa;
+
+  border: 1px solid #f0dfe0;
+  border-radius: 8px;
+
+  color: #737d8b;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.section-helper svg {
+  flex-shrink: 0;
+
+  color: #d71920;
+
+  margin-top: 1px;
+}
+
+
+/* ============================================================
+   TABLE WRAPPER
+   ============================================================ */
+
+.table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  padding: 18px 22px 0;
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   DATA TABLE
+   ============================================================ */
+
+.improvement-data-table {
+  width: 100%;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  overflow: hidden;
+
+  border: 1px solid #e4e7eb;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  font-size: 12px;
+}
+
+.improvement-data-table thead th {
+  padding: 11px 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fff8f8,
+      #fff3f3
+    );
+
+  border-bottom: 1px solid #ead9da;
+
+  color: #4c5563;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-align: left;
+
+  white-space: nowrap;
+}
+
+.improvement-data-table thead th:first-child {
+  width: 48px;
+  text-align: center;
+}
+
+.improvement-data-table tbody td {
+  padding: 9px 10px;
+
+  border-bottom: 1px solid #edf0f2;
+
+  color: #3f4754;
+
+  vertical-align: middle;
+}
+
+.improvement-data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.improvement-data-table tbody tr {
+  transition:
+    background 0.15s ease;
+}
+
+.improvement-data-table tbody tr:hover {
+  background: #fffafa;
+}
+
+.improvement-data-table tbody td:first-child {
+  text-align: center;
+
+  color: #b51218;
+
+  font-weight: 800;
+}
+
+.improvement-data-table input,
+.improvement-data-table textarea,
+.improvement-data-table select {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #e1e4e8;
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #252b35;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  outline: none;
+
+  transition:
+    border-color 0.17s ease,
+    box-shadow 0.17s ease;
+}
+
+.improvement-data-table input,
+.improvement-data-table select {
+  min-height: 37px;
+  padding: 7px 9px;
+}
+
+.improvement-data-table textarea {
+  min-height: 72px;
+
+  padding: 8px 9px;
+
+  resize: vertical;
+
+  line-height: 1.45;
+}
+
+.improvement-data-table input:focus,
+.improvement-data-table textarea:focus,
+.improvement-data-table select:focus {
+  border-color: #d71920;
+
+  box-shadow:
+    0 0 0 3px rgba(215, 25, 32, 0.07);
+}
+
+.improvement-data-table input::placeholder,
+.improvement-data-table textarea::placeholder {
+  color: #a8afb9;
+}
+
+
+/* ============================================================
+   DEPLOYMENT TABLE
+   ============================================================ */
+
+.deployment-table th:nth-child(2) {
+  min-width: 210px;
+}
+
+.deployment-table th:nth-child(3) {
+  min-width: 140px;
+}
+
+.deployment-table th:nth-child(4) {
+  min-width: 180px;
+}
+
+.deployment-table th:nth-child(5) {
+  min-width: 145px;
+}
+
+
+/* ============================================================
+   ADD ROW BUTTON
+   ============================================================ */
+
+.add-row-button {
+  margin: 12px 22px 20px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  border: 1px solid #e3bfc1;
+  border-radius: 8px;
+
+  background: #fffafa;
+  color: #c4151c;
+
+  padding: 8px 12px;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.add-row-button:hover {
+  background: #d71920;
+  border-color: #d71920;
+  color: #ffffff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(215, 25, 32, 0.16);
+}
+
+
+/* ============================================================
+   DANGER ICON BUTTON
+   ============================================================ */
+
+.icon-danger-button {
+  width: 34px;
+  height: 34px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #f0d2d3;
+  border-radius: 7px;
+
+  background: #fff7f7;
+
+  color: #c51b22;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.icon-danger-button:hover:not(:disabled) {
+  background: #d71920;
+  border-color: #d71920;
+  color: #ffffff;
+
+  transform: scale(1.04);
+}
+
+.icon-danger-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+
+/* ============================================================
+   IMAGE UPLOAD
+   ============================================================ */
+
+.image-upload-area {
+  margin: 0 22px 21px;
+
+  padding: 15px;
+
+  border: 1px dashed #e2bfc1;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffafa,
+      #fffdfd
+    );
+}
+
+.image-upload-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.image-upload-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.image-upload-heading strong {
+  color: #3b424e;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.image-upload-heading span {
+  color: #8a93a0;
+
+  font-size: 10px;
+}
+
+.image-upload-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 12px;
+
+  border: 1px solid #dfc0c1;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #c4151c;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.image-upload-button:hover {
+  background: #d71920;
+  border-color: #d71920;
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+.image-upload-button input {
+  display: none;
+}
+
+
+/* ============================================================
+   IMAGE PREVIEW
+   ============================================================ */
+
+.image-preview-grid {
+  margin-top: 14px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(115px, 1fr));
+
+  gap: 10px;
+}
+
+.image-preview {
+  position: relative;
+
+  height: 105px;
+
+  overflow: hidden;
+
+  border: 1px solid #e4e6e9;
+  border-radius: 9px;
+
+  background: #f5f6f7;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.image-preview button {
+  position: absolute;
+
+  top: 6px;
+  right: 6px;
+
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 7px;
+
+  background: rgba(185, 15, 22, 0.92);
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.16s ease,
+    background 0.16s ease;
+}
+
+.image-preview button:hover {
+  background: #a80e14;
+
+  transform: scale(1.06);
+}
+
+.image-upload-empty {
+  margin-top: 12px;
+
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #a1a8b2;
+
+  font-size: 11px;
+}
+
+.image-upload-empty svg {
+  color: #c8cdd4;
+}
+
+
+/* ============================================================
+   CALCULATED VALUE
+   ============================================================ */
+
+.calculated-value {
+  min-height: 37px;
+
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  padding: 7px 10px;
+
+  border: 1px solid #e7d6d7;
+  border-radius: 7px;
+
+  background: #fff8f8;
+
+  color: #b51218;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+/* ============================================================
+   FINANCIAL SUMMARY
+   ============================================================ */
+
+.financial-summary {
+  margin: 0 22px 21px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.financial-summary > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding: 14px 16px;
+
+  border: 1px solid #ead6d7;
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffafa,
+      #fffdfd
+    );
+}
+
+.financial-summary span {
+  color: #697382;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.financial-summary strong {
+  color: #b51218;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+
+/* ============================================================
+   SUBMISSION INFORMATION
+   ============================================================ */
+
+.submission-information {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+
+  padding: 17px 19px;
+
+  border: 1px solid #dfe4ea;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.035);
+}
+
+.submission-information-icon {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #fff0f0;
+
+  color: #c4151c;
+}
+
+.submission-information strong {
+  color: #252b35;
+
+  font-size: 13px;
+}
+
+.submission-information p {
+  margin: 4px 0 0;
+
+  color: #737d8b;
+
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+
+/* ============================================================
+   FORM ACTIONS
+   ============================================================ */
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+
+  padding: 23px 19px 14px;
+
+  border: 1px solid #e2e5e9;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.form-secondary-button,
+.form-submit-button {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 9px 16px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.form-secondary-button {
+  border: 1px solid #dfe3e8;
+
+  background: #ffffff;
+
+  color: #555e6d;
+}
+
+.form-secondary-button:hover:not(:disabled) {
+  border-color: #cfd4da;
+
+  background: #f8f9fa;
+
+  color: #252b35;
+
+  transform: translateY(-1px);
+}
+
+
+
+
+
+.form-submit-button {
+  border: 1px solid #c9151c;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d71920,
+      #b80f16
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 15px rgba(215, 25, 32, 0.17);
+}
+
+.form-submit-button:hover:not(:disabled) {
+  background:
+    linear-gradient(
+      135deg,
+      #e11c24,
+      #c20f16
+    );
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 20px rgba(215, 25, 32, 0.22);
+}
+
+.form-secondary-button:disabled,
+.form-submit-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* ============================================================
+   BUTTON SPINNER
+   ============================================================ */
+
+.button-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    improvement-spin 0.7s linear infinite;
+}
+
+@keyframes improvement-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ============================================================
+   SUCCESS SCREEN
+   ============================================================ */
+
+.improvement-success-card {
+  max-width: 560px;
+
+  margin: 100px auto;
+
+  padding: 42px 35px;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e6ea;
+  border-radius: 17px;
+
+  text-align: center;
+
+  box-shadow:
+    0 15px 45px rgba(15, 23, 42, 0.09);
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #eaf8ef;
+
+  color: #17823b;
+}
+
+.improvement-success-card h2 {
+  margin: 0;
+
+  color: #1b2430;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.improvement-success-card p {
+  margin: 10px auto 6px;
+
+  max-width: 440px;
+
+  color: #687382;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.improvement-success-card > span {
+  color: #9aa1ac;
+
+  font-size: 11px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  .improvement-page {
+    padding: 20px 18px 45px;
+  }
+
+  .improvement-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .form-owner-chip {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-full {
+    grid-column: auto;
+  }
+
+  .financial-summary {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .improvement-page {
+    padding: 14px 10px 35px;
+  }
+
+  .improvement-topbar {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .improvement-topbar-title {
+    display: none;
+  }
+
+  .improvement-heading {
+    padding: 21px 18px;
+  }
+
+  .improvement-heading h1 {
+    font-size: 23px;
+  }
+
+  .form-section-header {
+    padding: 13px 15px;
+  }
+
+  .form-grid {
+    padding: 17px 15px;
+  }
+
+  .section-helper {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .table-wrapper {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .image-upload-area {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .add-row-button {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .financial-summary {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .image-upload-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .image-upload-button {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .form-secondary-button,
+  .form-submit-button {
+    width: 100%;
+  }
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(215, 25, 32, 0.35);
+  outline-offset: 2px;
+}
+/* ============================================================
+   OIPM IMPROVEMENT PAGE
+   PREMIUM CARD SYSTEM
+   Slightly stronger than Login / Signup
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   MAIN IMPROVEMENT CARDS
+   ------------------------------------------------------------ */
+
+/* Main heading card */
+.improvement-heading,
+
+/* Every major form section */
+.form-section,
+
+/* Final submission information */
+.submission-information,
+
+/* Bottom action area */
+.form-actions,
+
+/* Success card */
+.improvement-success-card {
+
+  background: #ffffff !important;
+
+  border: 1px solid rgba(181, 18, 24, 0.24) !important;
+
+  box-shadow:
+    0 18px 45px rgba(35, 20, 20, 0.075),
+    0 5px 18px rgba(181, 18, 24, 0.045) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   FORM SECTIONS
+   Strongest visual separation
+   ------------------------------------------------------------ */
+
+.form-section {
+
+  border-color:
+    rgba(181, 18, 24, 0.27) !important;
+
+  border-radius: 15px !important;
+
+  box-shadow:
+    0 16px 38px rgba(35, 20, 20, 0.075),
+    0 4px 14px rgba(181, 18, 24, 0.045) !important;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease !important;
+}
+
+
+/* Slight premium lift when hovering a section */
+
+.form-section:hover {
+
+  border-color:
+    rgba(181, 18, 24, 0.34) !important;
+
+  box-shadow:
+    0 20px 45px rgba(35, 20, 20, 0.09),
+    0 6px 18px rgba(181, 18, 24, 0.055) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   HEADING CARD
+   ------------------------------------------------------------ */
+
+.improvement-heading {
+
+  border-color:
+    rgba(181, 18, 24, 0.24) !important;
+
+  box-shadow:
+    0 18px 42px rgba(35, 20, 20, 0.075),
+    0 5px 18px rgba(181, 18, 24, 0.04) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   SECTION HEADER
+   Gives each section a subtle inner separation
+   ------------------------------------------------------------ */
+
+.form-section-header {
+
+  border-bottom:
+    1px solid rgba(181, 18, 24, 0.12) !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #fffafa 100%
+    ) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   SECTION NUMBER
+   Slightly more premium depth
+   ------------------------------------------------------------ */
+
+.section-number {
+
+  box-shadow:
+    0 7px 16px rgba(181, 18, 24, 0.20),
+    0 2px 5px rgba(181, 18, 24, 0.10) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   TABLE CARDS
+   Tables should also feel separated from their section
+   ------------------------------------------------------------ */
+
+.improvement-data-table {
+
+  border:
+    1px solid rgba(181, 18, 24, 0.18) !important;
+
+  box-shadow:
+    0 6px 18px rgba(35, 20, 20, 0.045) !important;
+
+}
+
+
+/* Table header */
+
+.improvement-data-table thead th {
+
+  border-bottom:
+    1px solid rgba(181, 18, 24, 0.14) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   IMAGE UPLOAD CARD
+   ------------------------------------------------------------ */
+
+.image-upload-area {
+
+  border:
+    1px dashed rgba(181, 18, 24, 0.28) !important;
+
+  box-shadow:
+    0 5px 18px rgba(35, 20, 20, 0.035) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   FINANCIAL SUMMARY CARDS
+   ------------------------------------------------------------ */
+
+.financial-summary > div {
+
+  border:
+    1px solid rgba(181, 18, 24, 0.20) !important;
+
+  box-shadow:
+    0 5px 16px rgba(35, 20, 20, 0.04) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   SUBMISSION CARD
+   ------------------------------------------------------------ */
+
+.submission-information {
+
+  border-color:
+    rgba(181, 18, 24, 0.22) !important;
+
+  box-shadow:
+    0 12px 30px rgba(35, 20, 20, 0.06),
+    0 4px 14px rgba(181, 18, 24, 0.035) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   ACTION CARD
+   ------------------------------------------------------------ */
+
+.form-actions {
+
+  border-color:
+    rgba(181, 18, 24, 0.20) !important;
+
+  box-shadow:
+    0 12px 30px rgba(35, 20, 20, 0.06),
+    0 4px 14px rgba(181, 18, 24, 0.035) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   OWNER CHIP
+   ------------------------------------------------------------ */
+
+.form-owner-chip {
+
+  border-color:
+    rgba(181, 18, 24, 0.20) !important;
+
+  box-shadow:
+    0 4px 12px rgba(181, 18, 24, 0.035) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   READ ONLY FIELDS
+   ------------------------------------------------------------ */
+
+.readonly-field {
+
+  border-color:
+    rgba(181, 18, 24, 0.12) !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(35, 20, 20, 0.025) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   FORM INPUTS
+   Slightly stronger than current version
+   ------------------------------------------------------------ */
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+
+  border-color:
+    #d8dadd !important;
+
+}
+
+
+.form-field input:hover,
+.form-field textarea:hover,
+.form-field select:hover {
+
+  border-color:
+    rgba(181, 18, 24, 0.28) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   HELPER / INFO BOXES
+   ------------------------------------------------------------ */
+
+.section-helper,
+.current-status-info {
+
+  border-color:
+    rgba(181, 18, 24, 0.17) !important;
+
+  box-shadow:
+    0 4px 14px rgba(35, 20, 20, 0.025) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   CALCULATED VALUES
+   ------------------------------------------------------------ */
+
+.calculated-value {
+
+  border-color:
+    rgba(181, 18, 24, 0.20) !important;
+
+  box-shadow:
+    inset 0 1px 2px rgba(181, 18, 24, 0.025) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   IMAGE PREVIEWS
+   ------------------------------------------------------------ */
+
+.image-preview {
+
+  border-color:
+    rgba(181, 18, 24, 0.16) !important;
+
+  box-shadow:
+    0 4px 12px rgba(35, 20, 20, 0.045) !important;
+
+}
+
+
+/* ------------------------------------------------------------
+   SUCCESS CARD
+   ------------------------------------------------------------ */
+
+.improvement-success-card {
+
+  border-color:
+    rgba(181, 18, 24, 0.22) !important;
+
+  box-shadow:
+    0 22px 55px rgba(35, 20, 20, 0.09),
+    0 6px 20px rgba(181, 18, 24, 0.045) !important;
+
+}
+
+
+/* ============================================================
+   IMPORTANT:
+   DON'T LET THE CARD SYSTEM BECOME TOO HEAVY
+   ============================================================ */
+
+/* Keep internal table rows clean */
+
+.improvement-data-table tbody tr:hover {
+
+  background:
+    #fffafa !important;
+
+}
+
+
+/* Keep buttons themselves independent from card shadows */
+
+.form-submit-button,
+.form-secondary-button,
+.add-row-button,
+.icon-danger-button {
+
+  box-shadow:
+    none;
+
+}
+
+
+/* Submit button keeps its existing stronger shadow */
+
+.form-submit-button {
+
+  box-shadow:
+    0 6px 15px rgba(215, 25, 32, 0.17) !important;
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  .form-section,
+  .improvement-heading,
+  .submission-information,
+  .form-actions,
+  .improvement-success-card {
+
+    box-shadow:
+      0 12px 28px rgba(35, 20, 20, 0.07),
+      0 4px 12px rgba(181, 18, 24, 0.035) !important;
+
+  }
+
+}
+/* ============================================================
+   OIPM ADD IMPROVEMENT
+   REAL BEARING BACKGROUND
+   ============================================================ */
+
+
+/* ============================================================
+   BACKGROUND CONTAINER
+   ============================================================ */
+
+.improvement-background {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: 0;
+}
+
+
+/* ============================================================
+   MAKE PAGE CONTENT SIT ABOVE BACKGROUND
+   ============================================================ */
+
+.improvement-page {
+
+    position: relative;
+
+    isolation: isolate;
+}
+
+
+.improvement-page > *:not(.improvement-background):not(.view-improvement-image-preview-overlay) {
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* ============================================================
+   BEARING
+   ============================================================ */
+
+.improvement-bearing {
+
+    position: absolute;
+
+    width: 330px;
+    height: 330px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0.48;
+
+    transform-origin: center;
+
+}
+
+
+/* ============================================================
+   LEFT BEARING
+   ============================================================ */
+
+.improvement-bearing-left {
+
+    left: -125px;
+
+    bottom: 115px;
+
+    animation:
+        improvement-bearing-float-left 11s ease-in-out infinite;
+}
+
+
+/* ============================================================
+   RIGHT BEARING
+   ============================================================ */
+
+.improvement-bearing-right {
+
+    right: -110px;
+
+    top: 110px;
+
+    opacity: 0.52;
+
+    animation:
+        improvement-bearing-float-right 13s ease-in-out infinite;
+}
+
+
+/* ============================================================
+   TECHNICAL OUTER RINGS
+   ============================================================ */
+
+.improvement-bearing-ring {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid rgba(181, 18, 24, 0.20);
+}
+
+
+.ring-one {
+
+    width: 330px;
+    height: 330px;
+
+    animation:
+        improvement-ring-rotate 42s linear infinite;
+}
+
+
+.ring-two {
+
+    width: 302px;
+    height: 302px;
+
+    border-color:
+        rgba(181, 18, 24, 0.14);
+
+    animation:
+        improvement-ring-rotate-reverse 52s linear infinite;
+}
+
+
+.ring-three {
+
+    width: 278px;
+    height: 278px;
+
+    border-color:
+        rgba(181, 18, 24, 0.12);
+
+    animation:
+        improvement-ring-rotate 60s linear infinite;
+}
+
+
+/* ============================================================
+   BEARING BODY
+   ============================================================ */
+
+.improvement-bearing-body {
+
+    position: absolute;
+
+    width: 238px;
+    height: 238px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.98) 0%,
+            rgba(248,248,248,0.96) 68%,
+            rgba(228,228,228,0.80) 100%
+        );
+
+    border:
+        2px solid rgba(175, 175, 175, 0.55);
+
+    box-shadow:
+        inset 0 0 0 8px rgba(255,255,255,0.72),
+        inset 0 0 0 10px rgba(190,190,190,0.18),
+        0 12px 35px rgba(30,30,30,0.07);
+
+    animation:
+        improvement-bearing-rotate 38s linear infinite;
+}
+
+
+/* ============================================================
+   OUTER RACE
+   ============================================================ */
+
+.improvement-bearing-outer-race {
+
+    position: absolute;
+
+    width: 202px;
+    height: 202px;
+
+    border-radius: 50%;
+
+    border:
+        7px solid rgba(205,205,205,0.62);
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,0.9),
+        0 0 0 2px rgba(181,18,24,0.12);
+}
+
+
+/* ============================================================
+   INNER RACE
+   ============================================================ */
+
+.improvement-bearing-inner-race {
+
+    position: absolute;
+
+    width: 116px;
+    height: 116px;
+
+    border-radius: 50%;
+
+    border:
+        7px solid rgba(210,210,210,0.70);
+
+    background:
+        rgba(248,248,248,0.92);
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,0.95),
+        0 0 0 2px rgba(181,18,24,0.11);
+
+}
+
+
+/* ============================================================
+   BEARING BALLS
+   ============================================================ */
+
+.improvement-bearing-ball {
+
+    position: absolute;
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffffff 0%,
+            #eeeeee 30%,
+            #c9c9c9 70%,
+            #aaaaaa 100%
+        );
+
+    border:
+        1px solid rgba(150,150,150,0.55);
+
+    box-shadow:
+        0 2px 5px rgba(0,0,0,0.12);
+
+}
+
+
+/* ============================================================
+   BALL POSITIONS
+   ============================================================ */
+
+.ball-1 {
+
+    top: 35px;
+    left: 109px;
+}
+
+
+.ball-2 {
+
+    top: 57px;
+    right: 55px;
+}
+
+
+.ball-3 {
+
+    top: 109px;
+    right: 34px;
+}
+
+
+.ball-4 {
+
+    bottom: 57px;
+    right: 55px;
+}
+
+
+.ball-5 {
+
+    bottom: 35px;
+    left: 109px;
+}
+
+
+.ball-6 {
+
+    bottom: 57px;
+    left: 55px;
+}
+
+
+.ball-7 {
+
+    top: 109px;
+    left: 34px;
+}
+
+
+.ball-8 {
+
+    top: 57px;
+    left: 55px;
+}
+
+
+/* ============================================================
+   CENTRAL HUB
+   ============================================================ */
+
+.improvement-bearing-hub {
+
+    position: absolute;
+
+    width: 92px;
+    height: 92px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffffff 0%,
+            #eeeeee 72%,
+            #d2d2d2 100%
+        );
+
+    border:
+        2px solid rgba(180,180,180,0.55);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        inset 0 0 0 6px rgba(255,255,255,0.75),
+        0 2px 8px rgba(0,0,0,0.08);
+
+}
+
+
+/* ============================================================
+   CENTRAL HOLE
+   ============================================================ */
+
+.improvement-bearing-hole {
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
+
+    background:
+        #ffffff;
+
+    border:
+        2px solid rgba(181,18,24,0.22);
+
+    box-shadow:
+        inset 0 0 0 7px rgba(225,225,225,0.50);
+
+}
+
+
+/* ============================================================
+   BEARING ROTATION
+   ============================================================ */
+
+@keyframes improvement-bearing-rotate {
+
+    from {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+@keyframes improvement-ring-rotate {
+
+    from {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+@keyframes improvement-ring-rotate-reverse {
+
+    from {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+    to {
+
+        transform:
+            rotate(0deg);
+
+    }
+
+}
+
+
+/* ============================================================
+   BEARING FLOAT
+   ============================================================ */
+
+@keyframes improvement-bearing-float-left {
+
+    0%,
+    100% {
+
+        margin-top: 0;
+
+    }
+
+    50% {
+
+        margin-top: -18px;
+
+    }
+
+}
+
+
+@keyframes improvement-bearing-float-right {
+
+    0%,
+    100% {
+
+        margin-top: 0;
+
+    }
+
+    50% {
+
+        margin-top: 16px;
+
+    }
+
+}
+
+
+/* ============================================================
+   PROCESS LINE
+   Kept OUTSIDE the form content
+   ============================================================ */
+
+.improvement-process-line {
+
+    position: absolute;
+
+    left: 8%;
+
+    right: 8%;
+
+    bottom: 28px;
+
+    height: 1px;
+
+    background:
+        rgba(181,18,24,0.22);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+/* ============================================================
+   PROCESS DOTS
+   ============================================================ */
+
+.improvement-process-dot {
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background:
+        #c52222;
+
+    box-shadow:
+        0 0 0 5px rgba(197,34,34,0.07),
+        0 2px 7px rgba(181,18,24,0.18);
+
+    animation:
+        improvement-dot-pulse 3s ease-in-out infinite;
+
+}
+
+
+.dot-one {
+    animation-delay: 0s;
+}
+
+
+.dot-two {
+    animation-delay: 0.7s;
+}
+
+
+.dot-three {
+    animation-delay: 1.4s;
+}
+
+
+.dot-four {
+    animation-delay: 2.1s;
+}
+
+
+/* ============================================================
+   DOT MOTION
+   ============================================================ */
+
+@keyframes improvement-dot-pulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(1);
+
+        opacity: 0.65;
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.35);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* ============================================================
+   IMPORTANT:
+   NEVER BLUR THE ACTUAL PAGE CONTENT
+   ============================================================ */
+
+.improvement-background,
+.improvement-background * {
+
+    filter: none;
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    .improvement-bearing {
+
+        width: 230px;
+        height: 230px;
+
+        opacity: 0.28;
+
+    }
+
+
+    .improvement-bearing-body {
+
+        width: 165px;
+        height: 165px;
+
+    }
+
+
+    .improvement-bearing-ring.ring-one {
+
+        width: 230px;
+        height: 230px;
+
+    }
+
+
+    .improvement-bearing-ring.ring-two {
+
+        width: 210px;
+        height: 210px;
+
+    }
+
+
+    .improvement-bearing-ring.ring-three {
+
+        width: 192px;
+        height: 192px;
+
+    }
+
+
+    .improvement-bearing-outer-race {
+
+        width: 140px;
+        height: 140px;
+
+    }
+
+
+    .improvement-bearing-inner-race {
+
+        width: 82px;
+        height: 82px;
+
+    }
+
+
+    .improvement-bearing-ball {
+
+        width: 14px;
+        height: 14px;
+
+    }
+
+
+    .improvement-bearing-left {
+
+        left: -120px;
+
+        bottom: 80px;
+
+    }
+
+
+    .improvement-bearing-right {
+
+        right: -110px;
+
+        top: 120px;
+
+    }
+
+
+    .improvement-process-line {
+
+        left: 10%;
+
+        right: 10%;
+
+        bottom: 16px;
+
+    }
+
+}
+.form-draft-button,
+.form-draft-submit-button {
+    border: 1px solid #c00000;
+    border-radius: 8px;
+    padding: 11px 18px;
+    background: #ffffff;
+    color: #c00000;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.form-draft-submit-button {
+    background: #fff5f5;
+}
+
+.form-draft-button:disabled,
+.form-draft-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.draft-save-message {
+    align-self: center;
+    color: #16803c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* Multi-select dropdowns must be able to extend beyond the card. */
+.improvement-form .multi-select-section {
+  position: relative;
+  overflow: visible;
+  z-index: 8;
+}
+
+.improvement-form .multi-select-section + .multi-select-section {
+  z-index: 7;
+}
+
+
+/* Keep Activity / Benefit option menus above following form sections. */
+.multi-select-section {
+    overflow: visible !important;
+}
+.multi-select-section .multi-select-field {
+    z-index: 20;
+}
+.multi-select-section .multi-select-menu {
+    z-index: 1000;
+}
+
+/* ============================================================
+   IMAGE PREVIEW
+   ============================================================ */
+
+.view-improvement-image-preview-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1500;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.78
+        );
+
+}
+
+
+.view-improvement-image-preview {
+
+    position: relative;
+
+    max-width: 94vw;
+
+    max-height: 90vh;
+
+}
+
+
+.view-improvement-image-preview img {
+
+    display: block;
+
+    max-width: 94vw;
+
+    max-height: 84vh;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 20px 60px
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+}
+
+
+.view-improvement-image-preview-close {
+
+    position: absolute;
+
+    top: -14px;
+
+    right: -14px;
+
+    z-index: 2;
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 18px
+        rgba(
+            0,
+            0,
+            0,
+            0.25
+        );
+
+}
+
+/* Cost-saving types: keep the financial choices clear and readable. */
+.improvement-data-table {
+  min-width: 1180px;
+}
+
+.improvement-data-table select:disabled,
+.improvement-data-table input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.table-header-note {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+}

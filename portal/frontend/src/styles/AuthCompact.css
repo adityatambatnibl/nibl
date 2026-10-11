@@ -1,0 +1,329 @@
+/* =====================================================
+   AUTH PAGES - Sign in and Register
+   Both fit on one screen without scrolling.
+   Colours come from the existing theme variables.
+===================================================== */
+
+/* ---------- Shared: the page is exactly one screen tall ---------- */
+
+.auth-page,
+.auth-page.signup-page {
+    height: 100vh;
+    height: 100svh;
+    min-height: 0;
+    padding: 16px 5vw !important;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;          /* only if the window is really tiny */
+}
+
+.auth-page .auth-brand {
+    flex: 0 0 auto;
+    min-height: 52px;
+}
+
+/* Sign in: centre the two columns in the remaining space */
+.auth-page .auth-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 12px 0;
+    margin: 0 auto;
+    align-content: safe center;
+}
+
+.auth-page .auth-card {
+    padding: 30px 34px;
+}
+
+.auth-page .auth-card-heading p {
+    margin-bottom: 20px;
+}
+
+/* ---------- Register: one boxed card, two panels ---------- */
+
+.auth-page.signup-compact .signup-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    /* margin:auto on the box centres it but never lets it
+       slide up over the logos when the window is short */
+}
+
+.signup-box {
+    margin: auto;
+    width: min(940px, 100%);
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    background: #ffffff;
+    border: 1px solid var(--nibl-border, #e8d8d6);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(90, 20, 15, 0.12);
+}
+
+/* Left panel - brand colour */
+.signup-aside {
+    position: relative;
+    padding: 34px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 110% 110%, rgba(255, 255, 255, 0.12) 0 38%, transparent 39%),
+        radial-gradient(circle at 110% 110%, rgba(255, 255, 255, 0.07) 0 52%, transparent 53%),
+        linear-gradient(150deg, var(--nibl-red, #b51f18) 0%, var(--nibl-dark-red, #8f1511) 100%);
+}
+
+.signup-aside-eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    opacity: 0.8;
+}
+
+.signup-aside h1 {
+    margin: 10px 0 12px;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: #ffffff;
+}
+
+.signup-aside h1 span {
+    color: #ffd9d6;
+}
+
+.signup-aside p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.signup-steps {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.signup-steps li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.signup-steps b {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 11px;
+}
+
+/* Right panel - the form (reset the old standalone card look) */
+.signup-box .signup-card,
+.signup-box .signup-card:hover {
+    padding: 24px 30px 16px;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    z-index: auto !important;
+}
+
+.signup-card-heading h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #1f1f1f;
+}
+
+.signup-card-heading {
+    margin-bottom: 14px;
+}
+
+.signup-compact .form-grid {
+    padding: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.signup-compact .form-group {
+    gap: 5px;
+    margin-bottom: 12px;
+}
+
+.signup-compact .form-group label {
+    font-size: 11.5px;
+}
+
+.signup-compact .form-group input,
+.signup-compact .form-group select {
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+}
+
+/* Roles: four small tiles in one row */
+.signup-compact .role-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.signup-compact .role-option {
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 8px;
+    border-radius: 9px;
+}
+
+.signup-compact .role-option .role-radio {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    margin-top: 0;
+}
+
+.signup-compact .role-option.selected .role-radio {
+    border-width: 4px;
+}
+
+.signup-compact .role-option strong {
+    margin: 0;
+    font-size: 12.5px;
+    white-space: nowrap;
+}
+
+.signup-compact .field-help {
+    font-size: 11px;
+}
+
+.signup-compact .signup-note {
+    margin: -2px 0 12px;
+}
+
+.signup-compact .primary-button.full {
+    padding-top: 11px;
+    padding-bottom: 11px;
+}
+
+.signup-compact .auth-switch {
+    margin-top: 12px;
+    padding-top: 10px;
+}
+
+.signup-compact .error-message,
+.signup-compact .success-message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+}
+
+/* ---------- Short screens (laptops with browser zoom) ---------- */
+
+@media (max-height: 640px) {
+    .auth-page {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .auth-visual h1 {
+        font-size: clamp(38px, 4.2vw, 56px);
+    }
+
+    .auth-page .auth-card {
+        padding: 22px 28px;
+    }
+
+    .auth-page .auth-card-heading h2 {
+        font-size: 26px;
+        margin: 0 0 4px;
+    }
+
+    .auth-page .auth-card-heading p {
+        margin-bottom: 14px;
+    }
+
+    .auth-page .auth-card .form-group {
+        margin-bottom: 12px;
+    }
+
+    .auth-page .auth-switch {
+        margin-top: 14px;
+        padding-top: 12px;
+    }
+
+    .signup-box .signup-card {
+        padding: 18px 26px 12px;
+    }
+
+    .signup-card-heading {
+        margin-bottom: 8px;
+    }
+
+    .signup-compact .form-group {
+        margin-bottom: 9px;
+    }
+
+    .signup-compact .form-group input,
+    .signup-compact .form-group select {
+        height: 34px;
+    }
+
+    .signup-aside h1 {
+        font-size: 30px;
+    }
+
+    .signup-steps {
+        margin-top: 18px;
+        gap: 9px;
+    }
+}
+
+/* ---------- Tablets and phones ---------- */
+
+@media (max-width: 860px) {
+    .auth-page {
+        height: auto;
+        min-height: 100svh;
+    }
+
+    .signup-box {
+        grid-template-columns: 1fr;
+    }
+
+    .signup-aside {
+        padding: 20px 22px;
+    }
+
+    .signup-steps {
+        display: none;
+    }
+
+    .signup-compact .role-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .signup-compact .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .signup-box .signup-card {
+        padding: 18px;
+    }
+}

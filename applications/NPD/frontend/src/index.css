@@ -1,0 +1,375 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Brand red ─────────────────────────────────────────────
+     Sourced from the supplied palette: #B51212 primary,
+     #8F0B0B / #730808 for the sidebar gradient.               */
+  --color-brand-50:  #FFF7F6;   /* table headers, soft tint     */
+  --color-brand-100: #FFEDEB;
+  --color-brand-200: #FBD7D4;
+  --color-brand-300: #F2A9A5;
+  --color-brand-400: #E26A63;
+  --color-brand-500: #C51818;   /* button gradient start        */
+  --color-brand-600: #B51212;   /* PRIMARY                      */
+  --color-brand-700: #A50F0F;   /* button gradient end          */
+  --color-brand-800: #8F0B0B;
+  --color-brand-900: #730808;   /* sidebar foot                 */
+
+  /* ─── Surfaces ─────────────────────────────────────────── */
+  --color-page:    #F7F7F8;
+  --color-card:    #FFFFFF;
+  --color-line:    #E8E8E8;
+  --color-divider: #EEEEEE;
+  --color-hover:   #FFFAFA;
+
+  /* ─── Ink ──────────────────────────────────────────────── */
+  --color-ink-900: #242424;
+  --color-ink-700: #444444;
+  --color-ink-500: #777777;
+  --color-ink-400: #999999;
+  --color-ink-300: #BDBDBD;
+
+  /* ─── Status ───────────────────────────────────────────── */
+  --color-ok:        #318044;
+  --color-ok-bg:     #EAF7ED;
+  --color-info:      #2563C7;
+  --color-info-bg:   #EAF2FF;
+  --color-warn:      #D87C00;
+  --color-warn-bg:   #FFF4DC;
+  --color-alert:     #A76400;
+  --color-alert-bg:  #FFF3D9;
+  --color-danger:    #C52C2C;
+  --color-danger-bg: #FFEDED;
+
+  /* ─── Elevation ────────────────────────────────────────── */
+  --shadow-card:  0 3px 14px rgba(20, 20, 20, 0.045);
+  --shadow-lift:  0 9px 24px rgba(35, 15, 15, 0.08);
+  --shadow-panel: 0 25px 70px rgba(0, 0, 0, 0.20);
+
+
+  /* ─── Stock-palette overrides ───────────────────────────────
+     The 22 pages use slate/red/green/amber/blue utilities in
+     ~870 places. Rather than edit each one, remap the names.
+     Every existing class keeps working and picks up the palette. */
+
+  /* slate → warm neutral (was blue-tinted) */
+  --color-slate-50:  #F7F7F8;
+  --color-slate-100: #F0F0F0;
+  --color-slate-200: #E8E8E8;
+  --color-slate-300: #D6D6D6;
+  --color-slate-400: #BDBDBD;
+  --color-slate-500: #999999;
+  --color-slate-600: #777777;
+  --color-slate-700: #555555;
+  --color-slate-800: #3A3A3A;
+  --color-slate-900: #242424;
+
+  /* red → danger */
+  --color-red-50:  #FFEDED;
+  --color-red-100: #FFDDDD;
+  --color-red-200: #F0C5C5;
+  --color-red-500: #C52C2C;
+  --color-red-600: #B51212;
+  --color-red-700: #A71919;
+
+  /* green → ok */
+  --color-green-50:  #EAF7ED;
+  --color-green-100: #D7EFDD;
+  --color-green-200: #BCE2C6;
+  --color-green-600: #318044;
+  --color-green-700: #2A6E3A;
+
+  /* amber → alert */
+  --color-amber-50:  #FFF3D9;
+  --color-amber-100: #FFE9BC;
+  --color-amber-200: #F3D9A4;
+  --color-amber-600: #B87200;
+  --color-amber-700: #A76400;
+
+  /* blue → info */
+  --color-blue-50:  #EAF2FF;
+  --color-blue-100: #D6E5FF;
+  --color-blue-200: #B9D2FA;
+  --color-blue-600: #2563C7;
+  --color-blue-700: #1F55AC;
+
+  /* Legacy aliases — keep old class names compiling */
+  --color-nrb-red:  #B51212;
+  --color-nrb-grey: #58595B;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink-700);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Brand-tinted focus ring — visible on every interactive element */
+*:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+
+/* Quieter scrollbars inside the wide tracking tables */
+@supports (scrollbar-width: thin) {
+  .overflow-x-auto,
+  .overflow-y-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #D8D8D8 transparent;
+  }
+}
+
+@keyframes nrb-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes nrb-spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MOTION
+   One orchestrated page-load sequence, not scattered effects.
+   Every rule below is disabled by the reduced-motion block.
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes nrb-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nrb-bar-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes nrb-bar-y {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+@keyframes nrb-ring {
+  from { stroke-dashoffset: var(--ring-circ); }
+  to   { stroke-dashoffset: var(--ring-off); }
+}
+
+@keyframes nrb-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* Entrance. Set --d inline to stagger: style={{ "--d": "80ms" }} */
+.rise {
+  opacity: 0;
+  animation: nrb-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Horizontal bar that draws from the left */
+.bar-x {
+  transform-origin: left center;
+  animation: nrb-bar-x 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 120ms);
+}
+
+/* Vertical bar that grows from the baseline */
+.bar-y {
+  transform-origin: bottom center;
+  animation: nrb-bar-y 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 120ms);
+}
+
+/* Ring gauge sweep */
+.ring-draw {
+  stroke-dashoffset: var(--ring-circ);
+  animation: nrb-ring 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 150ms);
+}
+
+/* Slow blink for anything genuinely urgent */
+.pulse-soft { animation: nrb-pulse 2.2s ease-in-out infinite; }
+
+/* Card hover lift — taken from the supplied stylesheet */
+.lift { transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease; }
+.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: #DFD3D3;
+}
+
+/* Row hover nudge */
+.nudge { transition: background-color 150ms ease, padding-left 150ms ease; }
+.nudge:hover { background-color: var(--color-hover); padding-left: 1.25rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rise      { opacity: 1 !important; }
+  .bar-x,
+  .bar-y     { transform: none !important; }
+  .ring-draw { stroke-dashoffset: var(--ring-off) !important; }
+  .lift:hover { transform: none !important; }
+  [style*="nrb-spin"] { animation: none !important; }
+}
+
+
+
+
+
+/* ---------- logo ---------- */
+
+@keyframes logo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes logo-sheen {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  55%,
+  100% {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.logo-panel {
+  position: relative;
+  overflow: hidden;
+  animation: logo-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.logo-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  animation: logo-sheen 4.5s ease-in-out 0.9s infinite;
+  pointer-events: none;
+}
+
+.logo-rule {
+  transform-origin: left;
+  animation: rule-draw 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+/* ---------- sidebar nav ---------- */
+
+@keyframes nav-in {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nav-item {
+  position: relative;
+  z-index: 1;
+  animation: nav-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 450ms);
+}
+
+.nav-heading {
+  position: relative;
+  z-index: 1;
+  animation: nav-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.72s both;
+}
+
+/* ---------- cursor spotlight ----------
+   A soft light follows the pointer across the nav. The position comes from
+   --mx / --my, which the component writes on mouse move.                    */
+
+.nav-spotlight {
+  position: relative;
+}
+
+.nav-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  background: radial-gradient(
+    170px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.05) 45%,
+    transparent 70%
+  );
+}
+
+.nav-spotlight:hover::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-panel,
+  .logo-panel::after,
+  .logo-rule,
+  .nav-item,
+  .nav-heading {
+    animation: none;
+  }
+  .logo-panel::after,
+  .nav-spotlight::before {
+    display: none;
+  }
+}
+
+/* Header action buttons (Edit / Export Excel / Delete): same size,
+   a gentle lift on hover and a press-in on click. */
+.btn-action {
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease,
+    border-color 150ms ease;
+}
+.btn-action:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px -4px rgb(15 23 42 / 0.25);
+}
+.btn-action:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
+}
+.btn-action:disabled {
+  cursor: progress;
+  opacity: 0.75;
+}

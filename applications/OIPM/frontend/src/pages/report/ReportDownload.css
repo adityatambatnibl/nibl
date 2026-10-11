@@ -1,0 +1,107 @@
+.report-download-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.report-download-modal {
+    width: min(460px, 100%);
+    overflow: hidden;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.report-download-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    background: #c00000;
+    color: #ffffff;
+}
+
+.report-download-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-download-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.report-download-body {
+    padding: 24px;
+    text-align: center;
+}
+
+.report-download-body h3 {
+    margin: 14px 0 6px;
+    color: #202633;
+}
+
+.report-download-body p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.report-download-spinner {
+    color: #c00000;
+    animation: oipm-report-spin 1s linear infinite;
+}
+
+.report-download-success {
+    color: #16803c;
+}
+
+.report-download-error-icon {
+    color: #c00000;
+}
+
+.report-download-error {
+    color: #c00000 !important;
+    white-space: pre-wrap;
+}
+
+.report-download-action,
+.report-download-secondary {
+    margin-top: 18px;
+    padding: 10px 22px;
+    border-radius: 7px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.report-download-action {
+    border: 0;
+    background: #c00000;
+    color: #ffffff;
+}
+
+.report-download-secondary {
+    border: 1px solid #c00000;
+    background: #ffffff;
+    color: #c00000;
+}
+
+@keyframes oipm-report-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

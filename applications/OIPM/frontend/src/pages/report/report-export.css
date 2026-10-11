@@ -1,0 +1,226 @@
+@page { size: A4; margin: 11mm 11mm 13mm; }
+body { margin: 0; padding: 0; background: #ffffff; color: #344054; font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 1.45; }
+table { border-collapse: collapse; }
+.report-shell { width: 100%; }
+.report-top { width: 100%; border: 1px solid #ead6d6; background: #fffafa; margin-bottom: 12px; page-break-inside: avoid; }
+.report-top-band { background: #c91515; color: #ffffff; padding: 9px 14px; }
+.report-top-band strong { font-size: 11px; letter-spacing: 2px; }
+.report-top-body { padding: 13px 14px 14px; }
+.report-top-body h1 { margin: 0; color: #172033; font-size: 21px; line-height: 1.2; }
+.report-top-body > p { margin: 4px 0 11px; color: #8792a5; font-size: 9.5px; }
+.report-header-grid { width: 100%; }
+.report-header-cell { width: 50%; padding: 8px 10px; border: 1px solid #eee0e0; background: #ffffff; vertical-align: top; }
+.report-label { margin-bottom: 3px; color: #758196; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+.report-header-cell strong { color: #202b3c; font-size: 10.5px; }
+.report-section { width: 100%; margin: 0 0 12px; border: 1px solid #eadede; background: #ffffff; page-break-inside: avoid; }
+.report-section-heading-cell { padding: 13px 13px 0; }
+.report-section-heading { width: 100%; margin-bottom: 9px; }
+.report-section-accent-cell { width: 5px; height: 34px; padding: 0; background: #d91c1c; vertical-align: top; }
+.report-section-heading-copy { padding-left: 10px; vertical-align: top; }
+.report-section-number { margin-bottom: 1px; color: #d91c1c; font-size: 7.5px; font-weight: 800; letter-spacing: 1.5px; }
+.report-section-heading h2 { margin: 0; color: #263246; font-size: 15px; font-weight: 700; }
+.report-section-heading p { margin: 2px 0 0; color: #8792a5; font-size: 9px; }
+.report-section-body { width: 100%; padding: 0 13px 13px; vertical-align: top; }
+.report-info-table { width: 100%; table-layout: fixed; }
+.report-info-card { width: 33.333%; padding: 9px 10px; border: 1px solid #ece3e3; background: #fffafa; vertical-align: top; }
+.report-info-empty-cell { background: #ffffff; }
+.report-info-value { color: #202b3c; font-size: 10px; line-height: 1.45; font-weight: 650; word-break: break-word; }
+.report-text { padding: 11px 12px; border: 1px solid #ece3e3; background: #fffafa; color: #344054; font-size: 10px; line-height: 1.65; word-break: break-word; }
+.report-text .report-label { display: block; }
+.report-empty { padding: 11px; border: 1px dashed #d7dde6; background: #fafbfc; color: #8792a5; text-align: center; font-size: 9px; }
+.report-list-table { width: 100%; }
+.report-list-row { page-break-inside: avoid; }
+.report-list-number-cell { width: 42px; padding: 8px 7px; border: 1px solid #ebe1e1; background: #ffffff; vertical-align: top; }
+.report-list-number { width: 26px; height: 26px; line-height: 26px; background: #f1f4f8; color: #536174; border-radius: 7px; text-align: center; font-size: 9px; font-weight: 800; }
+.report-list-content-cell { padding: 8px 10px; border: 1px solid #ebe1e1; border-left: 0; background: #fffafa; vertical-align: middle; }
+.report-list-content-text { color: #344054; font-size: 10px; line-height: 1.6; }
+.report-detail-table { width: 100%; }
+.report-detail-table td { padding: 4px 0; border-bottom: 1px solid #f0f2f5; vertical-align: top; }
+.report-detail-table tr:last-child td { border-bottom: 0; }
+.report-detail-label { width: 145px; color: #8792a5; font-size: 8.5px; font-weight: 700; }
+.report-detail-value { color: #344054; font-size: 9.5px; font-weight: 650; line-height: 1.5; }
+.report-financial-grid { width: 100%; table-layout: fixed; margin-bottom: 9px; }
+.report-financial-card { width: 20%; padding: 9px; border: 1px solid #eadede; background: #fffafa; vertical-align: top; }
+.report-financial-card span, .report-saving-grid span { display: block; margin-bottom: 3px; color: #758196; font-size: 8px; font-weight: 800; text-transform: uppercase; }
+.report-financial-card strong { color: #c91515; font-size: 11px; }
+.report-saving-table { width: 100%; }
+.report-saving-card { padding: 10px; border: 1px solid #ebe1e1; background: #fffafa; page-break-inside: avoid; }
+.report-saving-head { width: 100%; margin-bottom: 7px; }
+.report-saving-head .report-list-number-cell { width: 38px; padding: 0 7px 0 0; border: 0; background: transparent; }
+.report-saving-head td:last-child { padding-left: 7px; vertical-align: middle; }
+.report-saving-head h4 { margin: 0; color: #263246; font-size: 10.5px; }
+.report-saving-head span { color: #8792a5; font-size: 8px; }
+.report-saving-grid { width: 100%; table-layout: fixed; }
+.report-saving-grid td { width: 33.333%; padding: 8px; border: 1px solid #ece3e3; background: #ffffff; vertical-align: top; }
+.report-saving-grid strong { color: #344054; font-size: 10px; }
+.report-saving-highlight { background: #f4fbf7 !important; border-color: #cce9d8 !important; }
+.report-saving-highlight strong { color: #138a48; }
+.report-approval-grid { width: 100%; table-layout: fixed; }
+.report-approval-card { width: 50%; padding: 10px; border: 1px solid #ece3e3; background: #fffafa; vertical-align: top; }
+.report-approval-card h3 { margin: 0 0 7px; color: #263246; font-size: 10.5px; }
+.report-signatures { width: 100%; margin-top: 4px; border: 1px solid #eadede; page-break-inside: avoid; }
+.report-signatures-title { padding: 10px 12px; background: #fffafa; border-bottom: 1px solid #eadede; color: #263246; font-size: 11px; font-weight: 700; }
+.report-signature-table { width: 100%; table-layout: fixed; }
+.report-signature-box { width: 33.333%; height: 100px; padding: 10px; border-right: 1px solid #eadede; vertical-align: top; }
+.report-signature-box:last-child { border-right: 0; }
+.report-signature-box strong { color: #c91515; font-size: 9.5px; }
+.report-signature-line { margin-top: 52px; border-bottom: 1px solid #697386; }
+.report-signature-date { margin-top: 5px; color: #8792a5; font-size: 7.5px; }
+.report-footer { margin-top: 9px; padding-top: 6px; border-top: 2px solid #c91515; text-align: center; color: #8792a5; font-size: 7.5px; }
+
+/* ============================================================
+   FINAL WORD LAYOUT / ALIGNMENT FIX
+============================================================ */
+
+.report-section {
+    border: 1.5px solid #c7a5a5 !important;
+    margin-bottom: 13px !important;
+}
+
+.report-section-heading-cell {
+    padding: 11px 12px 9px !important;
+    border-bottom: 1px solid #d9bebe !important;
+}
+
+.report-section-heading {
+    margin: 0 !important;
+}
+
+.report-section-heading-copy {
+    padding: 0 0 0 10px !important;
+    border-left: 5px solid #d91c1c !important;
+    vertical-align: top !important;
+}
+
+.report-section-number {
+    margin-bottom: 2px !important;
+}
+
+.report-section-body {
+    padding: 10px 12px 12px !important;
+}
+
+.report-list-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+}
+
+.report-list-row {
+    page-break-inside: avoid !important;
+}
+
+.report-list-number-cell {
+    width: 42px !important;
+    padding: 8px 6px !important;
+    border: 1px solid #cdb2b2 !important;
+    background: #ffffff !important;
+    text-align: center !important;
+    vertical-align: top !important;
+}
+
+.report-list-content-cell {
+    padding: 8px 10px !important;
+    border: 1px solid #cdb2b2 !important;
+    border-left: 0 !important;
+    background: #fffafa !important;
+    vertical-align: top !important;
+}
+
+.report-detail-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+}
+
+.report-detail-table td {
+    padding: 4px 0 !important;
+    border-bottom: 1px solid #eadfdf !important;
+    vertical-align: top !important;
+}
+
+.report-detail-table tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.report-detail-label {
+    width: 145px !important;
+    color: #758196 !important;
+    font-size: 8.5px !important;
+    font-weight: 700 !important;
+}
+
+.report-detail-separator {
+    width: 18px !important;
+    color: #a08383 !important;
+    text-align: center !important;
+    font-weight: 700 !important;
+}
+
+.report-detail-value {
+    color: #344054 !important;
+    font-size: 9.5px !important;
+    font-weight: 650 !important;
+    line-height: 1.5 !important;
+    word-break: break-word !important;
+}
+
+/* Financial cards: label, separator and value are separate lines/cells. */
+.report-financial-card {
+    border: 1.5px solid #cdb2b2 !important;
+}
+
+.report-financial-label {
+    border-bottom: 1px solid #dfcaca !important;
+    padding-bottom: 4px !important;
+}
+
+.report-financial-label::after {
+    content: " -" !important;
+    color: #9b7b7b !important;
+}
+
+.report-financial-value {
+    padding-top: 5px !important;
+    white-space: nowrap !important;
+}
+
+/* Investment cards must remain in one row in Word. */
+.report-investment-grid {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+}
+
+.report-investment-card {
+    width: 33.333% !important;
+    border: 1.5px solid #cdb2b2 !important;
+    padding: 9px 10px !important;
+    background: #fffafa !important;
+}
+
+/* Approval rows: label - value, never glued together. */
+.report-approval-grid {
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+.report-approval-card {
+    border: 1.5px solid #cdb2b2 !important;
+}
+
+.report-approval-detail td {
+    border-bottom: 1px solid #eadfdf !important;
+}
+
+.report-approval-detail td:nth-child(2) {
+    text-align: center !important;
+    color: #9b7b7b !important;
+}
+
+/* All major blocks get a visible outline. */
+.report-top,
+.report-section,
+.report-signatures {
+    border-color: #c7a5a5 !important;
+}

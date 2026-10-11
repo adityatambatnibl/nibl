@@ -1,0 +1,57 @@
+# ---- secrets / local settings (each backend has a .env.example to copy) ----
+.env
+.env.*
+!.env.example
+credentials.json
+token.json
+token_backup.json
+*.pem
+*.key
+
+# ---- Python ----
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# ---- Node / builds ----
+node_modules/
+dist/
+dist_backup*/
+*.tsbuildinfo
+.vite/
+
+# ---- runtime data & logs (back these up, do not commit them) ----
+logs/
+*.log
+uploads/
+data/*
+!data/README.md
+
+# ---- editors / OS ----
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+.DS_Store
+
+# ---- temporary / backup copies ----
+*.bak
+*.bak-*
+*.old
+*.tmp
+*.orig
+*-copy.*
+* (1).*
+* (2).*
+
+# ---- database dumps (real user data) & server-only switch files ----
+*.dump
+shared/database/backup-before-drop/
+scripts/switch/deploy-config.ps1
+scripts/switch/deploy-state.json
+scripts/switch/server-check.txt
+scripts/switch/projects.test.json
+scripts/switch/logs/
