@@ -65,7 +65,7 @@ try {
     Start-Sleep 3
 
     Step "7/7  Smoke test"
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Root "scripts\smoke-test.ps1") -PublicUrl $cfg.PublicUrl
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Root "scripts\smoke-test.ps1") -PublicUrl $cfg.CheckUrl
     if ($LASTEXITCODE -ne 0) { Stop-With "Smoke test failed (see the FAIL lines above)." }
 
     Save-State @{ TestDone = $state.TestDone; Phase = "live"; LiveAt = (Get-Date -Format "yyyy-MM-dd HH:mm"); IisBackup = $iisBackup; Stamp = $stamp; BackupDir = $bk }

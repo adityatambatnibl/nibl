@@ -41,7 +41,7 @@ try {
         if (-not $ok) { $script:Bad++ }
         Say ("{0,-4} port {1} {2}" -f $(if ($ok) { "OK" } else { "FAIL" }), $p, $(if ($ok) { "listening" } else { "NOT listening" })) $(if ($ok) { "Green" } else { "Red" })
     }
-    Check "Live site" "$($cfg.PublicUrl)/" @(200, 301, 302)
+    Check "Live site" "$($cfg.CheckUrl)/" @(200, 301, 302)
 
     $state.Phase = "rolled-back"; $state.RolledBackAt = (Get-Date -Format "yyyy-MM-dd HH:mm")
     Save-State $state

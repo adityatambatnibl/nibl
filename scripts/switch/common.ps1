@@ -42,6 +42,16 @@ function Load-Config {
     }
     if ($Cfg.OldServices -contains "FILL-ME") { Stop-With "deploy-config.ps1: OldServices still says FILL-ME." }
     if (-not (Test-Path -LiteralPath $Cfg.Nssm)) { Stop-With "nssm.exe not found at $($Cfg.Nssm)" }
+    # CheckUrl = address the scripts use to test the site FROM THIS SERVER. When the IIS site is bound to
+    # one IP (e.g. 192.168.105.20), "http://nibl" from the server itself may land on another address -> 404.
+    if (-not $Cfg.CheckUrl) {
+        $Cfg.CheckUrl = $Cfg.PublicUrl
+        $b = (& $AppCmd list site $Cfg.IisSite /text:bindings 2>$null | Out-String)
+        if ($b -match '(https?)/(\d{1,3}(?:\.\d{1,3}){3}):(\d+):') {
+            $port = $(if ($Matches[3] -in "80", "443") { "" } else { ":" + $Matches[3] })
+            $Cfg.CheckUrl = "{0}://{1}{2}" -f $Matches[1], $Matches[2], $port
+        }
+    }
     return $Cfg
 }
 

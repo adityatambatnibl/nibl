@@ -93,7 +93,7 @@ try {
     Check "Test portal API"        "$t/portal-api/health"
     Check "Test NPD API"           "$t/npd/api/health"
     Check "Test AI Drawing API"    "$t/ai-drawing-control/api/health"
-    Check "LIVE site still up"     "$($cfg.PublicUrl)/" @(200, 301, 302)
+    Check "LIVE site still up"     "$($cfg.CheckUrl)/" @(200, 301, 302)
     if ($script:Bad) { Stop-With "$script:Bad check(s) failed - fix them before going live (logs: <app>\backend\logs\stderr.log)." }
 
     Save-State @{ TestDone = $stamp; Phase = "tested" }
