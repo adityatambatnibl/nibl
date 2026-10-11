@@ -27,8 +27,8 @@ dist_backup*/
 logs/
 *.log
 uploads/
-data/*
-!data/README.md
+**/data/*
+!**/data/README.md
 
 # ---- editors / OS ----
 .vscode/
