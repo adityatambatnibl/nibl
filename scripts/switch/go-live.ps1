@@ -54,7 +54,7 @@ try {
     Clear-TestMode $cfg
     Restart-NewServices $cfg
     foreach ($a in $Apps) {
-        if (-not (Wait-Port $a.LivePort 90)) { Show-LogTail $a; Stop-With "$($a.Service) did not start on port $($a.LivePort) - see $($a.Dir)\backend\logs\stderr.log" }
+        if (-not (Wait-Service $cfg $a $a.LivePort 90)) { Show-LogTail $a; Stop-With "$($a.Service) did not start on port $($a.LivePort) - see $($a.Dir)\backend\logs\stderr.log" }
         Say "   $($a.Service) running on $($a.LivePort)" "Green"
     }
 
@@ -68,7 +68,8 @@ try {
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $Root "scripts\smoke-test.ps1") -PublicUrl $cfg.CheckUrl
     if ($LASTEXITCODE -ne 0) { Stop-With "Smoke test failed (see the FAIL lines above)." }
 
-    Save-State @{ TestDone = $state.TestDone; Phase = "live"; LiveAt = (Get-Date -Format "yyyy-MM-dd HH:mm"); IisBackup = $iisBackup; Stamp = $stamp; BackupDir = $bk }
+    $liveCommit = (& git -c safe.directory=* -C $Root rev-parse HEAD 2>$null | Select-Object -Last 1)
+    Save-State @{ TestDone = $state.TestDone; Phase = "live"; LiveAt = (Get-Date -Format "yyyy-MM-dd HH:mm"); IisBackup = $iisBackup; Stamp = $stamp; BackupDir = $bk; LiveCommit = "$liveCommit".Trim() }
     Say ""
     Say "=====================================================================" Green
     Say "  LIVE.  $($cfg.PublicUrl) now runs the new version." Green

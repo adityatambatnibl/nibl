@@ -13,7 +13,7 @@ Start-Transcript -LiteralPath (Join-Path $LogDir "test-new-$stamp.log") | Out-Nu
 try {
     Assert-Admin
     $cfg = Load-Config
-    if ((Load-State).Phase -eq "live") { Stop-With "The new version is already LIVE - running the test now would replace live data. Use the normal update steps instead." }
+    if ((Load-State).Phase -eq "live") { Stop-With "The new version is already LIVE - running the test now would replace live data. For changes after go-live run scripts\5-UPDATE-LIVE.bat." }
     $pg = Use-Pg $cfg
     Say ("PostgreSQL {0} on port {1}" -f $pg.Service, $pg.Port)
     Read-PgPassword | Out-Null
