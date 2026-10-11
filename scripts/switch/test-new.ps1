@@ -33,6 +33,10 @@ try {
     }
     foreach ($db in $cfg.OipmDb, $cfg.NpdDb) { if (-not (Db-Exists $db)) { Stop-With "Live database '$db' not found on port $($pg.Port)." } }
 
+    # A previous test run may still be running: stop it first, so its database connections and
+    # locked Python files do not get in the way. (Test services only - the live site is not touched.)
+    Stop-NewServices $cfg
+
     Step "1/7  Fresh copy of the LIVE data into nibl_* (live databases only read)"
     Rename-NiblDbs "before_test_$stamp" | Out-Null
     Run-Setup $cfg
@@ -53,7 +57,7 @@ try {
     Set-TestMode $cfg
     Restart-NewServices $cfg
     foreach ($a in $Apps) {
-        if (-not (Wait-Port $a.TestPort 60)) { Stop-With "$($a.Service) did not start on port $($a.TestPort) - see $($a.Dir)\backend\logs\stderr.log" }
+        if (-not (Wait-Port $a.TestPort 90)) { Show-LogTail $a; Stop-With "$($a.Service) did not start on port $($a.TestPort) - see $($a.Dir)\backend\logs\stderr.log" }
         Say "   $($a.Service) running on $($a.TestPort)" "Green"
     }
 

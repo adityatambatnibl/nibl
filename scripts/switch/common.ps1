@@ -260,6 +260,13 @@ function Start-OldServices([hashtable]$cfg) {
     }
 }
 
+# Prints the end of a backend's error log, so the reason is on screen (and in the switch log).
+function Show-LogTail([hashtable]$a) {
+    $f = Join-Path $Root "$($a.Dir)\backend\logs\stderr.log"
+    if (Test-Path $f) { Say "   ---- last lines of $($a.Dir)\backend\logs\stderr.log ----" Yellow; Get-Content -LiteralPath $f -Tail 25 | ForEach-Object { Say "   $_" } }
+    else { Say "   (no $f yet)" Yellow }
+}
+
 function Wait-Port([int]$port, [int]$seconds = 60) {
     for ($i = 0; $i -lt $seconds; $i++) {
         if (Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue) { return $true }

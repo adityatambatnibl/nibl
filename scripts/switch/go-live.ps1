@@ -54,7 +54,7 @@ try {
     Clear-TestMode $cfg
     Restart-NewServices $cfg
     foreach ($a in $Apps) {
-        if (-not (Wait-Port $a.LivePort 60)) { Stop-With "$($a.Service) did not start on port $($a.LivePort) - see $($a.Dir)\backend\logs\stderr.log" }
+        if (-not (Wait-Port $a.LivePort 90)) { Show-LogTail $a; Stop-With "$($a.Service) did not start on port $($a.LivePort) - see $($a.Dir)\backend\logs\stderr.log" }
         Say "   $($a.Service) running on $($a.LivePort)" "Green"
     }
 
