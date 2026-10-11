@@ -12,9 +12,9 @@
 $stamp = Get-Date -Format "yyyyMMdd_HHmm"
 Start-Transcript -LiteralPath (Join-Path $LogDir "update-live-$stamp.log") | Out-Null
 
-function Git([string[]]$a) {
+function Invoke-Git([string[]]$a) {
     # -c safe.directory: an Administrator window may otherwise refuse the folder ("dubious ownership").
-    $out = & git -c safe.directory=* -C $Root @a 2>&1 | ForEach-Object { "$_" }
+    $out = & git.exe -c safe.directory=* -C $Root @a 2>&1 | ForEach-Object { "$_" }
     if ($LASTEXITCODE -ne 0) { throw ("git {0} failed: {1}" -f ($a -join " "), ($out -join " ")) }
     return $out
 }
@@ -54,12 +54,12 @@ try {
 
     Step "2/4  Get the new version from GitHub"
     $prev = $state.LiveCommit
-    $head = (Git @("rev-parse", "HEAD") | Select-Object -Last 1).Trim()
+    $head = (Invoke-Git @("rev-parse", "HEAD") | Select-Object -Last 1).Trim()
     if (-not $prev) { $prev = $head }        # first update: the version on disk now counts as "before"
-    Git @("pull", "--ff-only") | ForEach-Object { Say "   $_" }
-    $new = (Git @("rev-parse", "HEAD") | Select-Object -Last 1).Trim()
+    Invoke-Git @("pull", "--ff-only") | ForEach-Object { Say "   $_" }
+    $new = (Invoke-Git @("rev-parse", "HEAD") | Select-Object -Last 1).Trim()
     Say "   before: $($prev.Substring(0,7))   now: $($new.Substring(0,7))"
-    Git @("log", "--oneline", "$prev..$new") | ForEach-Object { Say "     $_" }
+    Invoke-Git @("log", "--oneline", "$prev..$new") | ForEach-Object { Say "     $_" }
 
     Step "3/4  Install, build, restart"
     Build-And-Restart $cfg
@@ -80,7 +80,7 @@ try {
         $ans = Read-Host "Go back to the version before ($($prev.Substring(0,7)))? [Y/n]"
         if ($ans -notmatch '^[nN]') {
             try {
-                Git @("reset", "--hard", $prev) | Out-Null
+                Invoke-Git @("reset", "--hard", $prev) | Out-Null
                 Build-And-Restart $cfg
                 if (Smoke $cfg) { Say "Back on the version before. Send scripts\switch\logs\update-live-$stamp.log to the developer." Green }
                 else { Say "Went back, but checks still fail - run scripts\4-ROLLBACK.bat if the site is down." Red }
