@@ -7,8 +7,10 @@ import tailwindcss from '@tailwindcss/vite'
 // [ npm run dev , npm run build ]. A real environment variable still wins.
 const SETTINGS: Record<string, [string, string]> = {
   VITE_API_URL: ['/npd/api', '/npd/api'],
-  VITE_WORKSPACE_URL: ['/', 'http://nibl'],   // the NIBL portal (sign-in + cards)
-  VITE_OIPM_URL: ['/', 'http://nibl'],
+  // Same site as NPD ("/"), like OIPM and Drawings. A fixed 'http://nibl' sent people who opened the
+  // site by another address (http://nibl:8080, http://192.168.105.20) to a different site = signed out.
+  VITE_WORKSPACE_URL: ['/', '/'],   // the NIBL portal (sign-in + cards)
+  VITE_OIPM_URL: ['/', '/'],
 }
 
 const BACKEND = process.env.NPD_BACKEND_URL ?? 'http://127.0.0.1:8001'
