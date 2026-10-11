@@ -79,11 +79,22 @@ def _read_local(path: str) -> bytes:
 
 
 def _delete_local(paths: list[str]) -> None:
+    root = _root()
     for p in paths:
         try:
-            _local_file(p).unlink(missing_ok=True)
+            f = _local_file(p)
+            f.unlink(missing_ok=True)
         except Exception:
-            pass
+            continue
+        # Remove the folders the file lived in once they are empty (project /
+        # activity folders), never the storage root itself or anything above it.
+        d = f.parent
+        while d != root and root in d.parents:
+            try:
+                d.rmdir()          # only succeeds when the folder is empty
+            except OSError:
+                break
+            d = d.parent
 
 
 def _base() -> str:

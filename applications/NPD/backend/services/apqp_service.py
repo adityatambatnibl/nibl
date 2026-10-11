@@ -580,6 +580,9 @@ async def delete(project_id: str) -> dict:
     order_no = project.order_no
 
     files = await attachment_service.delete_for_project(project_id)
+    # Per-project e-mail recipients ("who gets the mails of this timeline").
+    from models.project_recipients import ProjectRecipients
+    await repo.remove_where(ProjectRecipients, ProjectRecipients.project_id == project_id)
     activities = await repo.count(
         select(ApqpActivityRecord).where(ApqpActivityRecord.project_id == project_id)
     )

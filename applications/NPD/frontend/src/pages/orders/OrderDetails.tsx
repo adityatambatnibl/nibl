@@ -523,7 +523,8 @@ export default function OrderDetails() {
               <p>Permanently delete <strong>{data.product_name ?? data.order_no}</strong>?</p>
               <p className="mt-2">
                 This removes {plural(data.items.length, "item")}, {plural(data.stages.length, "stage record")} and any
-                attachments. Linked APQP projects are unlinked but kept.
+                attachments. Its APQP timeline (same reference) is deleted too, with all its
+                activities and files. Other linked APQP projects are only unlinked.
               </p>
               <p className="mt-2">This cannot be undone.</p>
             </>

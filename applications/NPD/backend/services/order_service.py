@@ -490,6 +490,25 @@ async def delete(order_no: str) -> dict:
     items = await repo.count(select(OrderItem).where(OrderItem.order_no == order_no))
     stages = await repo.count(select(OrderStage).where(OrderStage.order_no == order_no))
 
+    # A timeline = an order and its APQP project created together (same id).
+    # Deleting the order deletes that paired project too - its activities and
+    # sign-off go by ON DELETE CASCADE, its files are removed here. APQP
+    # projects that are only LINKED to this order (other id) are unlinked below.
+    paired = await repo.find_one(
+        select(ApqpProject).where(ApqpProject.project_id == order_no, ApqpProject.order_no == order_no)
+    )
+    apqp_deleted = None
+    if paired is not None:
+        files += await attachment_service.delete_for_project(paired.project_id)
+        apqp_deleted = paired.project_id
+        await repo.remove(paired)
+
+    from models.project_recipients import ProjectRecipients
+    await repo.remove_where(
+        ProjectRecipients,
+        or_(ProjectRecipients.order_no == order_no, ProjectRecipients.project_id == order_no),
+    )
+
     # Unlink any APQP project pointing at this order, in one statement.
     unlinked = (
         await db().execute(
@@ -504,7 +523,8 @@ async def delete(order_no: str) -> dict:
     # behind the way the three separate Mongo deletes could.
     await repo.remove(order)
 
-    return {"items": items, "stages": stages, "attachments": files, "unlinked_apqp": unlinked}
+    return {"items": items, "stages": stages, "attachments": files, "unlinked_apqp": unlinked,
+            "apqp_deleted": apqp_deleted}
 
 
 async def cascade_stage_plan(
