@@ -223,7 +223,8 @@ function Set-TestMode([hashtable]$cfg) {
     # projects.json with the test ports
     $j = Get-Content -LiteralPath (Join-Path $Root "shared\configuration\projects.json") -Raw
     foreach ($a in $Apps) { $j = $j.Replace("127.0.0.1:$($a.LivePort)/", "127.0.0.1:$($a.TestPort)/") }
-    Set-Content -LiteralPath $projects -Value $j -Encoding UTF8 -ErrorAction Stop
+    # No BOM: Python json.loads() rejects a UTF-8 BOM ("Something went wrong" on the portal cards).
+    [IO.File]::WriteAllText($projects, $j, (New-Object Text.UTF8Encoding $false))
 }
 
 function Clear-TestMode([hashtable]$cfg) {
@@ -235,9 +236,23 @@ function Install-NewServices([hashtable]$cfg) {
     if ($LASTEXITCODE -ne 0) { Stop-With "install-services.ps1 failed" }
 }
 
+# Stop, WAIT until really stopped, then start. ("nssm restart" on a service that is still
+# stopping can leave it stopped - that is what happened to NIBL-Portal-API on 11 Oct.)
 function Restart-NewServices([hashtable]$cfg) {
-    foreach ($a in $Apps) { & $cfg.Nssm restart $a.Service 2>&1 | Out-Null }
-    Start-Sleep 8
+    foreach ($a in $Apps) { & $cfg.Nssm stop $a.Service 2>&1 | Out-Null }
+    foreach ($a in $Apps) {
+        for ($i = 0; $i -lt 30; $i++) { if ((Get-Service $a.Service -ErrorAction SilentlyContinue).Status -eq "Stopped") { break }; Start-Sleep 1 }
+    }
+    foreach ($a in $Apps) { & $cfg.Nssm start $a.Service 2>&1 | Out-Null }
+    Start-Sleep 5
+}
+
+# Waits for the service's port; if it is not up halfway, starts the service once more.
+function Wait-Service([hashtable]$cfg, [hashtable]$a, [int]$port, [int]$seconds = 90) {
+    if (Wait-Port $port ([int]($seconds / 2))) { return $true }
+    Say "   $($a.Service) not up yet (status: $((Get-Service $a.Service -ErrorAction SilentlyContinue).Status)) - starting it again" Yellow
+    & $cfg.Nssm start $a.Service 2>&1 | Out-Null
+    return (Wait-Port $port ([int]($seconds / 2)))
 }
 function Stop-NewServices([hashtable]$cfg) {
     foreach ($a in $Apps) { if (Get-Service $a.Service -ErrorAction SilentlyContinue) { & $cfg.Nssm stop $a.Service 2>&1 | Out-Null } }
@@ -263,6 +278,7 @@ function Start-OldServices([hashtable]$cfg) {
 # Prints the end of a backend's error log, so the reason is on screen (and in the switch log).
 function Show-LogTail([hashtable]$a) {
     $f = Join-Path $Root "$($a.Dir)\backend\logs\stderr.log"
+    Say ("   service {0}: {1}" -f $a.Service, (Get-Service $a.Service -ErrorAction SilentlyContinue).Status) Yellow
     if (Test-Path $f) { Say "   ---- last lines of $($a.Dir)\backend\logs\stderr.log ----" Yellow; Get-Content -LiteralPath $f -Tail 25 | ForEach-Object { Say "   $_" } }
     else { Say "   (no $f yet)" Yellow }
 }

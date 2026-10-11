@@ -41,7 +41,8 @@ MESSAGES = {
 
 
 def _load(path: str) -> list[dict]:
-    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    # utf-8-sig: also accepts a file saved with a BOM (Windows Notepad / PowerShell 5.1 do that).
+    data = json.loads(Path(path).read_text(encoding="utf-8-sig"))
     projects = data["projects"] if isinstance(data, dict) else data
     for p in projects:
         for key in ("id", "name", "launch"):
