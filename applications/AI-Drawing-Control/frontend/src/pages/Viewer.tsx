@@ -236,7 +236,7 @@ export default function Viewer() {
                 <div key={r.user_id} className="flex items-center justify-between gap-2 px-4 py-2.5">
                   <div className="min-w-0 text-[13px]">
                     <div className="font-semibold text-ink-900">{r.user_name}</div>
-                    <div className="text-[11px] text-ink-400">{r.decided_at ? fmtDate(r.decided_at, true) : r.reminders_sent ? `${r.reminders_sent} reminder(s) sent` : r.notified_at ? "mail sent" : "mail queued"}</div>
+                    <div className="text-[11px] text-ink-400">{r.decided_at ? fmtDate(r.decided_at, true) : r.reminders_sent ? `${r.reminders_sent} reminders sent` : r.notified_at ? "mail sent" : "mail queued"}</div>
                   </div>
                   <Pill s={r.decision} />
                 </div>
