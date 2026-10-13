@@ -1,5 +1,5 @@
 @echo off
-REM AI Drawing Control backend - development (auto-reload). First run creates venv and installs packages.
+REM Drawing Control backend - development (auto-reload). First run creates venv and installs packages.
 cd /d "%~dp0"
 if not exist "venv\Scripts\python.exe" (
     echo First run - creating Python environment...
@@ -11,6 +11,6 @@ if not exist ".env" (
     echo .env is missing here. Run scripts\SETUP.bat first.
     pause & exit /b 1
 )
-title AI Drawing Control backend :8002
+title Drawing Control backend :8002
 venv\Scripts\python.exe -m uvicorn main:app --reload --reload-exclude venv --host 127.0.0.1 --port 8002
 pause

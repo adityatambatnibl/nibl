@@ -1,4 +1,4 @@
-/* Workspace launcher with three cards (OIPM, NPD, AI Drawing Control).
+/* Workspace launcher with three cards (OIPM, NPD, Drawing Control).
    Only applies when the third card is present; the two original cards keep
    their look, just one column narrower on wide screens. */
 .module-content .project-cards.has-three {

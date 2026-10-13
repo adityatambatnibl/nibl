@@ -53,7 +53,7 @@ SLIP = "#B45309"
 
 LOGO_URL = "https://nrbindustrialbearings.com/img/logo.jpg"
 COMPANY = "NRB Industrial Bearings Ltd."
-SYSTEM_NAME = "AI Drawing Control"
+SYSTEM_NAME = "Drawing Control"
 
 DATE_FMT = "%d-%b-%Y"
 DASH = "—"
@@ -246,7 +246,7 @@ def _header() -> str:
         <td align="right" style="vertical-align:middle;font-family:Arial,Helvetica,sans-serif;
             font-size:10px;color:{MUTED};letter-spacing:0.8px;text-transform:uppercase;
             line-height:1.5;">
-          AI Drawing<br>Control
+          Drawing<br>Control
         </td>
       </tr></table>
     </td>

@@ -1,7 +1,7 @@
 """
-AI Drawing Control API  -  /api/drawings/...  (also reachable as /npd/api/drawings/...)
+Drawing Control API  -  /api/drawings/...  (also reachable as /npd/api/drawings/...)
 
-Access (decided by the AI Drawing admin, stored in nibl_drawing.drawing.users):
+Access (decided by the Drawing admin, stored in nibl_drawing.drawing.users):
   approved user   open the app, search, view, confirm / deny
   approved admin  everything above + upload, revise, folders, users, email list, records
 """
@@ -15,17 +15,17 @@ from pydantic import BaseModel, Field
 from database.connection import db
 from models.user import User
 from services import drawing_service as svc
-from services import import_service, notification_service, storage_service
+from services import folder_sync_service, notification_service, storage_service
 from utils.deps import get_current_user, get_identity
 
-router = APIRouter(prefix="/drawings", tags=["AI Drawing Control"])
+router = APIRouter(prefix="/drawings", tags=["Drawing Control"])
 
 
 # ── access dependencies ─────────────────────────────────────────────────────
 
 async def dc_user(user: User = Depends(get_current_user)) -> User:
     if not svc.can_view(user):
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "You do not have access to AI Drawing Control.")
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "You do not have access to Drawing Control.")
     return user
 
 
@@ -46,20 +46,6 @@ async def _with_upload_cleanup(coro):
     except Exception:
         await storage_service.delete(db().info.pop("dc_uploaded", []))
         raise
-
-
-# ── bulk import (drawing admin) ─────────────────────────────────────────────
-
-@router.get("/import")
-async def import_preview(user: User = Depends(dc_admin)):
-    """What is waiting in data/import/ and what would happen to each file."""
-    return await import_service.preview()
-
-
-@router.post("/import")
-async def import_run(limit: int = Query(default=100, ge=1, le=200), user: User = Depends(dc_admin)):
-    """Import up to `limit` ready PDFs as approved drawings. Call again while 'remaining' > 0."""
-    return await _with_upload_cleanup(import_service.run(user, limit))
 
 
 # ── notifications (the bell) ────────────────────────────────────────────────
@@ -99,6 +85,9 @@ async def me(user: User | None = Depends(get_identity)):
     return {
         "id": str(user.id), "name": user.name, "email": user.email, "status": user.status,
         "can_view": svc.can_view(user), "is_admin": svc.is_dc_admin(user),
+        "employee_code": user.employee_code, "department": user.department,
+        "member_since": user.created_at.isoformat() if user.created_at else None,
+        **(await svc.profile_stats(user) if svc.can_view(user) else {}),
     }
 
 
@@ -266,6 +255,8 @@ async def search(
     sort: str = "updated", dir: str = "desc", page: int = 1, size: int = 10,
     user: User = Depends(dc_user),
 ):
+    # PDFs copied into data/drawings/<folder>/ appear (approved) on the next refresh of the list.
+    await folder_sync_service.sync()
     return await svc.search(user, q, field, status_filter, folder_id, include_sub, sort, dir, page, size)
 
 
@@ -273,17 +264,11 @@ async def search(
 async def upload(
     file: UploadFile = File(...),
     folder_id: str = Form(...),
-    drawing_no: str = Form(...),
-    item_code: str = Form(...),
-    description: str = Form(...),
-    rev_label: str = Form(...),
-    change_note: str = Form(""),
     reviewer_ids: str = Form(""),
     user: User = Depends(dc_admin),
 ):
-    d = await _with_upload_cleanup(svc.upload_new(
-        file, folder_id, drawing_no, item_code, description, rev_label, change_note, _ids(reviewer_ids), user,
-    ))
+    """New drawing: PDF + folder (+ who gets the mail). The drawing's name is the file name."""
+    d = await _with_upload_cleanup(svc.upload_new(file, folder_id, user, _ids(reviewer_ids)))
     return {"id": str(d.id), "drawing_no": d.drawing_no}
 
 
@@ -293,8 +278,8 @@ async def detail(drawing_id: str, revision_id: str | None = None, user: User = D
 
 
 class DetailsIn(BaseModel):
-    item_code: str = Field(min_length=1, max_length=120)
-    description: str = Field(min_length=1, max_length=300)
+    item_code: str = Field(default="", max_length=120)
+    description: str = Field(default="", max_length=300)
     folder_id: str
 
 
@@ -308,12 +293,11 @@ async def update_details(drawing_id: str, data: DetailsIn, user: User = Depends(
 async def revise(
     drawing_id: str,
     file: UploadFile = File(...),
-    rev_label: str = Form(...),
-    change_note: str = Form(...),
     reviewer_ids: str = Form(""),
     user: User = Depends(dc_admin),
 ):
-    d = await _with_upload_cleanup(svc.revise(drawing_id, file, rev_label, change_note, _ids(reviewer_ids), user))
+    """New revision: PDF (+ who gets the mail). The revision number is counted on automatically."""
+    d = await _with_upload_cleanup(svc.revise(drawing_id, file, user, _ids(reviewer_ids)))
     return {"id": str(d.id), "rev_label": d.current_rev_label}
 
 

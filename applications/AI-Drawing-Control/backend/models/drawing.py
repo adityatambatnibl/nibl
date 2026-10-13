@@ -1,7 +1,7 @@
 """
-AI Drawing Control - tables (schema `apqp`, names prefixed `dc_`).
+Drawing Control - tables (schema `apqp`, names prefixed `dc_`).
 
-Business rules these tables carry (from the AI Drawing Control project
+Business rules these tables carry (from the Drawing Control project
 explanation, Oct 2026):
 
 * Drawings are filed in a product tree of folders (any depth).

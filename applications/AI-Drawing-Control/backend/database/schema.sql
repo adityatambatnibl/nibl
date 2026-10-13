@@ -1,4 +1,4 @@
--- AI Drawing Control - database nibl_drawing, schema drawing.
+-- Drawing Control - database nibl_drawing, schema drawing.
 -- The backend creates all of this automatically on start (database/connection.py).
 -- Plain-SQL copy for reference / manual setup.
 

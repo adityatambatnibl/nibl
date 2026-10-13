@@ -1,4 +1,4 @@
-// Small shared pieces for AI Drawing Control screens (NPD look: Tailwind + brand tokens).
+// Small shared pieces for Drawing Control screens (NPD look: Tailwind + brand tokens).
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { DcUser, DStatus, Folder } from "./api";
 
@@ -16,7 +16,7 @@ export function fmtDate(v?: string | null, time = false) {
 const PILL: Record<string, [string, string]> = {
   deleted: ["Deleted", "bg-page text-ink-500 border-line line-through"],
   under_review: ["Under review", "bg-info-bg text-info border-info/25"],
-  approved: ["Approved", "bg-ok-bg text-ok border-ok/25"],
+  approved: ["Released", "bg-ok-bg text-ok border-ok/25"],
   denied: ["Denied", "bg-danger-bg text-danger border-danger/25"],
   locked: ["Locked", "bg-page text-ink-500 border-line"],
   pending: ["Pending", "bg-alert-bg text-alert border-alert/25"],

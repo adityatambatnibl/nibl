@@ -7,14 +7,13 @@ import { useDc } from "../DrawingLayout";
 import ReviseModal from "../ReviseModal";
 import { btnPrimarySm, btnSm, card, Empty, ErrorLine, field as fieldCls, fmtDate, input, nf, Pager, Pill, td, th, useDebounced } from "../ui";
 
-const FIELDS = [["all", "All fields"], ["item", "Item code"], ["desc", "Part description"], ["dwg", "Drawing no."]];
-const STATUSES = [["all", "All"], ["pending", "Pending"], ["under_review", "Under review"], ["denied", "Denied"], ["approved", "Approved"]];
+const STATUSES = [["all", "All"], ["pending", "Needs attention"], ["under_review", "Under review"], ["denied", "Denied"], ["approved", "Released"]];
 
 export default function Home() {
   const nav = useNavigate();
   const { isAdmin, counts, refresh } = useDc();
   const [q, setQ] = useState("");
-  const [field, setField] = useState("all");
+  const field = "all";
   const [status, setStatus] = useState("all");
   const [division, setDivision] = useState("");
   const [page, setPage] = useState(1);
@@ -58,25 +57,22 @@ export default function Home() {
         <button onClick={() => setStatus("pending")} aria-pressed={status === "pending"}
           className={`rounded-xl px-5 py-4 text-left text-white shadow-card transition hover:brightness-110 ${status === "pending" ? "ring-4 ring-brand-200" : ""}`}
           style={{ background: "linear-gradient(135deg,#C51818,#8F0B0B)" }}>
-          <span className="block text-[10px] font-bold uppercase tracking-[1.4px] text-white/80">Pending for approval</span>
+          <span className="block text-[10px] font-bold uppercase tracking-[1.4px] text-white/80">Needs attention</span>
           <span className="mt-1 block text-[38px] font-extrabold leading-none">{nf(counts?.pending ?? 0)}</span>
-          <span className="mt-1 block text-[12px] text-white/85">drawings waiting for confirmation or a revision</span>
+          <span className="mt-1 block text-[12px] text-white/85">denied drawings waiting for the admin's decision</span>
         </button>
         {tile("under_review", counts?.under_review, "Under review", "text-info")}
         {tile("denied", counts?.denied, "Denied — needs revision", "text-danger")}
         {tile("mine", counts?.mine, "Waiting for you", "text-alert")}
-        {tile("approved", counts?.approved, "Approved", "text-ok")}
+        {tile("approved", counts?.approved, "Released", "text-ok")}
       </div>
 
       <div className={card}>
         <div className="flex flex-wrap gap-2 border-b border-divider p-4">
-          <select value={field} onChange={(e) => setField(e.target.value)} className={fieldCls} aria-label="Search in">
-            {FIELDS.map(([k, l]) => <option key={k} value={k}>{l}</option>)}
-          </select>
           <div className="relative min-w-[260px] flex-1">
             <svg className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
             <input value={q} onChange={(e) => setQ(e.target.value)} className={`${input} pl-9`} autoComplete="off" aria-label="Search drawings"
-              placeholder={field === "item" ? "Search by item code" : field === "desc" ? "Search by part description" : field === "dwg" ? "Search by drawing no." : "Search by item code, part description or drawing no."} />
+              placeholder="Search by drawing name" />
           </div>
           <select value={division} onChange={(e) => setDivision(e.target.value)} className={fieldCls} aria-label="Division">
             <option value="">All divisions</option>
@@ -96,8 +92,6 @@ export default function Home() {
             <thead className="border-b border-line bg-brand-50/60">
               <tr>
                 <th className={th}>{sortBtn("drawing_no", "Drawing no.")}</th>
-                <th className={th}>{sortBtn("item_code", "Item code")}</th>
-                <th className={th}>{sortBtn("description", "Part description")}</th>
                 <th className={th}>Folder</th>
                 <th className={th}>Rev</th>
                 <th className={th}>{sortBtn("status", "Status")}</th>
@@ -109,8 +103,6 @@ export default function Home() {
               {data?.items.map((d) => (
                 <tr key={d.id} className="hover:bg-hover">
                   <td className={`${td} font-mono font-semibold text-ink-900`}>{d.drawing_no}{d.awaiting_me && <span className="ml-2 rounded bg-alert-bg px-1.5 py-0.5 font-sans text-[10px] font-bold text-alert">YOUR REVIEW</span>}</td>
-                  <td className={`${td} font-mono`}>{d.item_code}</td>
-                  <td className={td}>{d.description}</td>
                   <td className={`${td} text-ink-400`}>{d.folder_path}</td>
                   <td className={`${td} font-mono`}>{d.rev_label}</td>
                   <td className={td}><Pill s={d.status} /></td>

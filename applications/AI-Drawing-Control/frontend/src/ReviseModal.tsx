@@ -1,14 +1,20 @@
-// Revise a drawing: the admin has already picked the drawing; upload the new PDF,
-// say what changed, choose who must confirm (Email List + anyone added by hand).
+// Revise a drawing: the admin picks the new PDF and who gets the mail. The revision number
+// counts on by itself; the new revision is released at once.
 import { useEffect, useState } from "react";
 import { Modal, ModalError } from "./components/Modal";
 import { apiError } from "./apiClient";
 import { dc, type DcUser, type Detail } from "./api";
 import { btn, btnPrimary, input, Pill, ReviewerPicker } from "./ui";
 
+// Same rule as the server: A, B ... Z, AA, AB; an old numeric label n continues as letter n+1.
+function letters(n: number) {
+  let out = "";
+  while (n > 0) { const r = (n - 1) % 26; out = String.fromCharCode(65 + r) + out; n = Math.floor((n - 1) / 26); }
+  return out || "A";
+}
 function nextLabel(cur: string) {
-  if (/^\d+$/.test(cur)) return String(Number(cur) + 1).padStart(cur.length, "0");
-  if (/^[A-Y]$/i.test(cur)) return String.fromCharCode(cur.toUpperCase().charCodeAt(0) + 1);
+  if (/^\d+$/.test(cur)) return letters(Number(cur) + 1);
+  if (/^[A-Z]{1,3}$/i.test(cur)) return letters([...cur.toUpperCase()].reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0) + 1);
   return "";
 }
 
@@ -18,15 +24,14 @@ export default function ReviseModal({ drawingId, onClose, onDone }: { drawingId:
   const [ids, setIds] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [rev, setRev] = useState("");
-  const [note, setNote] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     Promise.all([dc.detail(drawingId), dc.users(), dc.emailList()])
       .then(([d, u, list]) => {
-        setDet(d); setUsers(u.filter((x) => x.is_active));
-        setIds(list.map((x) => x.id)); setRev(nextLabel(d.drawing.rev_label));
+        setDet(d); setUsers(u.filter((x) => x.is_active)); setIds(list.map((x) => x.id));
+        setRev(nextLabel(d.drawing.rev_label));
       })
       .catch((e) => setErr(apiError(e, "Could not load the drawing.")));
   }, [drawingId]);
@@ -37,11 +42,9 @@ export default function ReviseModal({ drawingId, onClose, onDone }: { drawingId:
     setErr("");
     if (!file) return setErr("Choose the revised PDF.");
     if (!file.name.toLowerCase().endsWith(".pdf")) return setErr("Only controlled PDF copies can be uploaded.");
-    if (!rev.trim()) return setErr("Enter the new revision.");
-    if (!note.trim()) return setErr("Say what changed in this revision.");
-    if (!ids.length) return setErr("Choose at least one user to confirm the drawing.");
+    if (!ids.length) return setErr("Choose at least one person to confirm the drawing.");
     const f = new FormData();
-    f.append("file", file); f.append("rev_label", rev.trim()); f.append("change_note", note.trim()); f.append("reviewer_ids", ids.join(","));
+    f.append("file", file); f.append("reviewer_ids", ids.join(","));
     setBusy(true);
     try { await dc.revise(drawingId, f); onDone(); }
     catch (e) { setErr(apiError(e, "Upload failed.")); }
@@ -53,28 +56,19 @@ export default function ReviseModal({ drawingId, onClose, onDone }: { drawingId:
       {det && (
         <div className="mt-4 space-y-4">
           <div className="flex flex-wrap items-center gap-2 text-[13px] text-ink-700">
-            <Pill s={det.drawing.status} /><b className="font-mono">{det.drawing.item_code}</b> · {det.drawing.description} · <span className="text-ink-400">{det.drawing.folder_path}</span>
+            <Pill s={det.drawing.status} /><span className="text-ink-400">{det.drawing.folder_path}</span>
           </div>
           {denies.length > 0 && (
             <div className="rounded-lg border border-danger/25 bg-danger-bg px-3 py-2 text-[13px] text-danger">
               {denies.map((r) => <div key={r.user_id}><b>To fix — denied by {r.user_name}:</b> {r.reason}</div>)}
             </div>
           )}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <label className="block text-[12px] font-semibold text-ink-700">Revised PDF (controlled copy)
-              <input type="file" accept=".pdf,application/pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className={`${input} mt-1`} />
-            </label>
-            <label className="block text-[12px] font-semibold text-ink-700">New revision
-              <input value={rev} onChange={(e) => setRev(e.target.value)} maxLength={20} placeholder="e.g. 02" className={`${input} mt-1`} />
-            </label>
-          </div>
-          <label className="block text-[12px] font-semibold text-ink-700">What changed (required)
-            <input value={note} onChange={(e) => setNote(e.target.value)} maxLength={500} placeholder="e.g. Raceway radius tolerance ±0.05 added" className={`${input} mt-1`} />
+          <label className="block text-[12px] font-semibold text-ink-700">Revised PDF (controlled copy)
+            <input type="file" accept=".pdf,application/pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className={`${input} mt-1`} />
           </label>
           <div>
-            <p className="mb-1 text-[12px] font-semibold text-ink-700">Send for confirmation to <b>{ids.length}</b> user{ids.length === 1 ? "" : "s"}</p>
+            <p className="mb-1 text-[12px] font-semibold text-ink-700">Mail for confirmation to <b>{ids.length}</b> person{ids.length === 1 ? "" : "s"}</p>
             <ReviewerPicker all={users} selected={ids} onChange={setIds} />
-            <p className="mt-1 text-[11px] text-ink-400">Starts with everyone on the Email List. Changes here apply to this revision only.</p>
           </div>
           <div className="rounded-lg border border-alert/25 bg-alert-bg px-3 py-2 text-[12px] text-alert">
             Rev {det.drawing.rev_label} will be <b>locked</b> — kept, visible to the drawing admin only. Users see only the new revision.

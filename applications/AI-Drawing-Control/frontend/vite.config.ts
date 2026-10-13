@@ -1,4 +1,4 @@
-// AI Drawing Control frontend - an independent application served at /ai-drawing-control/.
+// Drawing Control frontend - an independent application served at /ai-drawing-control/.
 // Dev: http://localhost:5176/ai-drawing-control/ (normally opened through the portal at http://localhost:5173).
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'

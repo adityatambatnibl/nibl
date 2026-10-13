@@ -1,0 +1,113 @@
+/* =========================================================
+   LOGIN INTRO - see LoginIntro.jsx for the timeline.
+   Scoped to .login-intro (the login page's .auth-page).
+   Uses opacity / translate / scale (not "transform"), because
+   the existing card and bearing rules pin transform.
+========================================================= */
+
+/* white screen from the very first paint, lifted at ~1.0-1.7 s */
+.login-intro::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    background: #fff;
+    pointer-events: none;
+    animation: li-uncover 1700ms ease forwards;
+}
+
+/* !important: the page's ".auth-page > *" rule would make it relative */
+.login-intro > .li-cover {
+    position: fixed !important;
+    inset: 0;
+    z-index: 9001 !important;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+}
+
+.li-fly {
+    width: 170px;
+    height: 170px;
+    opacity: 0;
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .18));
+}
+
+.login-intro .auth-brand-content { animation: li-fade 400ms ease 1450ms both; }
+.login-intro .auth-visual        { animation: li-fade-up 650ms ease 1550ms both; }
+.login-intro .auth-card          { animation: li-card 650ms cubic-bezier(.2, .8, .2, 1) 1650ms both; }
+
+/* bottom-left bearing assembles */
+.login-intro .premium-auth-scene .auth-bearing-left { opacity: .8 !important; }
+
+.login-intro .auth-bearing-left .premium-bearing-outer {
+    animation:
+        li-pop 600ms cubic-bezier(.2, .9, .3, 1.2) 950ms both,
+        premiumBearingRotate 22s linear 2.2s infinite;
+}
+.login-intro .auth-bearing-left .ring-outer  { animation: li-grow 500ms ease 1100ms both; }
+.login-intro .auth-bearing-left .ring-middle { animation: li-grow 500ms ease 1250ms both; }
+.login-intro .auth-bearing-left .premium-bearing-balls span { animation: li-ball 380ms cubic-bezier(.3, 1.6, .5, 1) both; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(1) { animation-delay: 1380ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(2) { animation-delay: 1440ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(3) { animation-delay: 1500ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(4) { animation-delay: 1560ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(5) { animation-delay: 1620ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(6) { animation-delay: 1680ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(7) { animation-delay: 1740ms; }
+.login-intro .auth-bearing-left .premium-bearing-balls span:nth-child(8) { animation-delay: 1800ms; }
+.login-intro .auth-bearing-left .premium-bearing-center { animation: li-pop 450ms cubic-bezier(.2, .9, .3, 1.3) 1850ms both; }
+
+/* production line */
+.login-intro .premium-process-track {
+    height: 2px !important;
+    background: linear-gradient(90deg, rgba(181, 18, 18, .15), rgba(181, 18, 18, .45), rgba(181, 18, 18, .15)) !important;
+}
+
+.li-part {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 3;
+    line-height: 0;
+    opacity: 0;
+    translate: -50% -60%;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .15)) !important;
+    animation: li-move 9s linear infinite backwards;
+}
+
+@keyframes li-uncover { 0%, 58% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+@keyframes li-fade    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes li-fade-up { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+@keyframes li-card    { from { opacity: 0; translate: 0 30px; scale: .97; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes li-pop     { from { scale: 0; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes li-grow    { from { scale: .3; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes li-ball    { from { translate: 0 -60px; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+
+@keyframes li-move {
+    0%   { left: 0%;   opacity: 0; rotate: 0deg; }
+    5%   { opacity: 1; }
+    22%  { left: 26%;  rotate: 360deg; }
+    30%  { left: 26%;  rotate: 360deg;  scale: 1.25; }
+    47%  { left: 55%;  rotate: 720deg;  scale: 1; }
+    55%  { left: 55%;  rotate: 720deg;  scale: 1.25; }
+    72%  { left: 82%;  rotate: 1080deg; scale: 1; }
+    80%  { left: 82%;  rotate: 1080deg; scale: 1.25; }
+    95%  { opacity: 1; }
+    100% { left: 100%; rotate: 1300deg; scale: 1; opacity: 0; }
+}
+
+/* "reduce motion": no intro at all, page shows at once */
+@media (prefers-reduced-motion: reduce) {
+    .login-intro::after { content: none; }
+    .login-intro .auth-brand-content,
+    .login-intro .auth-visual,
+    .login-intro .auth-card,
+    .login-intro .auth-bearing-left .premium-bearing-outer,
+    .login-intro .auth-bearing-left .ring-outer,
+    .login-intro .auth-bearing-left .ring-middle,
+    .login-intro .auth-bearing-left .premium-bearing-balls span,
+    .login-intro .auth-bearing-left .premium-bearing-center {
+        animation: none !important;
+    }
+}

@@ -45,7 +45,7 @@ class Settings:
     DB_PASSWORD = os.getenv("DB_PASSWORD", "").strip()
 
     # Tokens. JWT_SECRET_KEY MUST be the same value as
-    #   OIPM  JWT_SECRET_KEY, NPD OIPM_JWT_SECRET, AI Drawing PORTAL_JWT_SECRET
+    #   OIPM  JWT_SECRET_KEY, NPD OIPM_JWT_SECRET, Drawing Control PORTAL_JWT_SECRET
     # so every application accepts the portal sign-in.
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "").strip()
     JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256").strip()

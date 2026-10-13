@@ -1,5 +1,5 @@
 """
-AI Drawing Control - emails and reminders.
+Drawing Control - emails and reminders.
 
 Every function here runs OUTSIDE the request that triggered it: either via
 after_commit() (which gives it its own session once the request has
@@ -27,14 +27,14 @@ from services import email_service as E
 
 log = logging.getLogger("drawing_mail")
 
-APP_NAME = "AI Drawing Control"
+APP_NAME = "Drawing Control"
 
 
 def _wrap(title: str, body: str, preheader: str = "") -> str:
-    """The standard NPD email shell, labelled for AI Drawing Control."""
+    """The standard NPD email shell, labelled for Drawing Control."""
     html = E.wrap(title, body, preheader)
     return (
-        html.replace("APQP NPD Order<br>Tracking System", "AI Drawing<br>Control")
+        html.replace("APQP NPD Order<br>Tracking System", "Drawing<br>Control")
             .replace(E.SYSTEM_NAME, APP_NAME)
     )
 
@@ -53,10 +53,8 @@ async def _load(revision_id: uuid.UUID) -> tuple[DrawingRevision, Drawing] | tup
 
 def _facts(d: Drawing, rv: DrawingRevision) -> str:
     return E.table([
-        ("Drawing no.", E.esc(d.drawing_no)),
+        ("Drawing", E.esc(d.drawing_no)),
         ("Revision", E.esc(rv.rev_label)),
-        ("Item code", E.esc(d.item_code)),
-        ("Part description", E.esc(d.description)),
         ("What changed", E.esc(rv.change_note)),
         ("Uploaded by", f"{E.esc(rv.uploaded_by_name)} on {E.fmt_date(rv.uploaded_at)}"),
     ])
@@ -74,25 +72,24 @@ def _link(d: Drawing) -> str:
 
 async def send_review_requests(revision_id: uuid.UUID, revised: bool) -> None:
     rv, d = await _load(revision_id)
-    if not rv or rv.locked or rv.status != DrawingStatus.UNDER_REVIEW:
+    if not rv or rv.locked:
         return
     reviews = await repo.find_all(select(DrawingReview).where(
         DrawingReview.revision_id == rv.id, DrawingReview.decision == Decision.PENDING
     ))
     kind = "revised" if revised else "new"
     for r in reviews:
-        title = f"Please review drawing {E.esc(d.drawing_no)} Rev {E.esc(rv.rev_label)}"
+        title = f"Please confirm drawing {E.esc(d.drawing_no)} Rev {E.esc(rv.rev_label)}"
         body = (
             f"<p>Dear {E.esc(r.user_name)},</p>"
-            f"<p>A {'revised' if revised else 'new'} controlled drawing has been issued and needs your "
-            f"<b>Confirm</b> or <b>Deny</b>. Please check it on screen in {APP_NAME}. "
-            f"If you deny it, give the reason - it goes to the drawing admin and is shown to all users.</p>"
+            f"<p>A {'revised' if revised else 'new'} controlled drawing has been released. Please check it on "
+            f"screen in {APP_NAME} and <b>Confirm</b> it, or <b>Deny</b> it with the reason - the reason goes "
+            f"to the drawing admin, who decides whether a corrected revision is needed.</p>"
             f"{_facts(d, rv)}{_link(d)}"
-            + E.note("The drawing is approved only when every listed user has confirmed it. "
-                     "You will get a reminder until you respond.")
+            + E.note("You get a daily reminder until you confirm or deny.")
         )
         res = await E.send(
-            [r.user_email], f"[Drawing review] {d.drawing_no} Rev {rv.rev_label} - {d.description}",
+            [r.user_email], f"{'Revised drawing' if revised else 'New drawing'} for confirmation: {d.drawing_no} Rev {rv.rev_label}",
             _wrap(title, body, f"{d.drawing_no} Rev {rv.rev_label} needs your confirmation"),
             email_type=f"drawing_review_{kind}", dedupe_key=f"dc-req-{r.id}",
         )
@@ -120,12 +117,12 @@ async def send_denied(revision_id: uuid.UUID, denier_id: uuid.UUID) -> None:
         f"<p><b>{E.esc(denial.user_name)}</b> denied this drawing on {E.fmt_date(denial.decided_at)}.</p>"
         + E.table([("Reason", E.esc(denial.reason))])
         + _facts(d, rv)
-        + "<p>The review of this revision is closed. The drawing admin should correct the drawing and "
-          "upload a new revision with <b>Revise</b>; it will then go to everyone for confirmation again.</p>"
+        + "<p>The drawing stays released for now. If the reason is valid, the drawing admin uploads a "
+          "corrected revision with <b>Revise</b>; it then goes out for confirmation again.</p>"
         + _link(d)
     )
     await E.send(
-        to or cc, f"[Drawing denied] {d.drawing_no} Rev {rv.rev_label} - {d.description}",
+        to or cc, f"Drawing denied: {d.drawing_no} Rev {rv.rev_label}",
         _wrap(title, body, f"Denied by {denial.user_name}: {denial.reason}"),
         cc_emails=cc if to else None, email_type="drawing_denied", dedupe_key=f"dc-deny-{rv.id}",
     )
@@ -145,13 +142,13 @@ async def send_approved(revision_id: uuid.UUID) -> None:
     uploader = await repo.get(User, rv.uploaded_by)
     to = list(dict.fromkeys(([uploader.email] if uploader and uploader.email else []) + await drawing_service.admin_emails()))
     rows = [[E.esc(r.user_name), E.fmt_date(r.decided_at)] for r in sorted(reviews, key=lambda r: r.decided_at or _now())]
-    title = f"Drawing {E.esc(d.drawing_no)} Rev {E.esc(rv.rev_label)} is approved"
+    title = f"Drawing {E.esc(d.drawing_no)} Rev {E.esc(rv.rev_label)} - confirmed by everyone"
     body = (
-        "<p>Every listed user has confirmed this drawing. It is now the approved controlled revision.</p>"
+        "<p>Every selected user has confirmed this drawing.</p>"
         + _facts(d, rv) + E.data_table(["Confirmed by", "Date"], rows) + _link(d)
     )
     await E.send(
-        to, f"[Drawing approved] {d.drawing_no} Rev {rv.rev_label} - {d.description}",
+        to, f"Drawing confirmed by everyone: {d.drawing_no} Rev {rv.rev_label}",
         _wrap(title, body, "All listed users confirmed"),
         email_type="drawing_approved", dedupe_key=f"dc-ok-{rv.id}",
     )
@@ -175,7 +172,6 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
         .join(Drawing, Drawing.id == DrawingReview.drawing_id)
         .where(
             DrawingReview.decision == Decision.PENDING,
-            DrawingRevision.status == DrawingStatus.UNDER_REVIEW,
             DrawingRevision.locked.is_(False),
             Drawing.status != DrawingStatus.DELETED,
         )
@@ -202,7 +198,6 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
             lines.append(
                 f"<tr><td style='padding:6px 10px;border-bottom:1px solid #eee'><b>{E.esc(d.drawing_no)}</b></td>"
                 f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>Rev {E.esc(rv.rev_label)}</td>"
-                f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>{E.esc(d.description)}</td>"
                 f"<td style='padding:6px 10px;border-bottom:1px solid #eee;white-space:nowrap'>"
                 f"{waiting} day{'s' if waiting != 1 else ''}</td>"
                 f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>"
@@ -213,18 +208,17 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
         body = (
             f"<p>Dear {E.esc(first.user_name)},</p>"
             f"<p>The drawing{'s' if n != 1 else ''} below still need{'' if n != 1 else 's'} your "
-            f"<b>Confirm</b> or <b>Deny</b> in {APP_NAME}. A drawing is approved only when every "
-            f"listed user has responded.</p>"
+            f"<b>Confirm</b> or <b>Deny</b> in {APP_NAME}.</p>"
             f"<table style='border-collapse:collapse;width:100%;font-size:13px'>"
-            f"<tr style='text-align:left;color:#666'><th style='padding:6px 10px'>Drawing no.</th>"
-            f"<th style='padding:6px 10px'>Rev</th><th style='padding:6px 10px'>Description</th>"
+            f"<tr style='text-align:left;color:#666'><th style='padding:6px 10px'>Drawing</th>"
+            f"<th style='padding:6px 10px'>Rev</th>"
             f"<th style='padding:6px 10px'>Waiting</th><th></th></tr>{''.join(lines)}</table>"
             f"{E.button('Open My Reviews', '/reviews')}"
             + E.note(f"You get this reminder every day at {settings.DRAWING_REMINDER_TIME} until you respond.")
         )
         key = f"dc-rem-now-{revision_id}-{email}-{_now().timestamp():.0f}" if force else f"dc-rem-day-{email}-{today}"
         res = await E.send(
-            [email], f"[Reminder] {n} drawing{'s' if n != 1 else ''} waiting for your confirmation",
+            [email], f"Reminder: {n} drawing{'s' if n != 1 else ''} waiting for your confirmation",
             _wrap(title, body, "Still waiting for your Confirm / Deny"),
             email_type="drawing_reminder", dedupe_key=key,
         )
@@ -241,7 +235,7 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
 
 async def send_bulk_requests(revision_ids: list[uuid.UUID]) -> int:
     """
-    Bulk import: ONE email per person listing all drawings of the batch,
+    ONE email per person listing all drawings of the batch,
     instead of one email per drawing.
     """
     if not revision_ids:
@@ -264,8 +258,7 @@ async def send_bulk_requests(revision_ids: list[uuid.UUID]) -> int:
         lines = "".join(
             f"<tr><td style='padding:6px 10px;border-bottom:1px solid #eee'><b>{E.esc(d.drawing_no)}</b></td>"
             f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>Rev {E.esc(rv.rev_label)}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>{E.esc(d.item_code)}</td>"
-            f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>{E.esc(d.description)}</td></tr>"
+            "</tr>"
             for _r, rv, d in items[:200]
         )
         more = f"<p>... and {n - 200} more.</p>" if n > 200 else ""
@@ -276,14 +269,13 @@ async def send_bulk_requests(revision_ids: list[uuid.UUID]) -> int:
             f"need{'' if n != 1 else 's'} your <b>Confirm</b> or <b>Deny</b>. Open each one on screen; if you deny, "
             f"give the reason.</p>"
             f"<table style='border-collapse:collapse;width:100%;font-size:13px'>"
-            f"<tr style='text-align:left;color:#666'><th style='padding:6px 10px'>Drawing no.</th>"
-            f"<th style='padding:6px 10px'>Rev</th><th style='padding:6px 10px'>Item code</th>"
-            f"<th style='padding:6px 10px'>Description</th></tr>{lines}</table>{more}"
+            f"<tr style='text-align:left;color:#666'><th style='padding:6px 10px'>Drawing</th>"
+            f"<th style='padding:6px 10px'>Rev</th></tr>{lines}</table>{more}"
             f"{E.button('Open My Reviews', '/reviews')}"
             + E.note(f"Until you respond you get one reminder a day at {settings.DRAWING_REMINDER_TIME}.")
         )
         res = await E.send(
-            [email], f"[Drawing review] {n} new drawing{'s' if n != 1 else ''} need your confirmation",
+            [email], f"{n} new drawing{'s' if n != 1 else ''} need your confirmation",
             _wrap(title, body, f"{n} drawings need your confirmation"),
             email_type="drawing_review_bulk", dedupe_key=f"dc-bulk-{batch}-{email}",
         )

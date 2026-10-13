@@ -22,6 +22,7 @@ byte-level layer.
 
 import asyncio
 import os
+import shutil
 import uuid
 from pathlib import Path
 from urllib.parse import quote
@@ -236,3 +237,84 @@ async def ensure_bucket() -> str:
     return "created"
 
 
+# -- Drawing library helpers (local storage only) ---------------------------
+# The drawing library (data/drawings/<product tree>/<name>.pdf) is a readable
+# folder people can browse and drop PDFs into. These helpers keep it in step.
+
+def local_path(path: str) -> Path:
+    """The file on disk for an object key (refuses anything outside the data folder)."""
+    return _local_file(path)
+
+
+def _copy_local(src: str, dst: str) -> None:
+    s, d = _local_file(src), _local_file(dst)
+    d.parent.mkdir(parents=True, exist_ok=True)
+    tmp = d.with_name(d.name + ".part")
+    shutil.copyfile(s, tmp)
+    os.replace(tmp, d)               # overwrites the published copy in one step
+
+
+def _move_local(src: str, dst: str) -> None:
+    s, d = _local_file(src), _local_file(dst)
+    if not s.exists():
+        return
+    d.parent.mkdir(parents=True, exist_ok=True)
+    if d.exists():
+        d.unlink()
+    shutil.move(str(s), str(d))
+
+
+async def publish_copy(src: str, dst: str) -> None:
+    """Copy src over dst (local storage only)."""
+    if _use_local():
+        await asyncio.to_thread(_copy_local, src, dst)
+
+
+async def move(src: str, dst: str) -> None:
+    """Move src to dst (local storage only; a missing src is ignored)."""
+    if _use_local():
+        await asyncio.to_thread(_move_local, src, dst)
+
+
+async def copy_new(src: str, dst: str) -> None:
+    """Copy src to a NEW key dst (never overwrites) - a revision's own permanent copy."""
+    if _use_local():
+        def job():
+            s, d = _local_file(src), _local_file(dst)
+            if d.exists():
+                raise RuntimeError("Storage upload failed: a file with this key already exists.")
+            d.parent.mkdir(parents=True, exist_ok=True)
+            tmp = d.with_name(d.name + ".part")
+            shutil.copyfile(s, tmp)
+            os.replace(tmp, d)
+        await asyncio.to_thread(job)
+        return
+    await upload(dst, await download(src), "application/pdf")
+
+
+async def ensure_dir(path: str) -> None:
+    if _use_local():
+        await asyncio.to_thread(lambda: _local_file(path).mkdir(parents=True, exist_ok=True))
+
+
+async def move_dir(src: str, dst: str) -> None:
+    """Rename a library folder (only when the new name is free)."""
+    if not _use_local():
+        return
+    def job():
+        s, d = _local_file(src), _local_file(dst)
+        if s.is_dir() and not d.exists():
+            d.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(s), str(d))
+    await asyncio.to_thread(job)
+
+
+async def remove_empty_dir(path: str) -> None:
+    if not _use_local():
+        return
+    def job():
+        try:
+            _local_file(path).rmdir()
+        except OSError:
+            pass
+    await asyncio.to_thread(job)

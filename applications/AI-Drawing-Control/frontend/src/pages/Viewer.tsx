@@ -56,8 +56,9 @@ export default function Viewer() {
     setBusy(true); setErr("");
     try {
       const r = await dc.decide(det.shown.id, kind, kind === "deny" ? reason.trim() : undefined);
-      setMsg(r.outcome === "approved" ? "Confirmed. Everyone has confirmed — the drawing is now approved."
-        : r.outcome === "denied" ? "Denied. The drawing admin and all listed users have been informed."
+      setMsg(r.outcome === "approved" ? "Confirmed. Everyone has now confirmed this drawing."
+        : r.outcome === "denied" ? "Denied. The drawing admin has your reason and decides whether a new revision is needed."
+        : r.changed_mind ? "Confirmed. Your deny has been replaced by Confirm."
         : "Confirmed. Thank you.");
       setDenyOpen(false); setReason(""); load(); refresh();
     } catch (e) { setErr(apiError(e, "Could not save your answer.")); }
@@ -100,7 +101,6 @@ export default function Viewer() {
         <select value={s?.id ?? ""} onChange={(e) => setRev(e.target.value)} className={`${field} py-1.5`} aria-label="Revision">
           {det.revisions.map((r) => <option key={r.id} value={r.id}>Rev {r.rev_label}{r.locked ? " (locked)" : ""}</option>)}
         </select>
-        <span className="text-[12px] text-ink-400">{det.drawing.item_code} · {det.drawing.description}</span>
         {!det.is_admin && det.hidden_locked > 0 && <span className="text-[11px] text-ink-400">· earlier revisions are admin only</span>}
         <span className="ml-auto flex gap-2">
           {det.is_admin && !det.deleted && <button className={btnPrimary} onClick={() => setRevise(true)}>Revise this drawing</button>}
@@ -143,7 +143,13 @@ export default function Viewer() {
           <div className={card}>
             <div className="border-b border-divider px-4 py-3 text-[13px] font-bold text-ink-900">Your decision</div>
             <div className="space-y-3 p-4 text-[13px]">
-              {det.can_decide ? (
+              {det.can_decide && det.my_review?.decision === "denied" ? (
+                <>
+                  <p>You <b className="text-danger">denied</b> this revision on {fmtDate(det.my_review.decided_at, true)}{det.my_review.reason ? <> — “{det.my_review.reason}”</> : null}.</p>
+                  <p className="text-ink-500">Changed your mind? Confirm it — your deny is replaced and the drawing shows as Released again.</p>
+                  <div className="flex gap-2"><button className={btnPrimary} disabled={busy} onClick={() => decide("confirm")}>Confirm now</button></div>
+                </>
+              ) : det.can_decide ? (
                 denyOpen ? (
                   <>
                     <label className="block font-semibold text-ink-700">Reason for denying <span className="font-normal text-ink-400">(sent to the admin, shown to all users)</span>
@@ -153,14 +159,13 @@ export default function Viewer() {
                   </>
                 ) : (
                   <>
-                    <p className="text-ink-500">Check the drawing on screen, then confirm it or deny it with a reason.</p>
+                    <p className="text-ink-500">This drawing is released. Check it on screen, then confirm it — or deny it with a reason.</p>
                     <div className="flex gap-2"><button className={btnPrimary} disabled={busy} onClick={() => decide("confirm")}>Confirm</button><button className={btnDanger} onClick={() => setDenyOpen(true)}>Deny</button></div>
                   </>
                 )
               ) : det.my_review && det.my_review.decision !== "pending" && det.my_review.decision !== "cancelled" ? (
                 <p>You <b>{det.my_review.decision}</b> this revision on {fmtDate(det.my_review.decided_at, true)}.</p>
               ) : s?.locked ? <p className="text-ink-500">This revision is locked. Only the latest revision can be reviewed.</p>
-                : s?.review_status !== "under_review" ? <p className="text-ink-500">The review of this revision is closed ({s?.review_status === "approved" ? "approved" : "denied"}).</p>
                 : <p className="text-ink-500">You are not on the list of users for this revision.</p>}
             </div>
           </div>
@@ -180,7 +185,7 @@ export default function Viewer() {
                 </div>
               ))}
             </div>
-            {det.is_admin && s?.review_status === "under_review" && !s.locked && (
+            {det.is_admin && !s?.locked && (s?.reviews ?? []).some((r) => r.decision === "pending") && (
               <div className="border-t border-divider p-3"><button className={`${btn} w-full`} onClick={remind}>Send reminder now</button></div>
             )}
           </div>
@@ -194,7 +199,7 @@ export default function Viewer() {
           )}
         </div>
       </div>
-      {revise && <ReviseModal drawingId={id} onClose={() => setRevise(false)} onDone={() => { setRevise(false); setRev(undefined); setMsg("New revision sent for confirmation."); load(); refresh(); nav(`/view/${id}`); }} />}
+      {revise && <ReviseModal drawingId={id} onClose={() => setRevise(false)} onDone={() => { setRevise(false); setRev(undefined); setMsg("New revision released and mailed for confirmation."); load(); refresh(); nav(`/view/${id}`); }} />}
     </div>
   );
 }

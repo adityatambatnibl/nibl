@@ -1,6 +1,6 @@
-// AI Drawing Control shell: its own red sidebar and top bar, same NPD session.
+// Drawing Control shell: its own red sidebar and top bar, same NPD session.
 import { createContext, Suspense, useCallback, useContext, useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Loading } from "./components/Loading";
 import { goToPortal } from "./session";
 import NotificationBell from "./NotificationBell";
@@ -32,7 +32,6 @@ const MAIN = [
 ];
 const ADMIN = [
   { to: "/upload", label: "Upload Drawing", icon: "upload" },
-  { to: "/import", label: "Bulk Import", icon: "upload" },
   { to: "/users", label: "Users & Approvals", icon: "users" },
   { to: "/records", label: "Approval Records", icon: "check" },
   { to: "/locked", label: "Locked Versions", icon: "lock" },
@@ -47,6 +46,7 @@ export default function DrawingLayout() {
   const [name, setName] = useState("");
   const [counts, setCounts] = useState<Counts | null>(null);
   const [open, setOpen] = useState(false);
+  const nav = useNavigate();
 
   const refresh = useCallback(() => { dc.counts().then(setCounts).catch(() => {}); }, []);
 
@@ -55,8 +55,8 @@ export default function DrawingLayout() {
       .then((m) => {
         if (!m.can_view) {
           setWhy(m.status === "rejected"
-            ? "Your access request for AI Drawing Control was rejected. Please contact the drawing administrator."
-            : "Your access to AI Drawing Control is waiting for approval by the drawing administrator.");
+            ? "Your access request for Drawing Control was rejected. Please contact the drawing administrator."
+            : "Your access to Drawing Control is waiting for approval by the drawing administrator.");
           setState("denied");
           return;
         }
@@ -65,14 +65,14 @@ export default function DrawingLayout() {
         setState("ok");
         refresh();
       })
-      .catch(() => { setWhy("AI Drawing Control could not be reached. Please try again later."); setState("denied"); });
+      .catch(() => { setWhy("Drawing Control could not be reached. Please try again later."); setState("denied"); });
   }, [refresh]);
 
   if (state === "denied") {
     return (
       <div className="grid min-h-screen place-items-center bg-page p-6">
         <div className="max-w-md rounded-xl border border-line bg-white p-8 text-center shadow-card">
-          <p className="text-[11px] font-bold uppercase tracking-[1.4px] text-brand-600">AI Drawing Control</p>
+          <p className="text-[11px] font-bold uppercase tracking-[1.4px] text-brand-600">Drawing Control</p>
           <h1 className="mt-2 text-lg font-bold text-ink-900">Access not available yet</h1>
           <p className="mt-2 text-sm text-ink-500">{why}</p>
           <button onClick={() => goToPortal("/")} className="mt-5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700">Back to applications</button>
@@ -80,7 +80,7 @@ export default function DrawingLayout() {
       </div>
     );
   }
-  if (state !== "ok") return <Loading label="Opening AI Drawing Control..." />;
+  if (state !== "ok") return <Loading label="Opening Drawing Control..." />;
 
   const link = ({ isActive }: { isActive: boolean }) =>
     `group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] font-semibold transition-all duration-150 ${
@@ -118,7 +118,7 @@ export default function DrawingLayout() {
             )}
           </div>
           <div className="border-t border-white/[0.12] px-6 py-4">
-            <p className="text-[9px] font-semibold uppercase tracking-[1.5px] text-white/45">AI DRAWING CONTROL</p>
+            <p className="text-[9px] font-semibold uppercase tracking-[1.5px] text-white/45">DRAWING CONTROL</p>
           </div>
         </aside>
 
@@ -130,18 +130,18 @@ export default function DrawingLayout() {
               </button>
               <div className="leading-tight">
                 <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-brand-600">R&amp;D · Controlled drawings</p>
-                <p className="text-[15px] font-bold text-ink-900">AI Drawing Control</p>
+                <p className="text-[15px] font-bold text-ink-900">Drawing Control</p>
               </div>
             </div>
             <div className="flex items-center gap-2 lg:gap-3">
               <NotificationBell />
-              <div className="flex items-center gap-2.5 px-2 py-1.5">
+              <button onClick={() => nav("/account")} title="My profile" className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-page">
                 <span className="grid h-[38px] w-[38px] place-items-center rounded-full border border-brand-200 bg-brand-50 text-[13px] font-extrabold text-brand-600">{initials}</span>
-                <span className="hidden flex-col leading-tight sm:flex">
+                <span className="hidden flex-col items-start leading-tight sm:flex">
                   <strong className="text-[12px] font-semibold text-ink-900">{name}</strong>
                   <span className="text-[10px] text-ink-400">{isAdmin ? "Drawing admin" : "Reviewer"}</span>
                 </span>
-              </div>
+              </button>
               <button onClick={() => goToPortal("/")} className="rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-600">Workspace</button>
               <button onClick={() => goToPortal("/logout")} className="rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-600">Log out</button>
             </div>

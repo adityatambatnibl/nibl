@@ -54,7 +54,7 @@ async def provision(data: PortalUser, x_portal_key: str | None = Header(default=
     from services import notification_service
     await notification_service.notify(
         await notification_service.admin_ids(), "New access request",
-        f"{data.full_name.strip()} ({data.email.lower().strip()}) asked for access to AI Drawing Control.", "/users")
+        f"{data.full_name.strip()} ({data.email.lower().strip()}) asked for access to Drawing Control.", "/users")
     return {"status": "created", "access": "pending"}
 
 

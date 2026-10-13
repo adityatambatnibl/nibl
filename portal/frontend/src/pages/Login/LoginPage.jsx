@@ -5,6 +5,7 @@ import { useState } from "react";
 import { forgotPassword } from "../../services/authService";
 import BrandLogos from "../../components/Brand/BrandLogos";
 import BearingBackground from "../../components/Brand/BearingBackground";
+import LoginIntro from "./LoginIntro";
 
 
 /* =====================================================
@@ -29,9 +30,11 @@ export default function LoginPage({
 
     return (
 
-        <div className="auth-page">
+        <div className="auth-page login-intro">
 
             <BearingBackground variant="login"  />
+
+            <LoginIntro />
 
             <div className="auth-brand">
 

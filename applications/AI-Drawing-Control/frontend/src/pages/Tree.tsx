@@ -129,19 +129,19 @@ export default function Tree() {
               </div>
             )}
             <div className="flex flex-wrap items-center gap-2 px-4 py-3">
-              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter by item code, description or drawing no." className={`${input} max-w-sm`} />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter by drawing name" className={`${input} max-w-sm`} />
               {["all", "approved", "under_review", "denied"].map((k) => (
-                <button key={k} onClick={() => setStatus(k)} className={`rounded-full border px-3 py-1 text-[12px] font-semibold ${status === k ? "border-brand-600 bg-brand-600 text-white" : "border-line bg-white text-ink-700"}`}>{k === "all" ? "All" : k === "under_review" ? "Under review" : k[0].toUpperCase() + k.slice(1)}</button>
+                <button key={k} onClick={() => setStatus(k)} className={`rounded-full border px-3 py-1 text-[12px] font-semibold ${status === k ? "border-brand-600 bg-brand-600 text-white" : "border-line bg-white text-ink-700"}`}>{k === "all" ? "All" : k === "under_review" ? "Under review" : k === "approved" ? "Released" : k[0].toUpperCase() + k.slice(1)}</button>
               ))}
               {children.length > 0 && <label className="ml-auto flex items-center gap-2 text-[12px] text-ink-700"><input type="checkbox" checked={sub} onChange={(e) => setSub(e.target.checked)} /> Include subfolders</label>}
             </div>
             <div className="overflow-x-auto">
               <table className="w-full min-w-[760px]">
-                <thead className="border-y border-line bg-brand-50/60"><tr><th className={th}>Drawing no.</th><th className={th}>Item code</th><th className={th}>Part description</th>{sub && <th className={th}>Folder</th>}<th className={th}>Rev</th><th className={th}>Status</th><th className={th}>Updated</th></tr></thead>
+                <thead className="border-y border-line bg-brand-50/60"><tr><th className={th}>Drawing no.</th>{sub && <th className={th}>Folder</th>}<th className={th}>Rev</th><th className={th}>Status</th><th className={th}>Updated</th></tr></thead>
                 <tbody className="divide-y divide-divider">
                   {data?.items.map((d) => (
                     <tr key={d.id} onClick={() => nav(`/view/${d.id}`)} className="cursor-pointer hover:bg-hover">
-                      <td className={`${td} whitespace-nowrap font-mono font-semibold text-ink-900`}>{d.drawing_no}</td><td className={`${td} font-mono`}>{d.item_code}</td><td className={td}>{d.description}</td>
+                      <td className={`${td} whitespace-nowrap font-mono font-semibold text-ink-900`}>{d.drawing_no}</td>
                       {sub && <td className={`${td} text-ink-400`}>{d.folder_path.split(" › ").slice(-1)[0]}</td>}
                       <td className={`${td} font-mono`}>{d.rev_label}</td><td className={td}><Pill s={d.status} /></td><td className={`${td} whitespace-nowrap`}>{fmtDate(d.updated_at)}</td>
                     </tr>

@@ -1,8 +1,13 @@
-// AI Drawing Control - API client. Same axios instance (and NPD session) as the rest of NPD.
+// Drawing Control - API client. Same axios instance (and NPD session) as the rest of NPD.
 import { api } from "./apiClient";
 
 export type DStatus = "under_review" | "approved" | "denied" | "locked" | "deleted";
 
+export interface Me {
+  id?: string; name?: string; email?: string; status: string; can_view: boolean; is_admin: boolean;
+  employee_code?: string | null; department?: string | null; member_since?: string | null;
+  on_email_list?: boolean; waiting?: number; confirmed?: number; denied?: number;
+}
 export interface Folder { id: string; parent_id: string | null; name: string; direct_count: number }
 export interface DrawingRow {
   id: string; drawing_no: string; item_code: string; description: string;
@@ -48,7 +53,7 @@ const B = "/drawings";
 const d = <T,>(p: Promise<{ data: T }>) => p.then((r) => r.data);
 
 export const dc = {
-  me: () => d<{ id?: string; name?: string; status: string; can_view: boolean; is_admin: boolean }>(api.get(`${B}/me`)),
+  me: () => d<Me>(api.get(`${B}/me`)),
   counts: () => d<Counts>(api.get(`${B}/counts`)),
   search: (params: Record<string, unknown>) => d<Page<DrawingRow>>(api.get(B, { params })),
   myReviews: () => d<MyReview[]>(api.get(`${B}/reviews/mine`)),
@@ -65,7 +70,7 @@ export const dc = {
   remove: (id: string, reason: string) => d(api.post(`${B}/${id}/delete`, { reason })),
   restore: (id: string) => d<{ id: string; status: string }>(api.post(`${B}/${id}/restore`)),
   decide: (revisionId: string, decision: "confirm" | "deny", reason?: string) =>
-    d<{ outcome: string }>(api.post(`${B}/revisions/${revisionId}/decision`, { decision, reason })),
+    d<{ outcome: string; changed_mind?: boolean }>(api.post(`${B}/revisions/${revisionId}/decision`, { decision, reason })),
   remind: (revisionId: string) => d<{ reminded: number }>(api.post(`${B}/revisions/${revisionId}/remind`)),
   file: (revisionId: string, download = false) =>
     api.get(`${B}/revisions/${revisionId}/file`, { params: download ? { download: 1 } : {}, responseType: "blob" }),

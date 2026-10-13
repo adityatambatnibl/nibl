@@ -1,5 +1,5 @@
 @echo off
-REM AI Drawing Control backend - production: no reload, ONE worker (scheduled jobs expect a single process).
+REM Drawing Control backend - production: no reload, ONE worker (scheduled jobs expect a single process).
 REM Installed as a Windows service by scripts\install-services.ps1 (NSSM).
 REM APP_PORT is set by NSSM only for the side-by-side test (scripts\switch). Default = live port.
 cd /d "%~dp0"

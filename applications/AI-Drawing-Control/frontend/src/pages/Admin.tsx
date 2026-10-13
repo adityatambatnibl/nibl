@@ -32,7 +32,7 @@ function UsersInner() {
   const tabs: [typeof only, string][] = [["all", "All users"], ["pending", `Waiting for approval (${pendingCount})`], ["approved", "Approved"], ["rejected", "Rejected"], ["list", "On Email List"]];
   return (
     <div>
-      <PageHead title="Users & Approvals" sub={`New NIBL portal registrations arrive here as pending. Approve who may use AI Drawing Control. Everyone on the Email List (${listCount}) is asked to confirm each new drawing.`} />
+      <PageHead title="Users & Approvals" sub={`New NIBL portal registrations arrive here as pending. Approve who may use Drawing Control. Everyone on the Email List (${listCount}) is asked to confirm each new drawing.`} />
       <ErrorLine>{err}</ErrorLine>
       <div className={card}>
         <div className="flex flex-wrap gap-2 border-b border-divider p-4">
@@ -65,7 +65,7 @@ function UsersInner() {
           {shown.length === 0 && <Empty title="No users match" />}
         </div>
       </div>
-      <p className="mt-3 text-[12px] text-ink-400">People register once on the NIBL portal. Approval here only affects AI Drawing Control.</p>
+      <p className="mt-3 text-[12px] text-ink-400">People register once on the NIBL portal. Approval here only affects Drawing Control.</p>
     </div>
   );
 }
@@ -86,7 +86,7 @@ function RecordsTable({ rows, locked }: { rows: RecordRow[]; locked?: boolean })
     <div className="overflow-x-auto">
       <table className="w-full min-w-[980px]">
         <thead className="border-b border-line bg-brand-50/60"><tr>
-          <th className={th}>Drawing no.</th><th className={th}>Rev</th><th className={th}>Part description</th><th className={th}>Uploaded</th>
+          <th className={th}>Drawing no.</th><th className={th}>Rev</th><th className={th}>What changed</th><th className={th}>Uploaded</th>
           <th className={th}>{locked ? "Locked" : "Status"}</th><th className={th}>Responses</th>
         </tr></thead>
         <tbody className="divide-y divide-divider">
@@ -94,7 +94,7 @@ function RecordsTable({ rows, locked }: { rows: RecordRow[]; locked?: boolean })
             <tr key={r.id} className="align-top">
               <td className={td}><Link to={`/view/${r.drawing_id}`} className="font-mono font-semibold text-ink-900 hover:text-brand-600">{r.drawing_no}</Link><div className="text-[11px] text-ink-400">{r.folder_path}</div></td>
               <td className={`${td} font-mono`}>{r.rev_label}</td>
-              <td className={td}>{r.description}<div className="text-[11px] text-ink-400">{r.change_note}</div></td>
+              <td className={`${td} text-ink-500`}>{r.change_note}</td>
               <td className={`${td} whitespace-nowrap`}>{fmtDate(r.uploaded_at, true)}<div className="text-[11px] text-ink-400">{r.uploaded_by_name}</div></td>
               <td className={td}>{locked ? <>{fmtDate(r.locked_at, true)}<div className="text-[11px] text-ink-400">by {r.locked_by_name} · was <Pill s={r.review_status} /></div></> : <><Pill s={r.review_status} />{r.decided_at && <div className="mt-1 text-[11px] text-ink-400">{fmtDate(r.decided_at, true)}</div>}</>}</td>
               <td className={td}>
@@ -125,7 +125,7 @@ function RecordsInner({ locked }: { locked?: boolean }) {
       <ErrorLine>{err}</ErrorLine>
       <div className={card}>
         <div className="flex flex-wrap gap-2 border-b border-divider p-4">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search drawing no., item code or description" className={`${input} max-w-sm`} />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by drawing name" className={`${input} max-w-sm`} />
           {!locked && ["all", "under_review", "approved", "denied"].map((k) => (
             <button key={k} onClick={() => setStatus(k)} className={`rounded-full border px-3 py-1 text-[12px] font-semibold ${status === k ? "border-brand-600 bg-brand-600 text-white" : "border-line bg-white text-ink-700"}`}>{k === "all" ? "All" : k === "under_review" ? "Under review" : k[0].toUpperCase() + k.slice(1)}</button>
           ))}

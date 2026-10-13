@@ -1,8 +1,8 @@
 """
-AI Drawing Control's own users (database nibl_drawing).
+Drawing Control's own users (database nibl_drawing).
 
 A row is created by the NIBL portal when someone registers (PENDING).
-The AI Drawing admin approves or rejects here - approval in OIPM or NPD
+The Drawing admin approves or rejects here - approval in OIPM or NPD
 means nothing to this application, and the other way round.
 
 role:   admin  -> upload, revise, folders, users, records

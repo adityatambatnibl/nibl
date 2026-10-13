@@ -7,10 +7,10 @@ const Tree = lazy(() => import("./pages/Tree"));
 const Reviews = lazy(() => import("./pages/Reviews"));
 const Viewer = lazy(() => import("./pages/Viewer"));
 const Upload = lazy(() => import("./pages/Upload"));
+const Profile = lazy(() => import("./pages/Profile"));
 const UsersPage = lazy(() => import("./pages/Admin").then((m) => ({ default: m.UsersPage })));
 const RecordsPage = lazy(() => import("./pages/Admin").then((m) => ({ default: m.RecordsPage })));
 const LockedPage = lazy(() => import("./pages/Admin").then((m) => ({ default: m.LockedPage })));
-const BulkImport = lazy(() => import("./pages/Import"));
 const DownloadsPage = lazy(() => import("./pages/Admin").then((m) => ({ default: m.DownloadsPage })));
 const AuditPage = lazy(() => import("./pages/Admin").then((m) => ({ default: m.AuditPage })));
 
@@ -24,7 +24,7 @@ export default function App() {
           <Route path="reviews" element={<Reviews />} />
           <Route path="view/:id" element={<Viewer />} />
           <Route path="upload" element={<Upload />} />
-          <Route path="import" element={<BulkImport />} />
+          <Route path="account" element={<Profile />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="records" element={<RecordsPage />} />
           <Route path="locked" element={<LockedPage />} />

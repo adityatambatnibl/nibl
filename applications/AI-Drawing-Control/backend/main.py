@@ -1,5 +1,5 @@
 """
-AI Drawing Control - backend (independent application, database nibl_drawing).
+Drawing Control - backend (independent application, database nibl_drawing).
 
     /api/drawings/*   the application
     /api/portal/*     NIBL portal integration (create users, report access)
@@ -55,7 +55,7 @@ async def lifespan(app: FastAPI):
 
 # API pages (/docs) are for development only - hidden when ENVIRONMENT=production.
 _docs = settings.ENVIRONMENT.strip().lower() != "production"
-app = FastAPI(title="AI Drawing Control", version="1.0.0", lifespan=lifespan,
+app = FastAPI(title="Drawing Control", version="1.0.0", lifespan=lifespan,
               docs_url="/api/docs" if _docs else None, redoc_url=None,
               openapi_url="/api/openapi.json" if _docs else None)
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origin_list, allow_credentials=True,

@@ -1,5 +1,5 @@
 """
-The bell: in-app notifications for AI Drawing Control.
+The bell: in-app notifications for Drawing Control.
 
 Who gets what
   reviewers  a drawing / revision is waiting for their Confirm or Deny; a drawing

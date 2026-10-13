@@ -29,7 +29,7 @@ async def get_identity(cred: HTTPAuthorizationCredentials | None = Depends(beare
 
 async def get_current_user(user: User | None = Depends(get_identity)) -> User:
     if user is None:
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "Your AI Drawing Control account has not been created yet.")
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Your Drawing Control account has not been created yet.")
     if not user.is_approved:
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "Your access to AI Drawing Control is not approved yet.")
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Your access to Drawing Control is not approved yet.")
     return user

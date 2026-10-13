@@ -1,4 +1,4 @@
-"""AI Drawing Control settings, read from applications/AI-Drawing-Control/backend/.env."""
+"""Drawing Control settings, read from applications/AI-Drawing-Control/backend/.env."""
 from pathlib import Path
 
 from pydantic_settings import BaseSettings
@@ -35,7 +35,7 @@ class Settings(BaseSettings):
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
-    SMTP_FROM_NAME: str = "AI Drawing Control"
+    SMTP_FROM_NAME: str = "Drawing Control"
     EMAIL_ENABLED: bool = False
     APP_BASE_URL: str = "http://nibl/ai-drawing-control"   # email buttons
     APP_TIMEZONE: str = "Asia/Kolkata"
