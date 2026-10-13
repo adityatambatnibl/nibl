@@ -205,7 +205,7 @@ async def run_apqp_overdue(_: User = Depends(require_admin)):
 @router.post("/preview", response_model=PreviewOut)
 async def preview(data: PreviewRequest, _: User = Depends(require_admin)):
     """
-    Shows exactly the email(s) a button would send - built by the real code,
+    Shows exactly the emails a button would send - built by the real code,
     with today's data - but sends nothing and records nothing.
     """
     from database.connection import db

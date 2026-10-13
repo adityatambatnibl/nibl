@@ -18,7 +18,7 @@ export function formatDateTime(iso: string | null | undefined): string {
   });
 }
 /**
- * "1 stage" / "4 stages" - never "4 stage(s)".
+ * "1 stage" / "4 stages" - never "4 stages".
  * Pass the plural when it is not just +s: plural(n, "activity", "activities").
  */
 export function plural(n: number, one: string, many?: string): string {

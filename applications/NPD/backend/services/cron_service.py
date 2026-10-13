@@ -136,7 +136,7 @@ async def start():
     #     coalesce=True,
     #     max_instances=1,          # a slow run must not stack up behind itself
     # )
-    # logger.info("User sync scheduled every %s minute(s)", settings.USER_SYNC_MINUTES)
+    # logger.info("User sync scheduled every %s minuts", settings.USER_SYNC_MINUTES)
 
 
 def reschedule(hour: int, minute: int) -> None:

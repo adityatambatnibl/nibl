@@ -2500,7 +2500,7 @@ export default function PlantHeadDashboard() {
                                     <div className="plant-head-analytics-header">
                                         <div>
                                             <h2>
-                                                {`Monthwise Summary — ${analytics?.selected_fy || analyticsFy || "Current FY"}`}
+                                                {`Month-wise Summary — ${analytics?.selected_fy || analyticsFy || "Current FY"}`}
                                             </h2>
                                             <p>
                                                 Monthly OIPM volume and savings. Finance validation is counted only after Accounts approval.
@@ -2522,8 +2522,8 @@ export default function PlantHeadDashboard() {
                                                 aria-expanded={!monthwiseSummaryCollapsed}
                                                 aria-label={
                                                     monthwiseSummaryCollapsed
-                                                        ? "Expand Monthwise Summary"
-                                                        : "Collapse Monthwise Summary"
+                                                        ? "Expand Month-wise Summary"
+                                                        : "Collapse Month-wise Summary"
                                                 }
                                             >
                                                 {monthwiseSummaryCollapsed

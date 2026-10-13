@@ -190,7 +190,7 @@ async def save_for_project(key: str, stage_owners: dict, dept_owners: dict, user
     from services import audit_service
     n = sum(len(v or []) for v in (stage_owners or {}).values()) + sum(len(v or []) for v in (dept_owners or {}).values())
     await audit_service.log("project_recipients_changed", user, "apqp", p.project_id, p.product_name or p.project_id,
-                            note=f"{n} address(es) across stages and departments")
+                            note=f"{n} address{'es' if n != 1 else ''} across stages and departments")
     return await get_for_project(p.project_id)
 
 

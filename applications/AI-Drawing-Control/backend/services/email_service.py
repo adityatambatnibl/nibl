@@ -246,7 +246,7 @@ def _header() -> str:
         <td align="right" style="vertical-align:middle;font-family:Arial,Helvetica,sans-serif;
             font-size:10px;color:{MUTED};letter-spacing:0.8px;text-transform:uppercase;
             line-height:1.5;">
-          Drawing<br>Control
+          AI Drawing<br>Control
         </td>
       </tr></table>
     </td>

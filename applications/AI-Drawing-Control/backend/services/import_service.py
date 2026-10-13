@@ -103,7 +103,7 @@ def _read_index(root: Path) -> tuple[dict[str, dict], list[str]]:
             if dno:
                 rows[dno.lower()] = rec
                 n += 1
-        notes.append(f"{f.name}: {n} row(s) read.")
+        notes.append(f"{f.name}: {n} rows read.")
     return rows, notes
 
 

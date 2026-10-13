@@ -1018,7 +1018,7 @@ function CostSavingDisplay({
                                         </div>
                                         <div className="cost-saving-value">
                                             <span>Duration</span>
-                                            <strong>{item?.saving_type === "limited" ? `${Math.floor((Number(item?.duration_months) || 0) / 12) ? `${Math.floor((Number(item?.duration_months) || 0) / 12)} years ` : ""}${(Number(item?.duration_months) || 0) % 12 ? `${(Number(item?.duration_months) || 0) % 12} months` : ""}`.trim() || "-" : item?.saving_type === "one_time" ? "One time" : "Ongoing"}</strong>
+                                            <strong>{item?.saving_type === "limited" ? `${Math.floor((Number(item?.duration_months) || 0) / 12) ? `${Math.floor((Number(item?.duration_months) || 0) / 12)} ${Math.floor((Number(item?.duration_months) || 0) / 12) === 1 ? "year" : "years"} ` : ""}${(Number(item?.duration_months) || 0) % 12 ? `${(Number(item?.duration_months) || 0) % 12} ${(Number(item?.duration_months) || 0) % 12 === 1 ? "month" : "months"}` : ""}`.trim() || "-" : item?.saving_type === "one_time" ? "One time" : "Ongoing"}</strong>
                                         </div>
                                     </div>
 
@@ -3343,7 +3343,7 @@ export default function ViewImprovement({
             const response = await uploadImprovementImages(improvement.id, section, Array.from(files));
             const field = section === "problem" ? "problem_images" : section === "countermeasure" ? "countermeasure_images" : "result_images";
             setEditData((previous) => ({ ...previous, [field]: [...(previous?.[field] || []), ...(response?.images || [])] }));
-        } catch (error) { setEditError(error?.message || "Unable to upload image(s)."); } finally { setImageActionLoading(""); }
+        } catch (error) { setEditError(error?.message || "Image upload failed. Please try again."); } finally { setImageActionLoading(""); }
     }
 
     async function handleEditImageDelete(section, image) {

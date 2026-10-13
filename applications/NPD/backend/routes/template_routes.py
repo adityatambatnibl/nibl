@@ -237,7 +237,7 @@ async def save_bearing_plan(data: PlanIn, admin: User = Depends(require_admin)):
         if bt is None:
             # The default plan - applies to every bearing without its own rule.
             if s.offset_days != row.days:
-                changes.append(f"{s.name}: {s.offset_days} -> {row.days} days")
+                changes.append(f"{s.name}: {s.offset_days} -> {row.days} day{'s' if row.days != 1 else ''}")
             s.offset_days = row.days
             if not s.anchor_field:
                 s.depends_on = row.starts_after
@@ -248,7 +248,7 @@ async def save_bearing_plan(data: PlanIn, admin: User = Depends(require_admin)):
             if row.days != s.offset_days:
                 variants[bt] = row.days
             if old_days != row.days:
-                changes.append(f"{s.name}: {old_days} -> {row.days} days")
+                changes.append(f"{s.name}: {old_days} -> {row.days} day{'s' if row.days != 1 else ''}")
 
             for k in [k for k in parents if k.casefold() == bt.casefold()]:
                 parents.pop(k)

@@ -29,7 +29,7 @@ DISPATCH_STAGE = "X"
 
 def plural(n: int, one: str, many: str | None = None) -> str:
     """
-    "1 stage" / "4 stages" - never "4 stage(s)".
+    "1 stage" / "4 stages" - never "4 stages".
 
     Written out because a summary that a manager forwards should read like
     a sentence, not like a template someone forgot to finish.

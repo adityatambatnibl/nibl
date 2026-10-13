@@ -91,7 +91,7 @@ export default function Tree() {
         <div className="tr-head border-b border-divider px-4 py-3">
           <div style={{ minWidth: 0 }}>
             <div className="text-[11px] text-ink-400">{cur ? t.path(cur.id).slice(0, -1).map((f) => f.name).join(" › ") || "Top level" : ""}</div>
-            <div className="text-[18px] font-bold text-ink-900">{cur ? cur.name : "Select a folder"} {cur && <span className="text-[12px] font-normal text-ink-400">{nf(t.total.get(cur.id) ?? 0)} drawings</span>}</div>
+            <div className="text-[18px] font-bold text-ink-900">{cur ? cur.name : "Select a folder"} {cur && <span className="text-[12px] font-normal text-ink-400">{nf(t.total.get(cur.id) ?? 0)} {(t.total.get(cur.id) ?? 0) === 1 ? "drawing" : "drawings"}</span>}</div>
           </div>
           {isAdmin && cur && (
             <div className="tr-actions">

@@ -1691,7 +1691,7 @@ async def upload_improvement_images(
     return {
 
         "message":
-            f"{len(uploaded_images)} image(s) "
+            f"{len(uploaded_images)} image{'s' if len(uploaded_images) != 1 else ''} "
             "uploaded successfully.",
 
         "improvement_id":
