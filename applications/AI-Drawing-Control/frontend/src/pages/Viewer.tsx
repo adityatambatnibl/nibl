@@ -1,11 +1,68 @@
 // One drawing: the PDF on screen, Confirm / Deny, responses, revisions (locked ones admin-only).
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { apiError } from "../apiClient";
 import { dc, type Detail } from "../api";
 import { useDc } from "../DrawingLayout";
 import ReviseModal from "../ReviseModal";
 import { btn, btnDanger, btnPrimary, card, ErrorLine, field, fmtDate, input, Pill } from "../ui";
+
+/* The drawing on screen, with a small expand button in its top-right corner (full screen; Esc to leave). */
+function PdfPane({ url, title }: { url: string; title: string }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [full, setFull] = useState(false);        // real browser full screen
+  const [overlay, setOverlay] = useState(false);  // fallback when full screen is not allowed
+
+  useEffect(() => {
+    const onChange = () => setFull(document.fullscreenElement === box.current);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+  useEffect(() => {
+    if (!overlay) return undefined;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOverlay(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [overlay]);
+
+  const big = full || overlay;
+  async function toggle() {
+    if (full) { await document.exitFullscreen().catch(() => {}); return; }
+    if (overlay) { setOverlay(false); return; }
+    try { await box.current!.requestFullscreen(); } catch { setOverlay(true); }
+  }
+
+  return (
+    <div ref={box} className={`pdfp ${big ? "pdfp-big" : ""} ${overlay ? "pdfp-overlay" : ""}`}>
+      <style>{PDF_CSS}</style>
+      {big && <div className="pdfp-bar"><b>{title}</b><span>Esc to close</span></div>}
+      <iframe src={`${url}#toolbar=0&navpanes=0&view=Fit`} title={title} className="pdfp-frame" />
+      <button type="button" className="pdfp-btn" onClick={toggle}
+        title={big ? "Close full screen (Esc)" : "Expand drawing to full screen"} aria-label={big ? "Close full screen" : "Expand drawing"}>
+        {big ? (
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" /></svg>
+        ) : (
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+        )}
+      </button>
+    </div>
+  );
+}
+
+// Plain CSS so it looks right however the screens were built.
+const PDF_CSS = `
+.pdfp{position:relative;background:#525659}
+.pdfp-frame{display:block;width:100%;height:78vh;border:0}
+.pdfp-big{display:flex;flex-direction:column;background:#323639}
+.pdfp-big .pdfp-frame{flex:1;height:auto}
+.pdfp-overlay{position:fixed;inset:0;z-index:2000}
+.pdfp-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 70px 10px 18px;background:#1f2326;color:#fff;font-size:14px}
+.pdfp-bar span{font-size:12px;color:rgba(255,255,255,.6)}
+.pdfp-btn{position:absolute;top:12px;right:12px;z-index:5;width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.35);
+  border-radius:10px;background:rgba(17,24,39,.72);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:background .15s, transform .15s}
+.pdfp-btn:hover{background:#B51212;transform:scale(1.06)}
+.pdfp-big .pdfp-btn{top:6px;right:12px}
+`;
 
 export default function Viewer() {
   const { id = "" } = useParams();
@@ -136,7 +193,7 @@ export default function Viewer() {
 
       <div className="grid gap-5 xl:grid-cols-[1fr_340px]">
         <div className={`${card} overflow-hidden`}>
-          {url ? <iframe src={`${url}#toolbar=0&navpanes=0`} title={`${det.drawing.drawing_no} Rev ${s?.rev_label}`} className="h-[78vh] w-full" />
+          {url ? <PdfPane url={url} title={`${det.drawing.drawing_no} Rev ${s?.rev_label}`} />
             : <div className="grid h-[60vh] place-items-center text-sm text-ink-400">Loading the PDF…</div>}
         </div>
         <div className="space-y-4">

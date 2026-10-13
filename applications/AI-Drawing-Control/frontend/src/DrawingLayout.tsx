@@ -118,19 +118,20 @@ export default function DrawingLayout() {
             )}
           </div>
           <div className="border-t border-white/[0.12] px-6 py-4">
+            <button onClick={() => goToPortal("/")} className="mb-2 text-[12px] font-semibold text-white/85 hover:text-white lg:hidden">← All applications</button>
             <p className="text-[9px] font-semibold uppercase tracking-[1.5px] text-white/45">DRAWING CONTROL</p>
           </div>
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-          <header className="sticky top-0 z-10 flex h-[68px] shrink-0 items-center justify-between border-b border-line bg-white/95 px-4 backdrop-blur-md lg:px-6">
+          <header className="dl-head sticky top-0 z-10 flex h-[68px] shrink-0 items-center justify-between border-b border-line bg-white/95 px-4 backdrop-blur-md lg:px-6">
             <div className="flex items-center gap-3">
               <button onClick={() => setOpen(true)} aria-label="Open menu" className="rounded-lg p-2 text-ink-700 hover:bg-page lg:hidden">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
               </button>
               <div className="leading-tight">
-                <p className="text-[10px] font-bold uppercase tracking-[1.4px] text-brand-600">R&amp;D · Controlled drawings</p>
-                <p className="text-[15px] font-bold text-ink-900">Drawing Control</p>
+                <p className="dl-eyebrow text-[10px] font-bold uppercase tracking-[1.4px] text-brand-600">R&amp;D · Controlled drawings</p>
+                <p className="dl-title whitespace-nowrap text-[15px] font-bold text-ink-900">Drawing Control</p>
               </div>
             </div>
             <div className="flex items-center gap-2 lg:gap-3">
@@ -142,10 +143,11 @@ export default function DrawingLayout() {
                   <span className="text-[10px] text-ink-400">{isAdmin ? "Drawing admin" : "Reviewer"}</span>
                 </span>
               </button>
-              <button onClick={() => goToPortal("/")} className="rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-600">Workspace</button>
-              <button onClick={() => goToPortal("/logout")} className="rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-600">Log out</button>
+              <button onClick={() => goToPortal("/")} title="Back to all applications" aria-label="Workspace" className="dl-ws whitespace-nowrap rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-600"><span className="dl-ws-t">Workspace</span><svg className="dl-ws-i" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></svg></button>
+              <button onClick={() => goToPortal("/logout")} className="dl-lo whitespace-nowrap rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-700 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-600">Log out</button>
             </div>
           </header>
+          <style>{`.dl-ws-i{display:none}@media (max-width:640px){.dl-eyebrow{display:none}.dl-ws{padding:8px}.dl-ws-t{display:none}.dl-ws-i{display:block}.dl-lo{padding:8px 10px}header.dl-head{padding-left:10px;padding-right:10px}header.dl-head>div:last-child{gap:6px}}@media (max-width:400px){.dl-title{font-size:13px}.dl-ws{display:none}}`}</style>
           <main className="flex-1 overflow-y-auto p-4 lg:p-6">
             <div className="mx-auto w-full max-w-[1360px]">
               <Suspense fallback={<Loading />}><Outlet /></Suspense>

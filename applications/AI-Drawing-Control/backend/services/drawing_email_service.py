@@ -203,7 +203,7 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
                 f"<tr><td style='padding:6px 10px;border-bottom:1px solid #eee'><b>{E.esc(d.drawing_no)}</b></td>"
                 f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>Rev {E.esc(rv.rev_label)}</td>"
                 f"<td style='padding:6px 10px;border-bottom:1px solid #eee;white-space:nowrap'>"
-                f"{waiting} day{'s' if waiting != 1 else ''}</td>"
+                f"{'Today' if waiting < 1 else str(waiting) + ' day' + ('s' if waiting != 1 else '')}</td>"
                 f"<td style='padding:6px 10px;border-bottom:1px solid #eee'>"
                 f"<a href='{_url(f'/view/{d.id}')}'>Open</a></td></tr>"
             )
