@@ -5,6 +5,7 @@ import { apiError } from "../apiClient";
 import { dc, type DcUser, type DrawingRow, type Folder } from "../api";
 import { AdminOnly, useDc } from "../DrawingLayout";
 import ReviseModal from "../ReviseModal";
+import MailPreviewModal from "../MailPreviewModal";
 import { btn, btnPrimary, btnPrimarySm, card, ErrorLine, FolderSelect, input, PageHead, Pill, ReviewerPicker, td, th, useDebounced } from "../ui";
 
 function UploadInner() {
@@ -25,6 +26,7 @@ function UploadInner() {
   const drq = useDebounced(rq);
   const [found, setFound] = useState<DrawingRow[]>([]);
   const [revise, setRevise] = useState<string | null>(null);
+  const [preview, setPreview] = useState(false);
 
   useEffect(() => {
     Promise.all([dc.folders(), dc.users(), dc.emailList()])
@@ -68,7 +70,7 @@ function UploadInner() {
           </div>
           <div className="rounded-lg border border-line bg-page px-3 py-2 text-[13px] text-ink-700">
             Drawing name: <b className="font-mono">{name || "— taken from the PDF file name —"}</b>
-            <span className="text-ink-400"> · Revision 1 · released at once</span>
+            <span className="text-ink-400"> · Revision A · released at once</span>
           </div>
           <div>
             <p className="mb-1 text-[12px] font-semibold text-ink-700">Mail for confirmation to <b>{ids.length}</b> person{ids.length === 1 ? "" : "s"}</p>
@@ -76,11 +78,12 @@ function UploadInner() {
             <p className="mt-1 text-[11px] text-ink-400">Starts with everyone on the Email List. They confirm, or deny with a reason; reminders stop once they answer.</p>
           </div>
           <p className="text-[11px] text-ink-400">
-            Already-approved drawings can also be copied straight into the <b>data\inbox</b> folder on the server
-            (sub-folders = product tree). They appear here, approved, the next time the drawing list is refreshed.
+            Drawings can also be copied straight into the <b>data\drawings</b> folder on the server
+            (sub-folders = product tree). They appear here, released, the next time the drawing list is refreshed.
           </p>
           <div className="flex justify-end gap-2 border-t border-divider pt-4">
             <button className={btn} onClick={() => nav("/")}>Cancel</button>
+            <button className={btn} disabled={!ids.length || !file} onClick={() => setPreview(true)} title={file ? "See the mail and who gets it" : "Choose the PDF first"}>Preview mail</button>
             <button className={btnPrimary} disabled={busy} onClick={submit}>{busy ? "Uploading…" : "Upload and mail for confirmation"}</button>
           </div>
         </div>
@@ -104,6 +107,7 @@ function UploadInner() {
           {found.length === 0 && <p className="p-6 text-center text-sm text-ink-500">No drawings match.</p>}
         </div>
       )}
+      {preview && <MailPreviewModal fileName={file?.name ?? ""} reviewerIds={ids} onClose={() => setPreview(false)} />}
       {revise && <ReviseModal drawingId={revise} onClose={() => setRevise(null)} onDone={() => { const id = revise; setRevise(null); refresh(); nav(`/view/${id}`); }} />}
     </div>
   );

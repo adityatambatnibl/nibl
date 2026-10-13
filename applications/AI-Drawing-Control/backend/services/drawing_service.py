@@ -787,6 +787,35 @@ async def next_rev_unique(d: Drawing) -> tuple[int, str]:
     return seq, label
 
 
+async def mail_preview(user: User, file_name: str, drawing_id: str | None, reviewer_ids: list[str] | None) -> dict:
+    """What the confirmation mail will look like, and who gets it - nothing is saved or sent."""
+    from types import SimpleNamespace
+    from services import drawing_email_service as M
+
+    recipients = await _recipients(reviewer_ids)
+    if drawing_id:
+        d = await _drawing_or_404(repo.as_uuid(drawing_id))
+        _seq, rev_label = await next_rev_unique(d)
+        fname = (file_name or "").strip()
+        change_note = f"New version uploaded ({fname})" if fname else "New version uploaded"
+        revised, name, did = True, d.drawing_no, d.id
+    else:
+        name = _name_from_file(file_name or "") if (file_name or "").strip() else "DRAWING-NAME"
+        rev_label, change_note, revised, did = FIRST_REV, "First issue", False, "preview"
+    fake_d = SimpleNamespace(id=did, drawing_no=name)
+    fake_rv = SimpleNamespace(rev_label=rev_label, change_note=change_note,
+                              uploaded_by_name=user.name, uploaded_at=now())
+    first = recipients[0]
+    subject, html = M.review_mail(fake_d, fake_rv, first.name, revised)
+    return {
+        "subject": subject,
+        "html": html,
+        "shown_for": first.name,
+        "rev_label": rev_label,
+        "recipients": [{"name": u.name, "email": u.email, "department": u.department} for u in recipients],
+    }
+
+
 async def upload_new(file: UploadFile, folder_id: str, user: User, reviewer_ids: list[str] | None = None) -> Drawing:
     """New drawing: PDF + folder. Name = file name. Released at once; mail to the selected people."""
     folder = await _folder_or_404(folder_id)

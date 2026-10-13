@@ -289,6 +289,18 @@ async def update_details(drawing_id: str, data: DetailsIn, user: User = Depends(
     return {"id": str(d.id)}
 
 
+class MailPreviewIn(BaseModel):
+    file_name: str = ""
+    drawing_id: str | None = None          # set = revise, empty = new drawing
+    reviewer_ids: list[str] = []
+
+
+@router.post("/mail-preview")
+async def mail_preview(data: MailPreviewIn, user: User = Depends(dc_admin)):
+    """Admin: see the confirmation mail and its recipients before uploading. Nothing is sent."""
+    return await svc.mail_preview(user, data.file_name, data.drawing_id, data.reviewer_ids or None)
+
+
 @router.post("/{drawing_id}/revise")
 async def revise(
     drawing_id: str,

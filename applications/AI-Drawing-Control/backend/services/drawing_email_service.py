@@ -70,6 +70,20 @@ def _link(d: Drawing) -> str:
 
 # ── Review request (new drawing / new revision) ────────────────────────────
 
+def review_mail(d, rv, user_name: str, revised: bool) -> tuple[str, str]:
+    """Subject + HTML of the confirmation mail. Used for sending and for the admin's Preview."""
+    title = f"Please confirm drawing {E.esc(d.drawing_no)} Rev {E.esc(rv.rev_label)}"
+    body = (
+        f"<p>A {'revised' if revised else 'new'} controlled drawing has been released. Please check it on "
+        f"screen in {APP_NAME} and <b>Confirm</b> it, or <b>Deny</b> it with the reason - the reason goes "
+        f"to the drawing admin, who decides whether a corrected revision is needed.</p>"
+        f"{_facts(d, rv)}{_link(d)}"
+        + E.note("You get a daily reminder until you confirm or deny.")
+    )
+    subject = f"{'Revised drawing' if revised else 'New drawing'} for confirmation: {d.drawing_no} Rev {rv.rev_label}"
+    return subject, _wrap(title, body, f"{d.drawing_no} Rev {rv.rev_label} needs your confirmation")
+
+
 async def send_review_requests(revision_id: uuid.UUID, revised: bool) -> None:
     rv, d = await _load(revision_id)
     if not rv or rv.locked:
@@ -79,18 +93,9 @@ async def send_review_requests(revision_id: uuid.UUID, revised: bool) -> None:
     ))
     kind = "revised" if revised else "new"
     for r in reviews:
-        title = f"Please confirm drawing {E.esc(d.drawing_no)} Rev {E.esc(rv.rev_label)}"
-        body = (
-            f"<p>Dear {E.esc(r.user_name)},</p>"
-            f"<p>A {'revised' if revised else 'new'} controlled drawing has been released. Please check it on "
-            f"screen in {APP_NAME} and <b>Confirm</b> it, or <b>Deny</b> it with the reason - the reason goes "
-            f"to the drawing admin, who decides whether a corrected revision is needed.</p>"
-            f"{_facts(d, rv)}{_link(d)}"
-            + E.note("You get a daily reminder until you confirm or deny.")
-        )
+        subject, html = review_mail(d, rv, r.user_name, revised)
         res = await E.send(
-            [r.user_email], f"{'Revised drawing' if revised else 'New drawing'} for confirmation: {d.drawing_no} Rev {rv.rev_label}",
-            _wrap(title, body, f"{d.drawing_no} Rev {rv.rev_label} needs your confirmation"),
+            [r.user_email], subject, html,
             email_type=f"drawing_review_{kind}", dedupe_key=f"dc-req-{r.id}",
         )
         if res.status in ("sent", "skipped", "duplicate"):
@@ -191,7 +196,6 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
     today = _now().strftime("%Y-%m-%d")
     sent = 0
     for email, items in by_person.items():
-        first = items[0][0]
         lines = []
         for r, rv, d in items:
             waiting = (_now() - (r.notified_at or rv.uploaded_at)).days
@@ -206,7 +210,6 @@ async def send_reminders(revision_id: uuid.UUID | None = None, force: bool = Fal
         n = len(items)
         title = f"{n} drawing{'s are' if n != 1 else ' is'} waiting for your confirmation"
         body = (
-            f"<p>Dear {E.esc(first.user_name)},</p>"
             f"<p>The drawing{'s' if n != 1 else ''} below still need{'' if n != 1 else 's'} your "
             f"<b>Confirm</b> or <b>Deny</b> in {APP_NAME}.</p>"
             f"<table style='border-collapse:collapse;width:100%;font-size:13px'>"
@@ -253,7 +256,6 @@ async def send_bulk_requests(revision_ids: list[uuid.UUID]) -> int:
     batch = uuid.uuid5(uuid.NAMESPACE_OID, ",".join(sorted(str(i) for i in revision_ids))).hex[:12]
     sent = 0
     for email, items in by_person.items():
-        first = items[0][0]
         n = len(items)
         lines = "".join(
             f"<tr><td style='padding:6px 10px;border-bottom:1px solid #eee'><b>{E.esc(d.drawing_no)}</b></td>"
@@ -264,7 +266,6 @@ async def send_bulk_requests(revision_ids: list[uuid.UUID]) -> int:
         more = f"<p>... and {n - 200} more.</p>" if n > 200 else ""
         title = f"{n} new drawing{'s' if n != 1 else ''} uploaded for your confirmation"
         body = (
-            f"<p>Dear {E.esc(first.user_name)},</p>"
             f"<p>{n} controlled drawing{'s have' if n != 1 else ' has'} been uploaded to {APP_NAME} and "
             f"need{'' if n != 1 else 's'} your <b>Confirm</b> or <b>Deny</b>. Open each one on screen; if you deny, "
             f"give the reason.</p>"

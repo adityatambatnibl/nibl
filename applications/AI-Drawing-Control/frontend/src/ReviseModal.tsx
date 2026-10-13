@@ -5,6 +5,7 @@ import { Modal, ModalError } from "./components/Modal";
 import { apiError } from "./apiClient";
 import { dc, type DcUser, type Detail } from "./api";
 import { btn, btnPrimary, input, Pill, ReviewerPicker } from "./ui";
+import MailPreviewModal from "./MailPreviewModal";
 
 // Same rule as the server: A, B ... Z, AA, AB; an old numeric label n continues as letter n+1.
 function letters(n: number) {
@@ -26,6 +27,7 @@ export default function ReviseModal({ drawingId, onClose, onDone }: { drawingId:
   const [rev, setRev] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   useEffect(() => {
     Promise.all([dc.detail(drawingId), dc.users(), dc.emailList()])
@@ -52,7 +54,7 @@ export default function ReviseModal({ drawingId, onClose, onDone }: { drawingId:
   }
 
   return (
-    <Modal title={det ? `Revise ${det.drawing.drawing_no}` : "Revise drawing"} subtitle={det ? `Rev ${det.drawing.rev_label} → Rev ${rev || "?"}` : undefined} onClose={onClose} width="max-w-2xl">
+    <Modal title={det ? `Revise ${det.drawing.drawing_no}` : "Revise drawing"} subtitle={det ? `Rev ${det.drawing.rev_label} → Rev ${rev || "?"}` : undefined} onClose={preview ? () => {} : onClose} width="max-w-2xl">
       {det && (
         <div className="mt-4 space-y-4">
           <div className="flex flex-wrap items-center gap-2 text-[13px] text-ink-700">
@@ -78,8 +80,10 @@ export default function ReviseModal({ drawingId, onClose, onDone }: { drawingId:
       <ModalError>{err}</ModalError>
       <div className="mt-5 flex justify-end gap-2">
         <button className={btn} onClick={onClose}>Cancel</button>
+        <button className={btn} disabled={!det || !ids.length} onClick={() => setPreview(true)} title="See the mail and who gets it">Preview mail</button>
         <button className={btnPrimary} disabled={!det || busy} onClick={send}>{busy ? "Uploading…" : `Send Rev ${rev || ""} for confirmation`}</button>
       </div>
+      {preview && <MailPreviewModal fileName={file?.name ?? ""} drawingId={drawingId} reviewerIds={ids} onClose={() => setPreview(false)} />}
     </Modal>
   );
 }

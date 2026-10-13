@@ -8,6 +8,10 @@ export interface Me {
   employee_code?: string | null; department?: string | null; member_since?: string | null;
   on_email_list?: boolean; waiting?: number; confirmed?: number; denied?: number;
 }
+export interface MailPreview {
+  subject: string; html: string; shown_for: string; rev_label: string;
+  recipients: { name: string; email: string; department: string | null }[];
+}
 export interface Folder { id: string; parent_id: string | null; name: string; direct_count: number }
 export interface DrawingRow {
   id: string; drawing_no: string; item_code: string; description: string;
@@ -64,6 +68,8 @@ export const dc = {
   renameFolder: (id: string, name: string) => d(api.put(`${B}/folders/${id}`, { name })),
   deleteFolder: (id: string) => d(api.delete(`${B}/folders/${id}`)),
   upload: (form: FormData) => d<{ id: string }>(api.post(B, form)),
+  mailPreview: (body: { file_name: string; drawing_id?: string; reviewer_ids: string[] }) =>
+    d<MailPreview>(api.post(`${B}/mail-preview`, body)),
   revise: (id: string, form: FormData) => d<{ id: string }>(api.post(`${B}/${id}/revise`, form)),
   updateDetails: (id: string, body: { item_code: string; description: string; folder_id: string }) =>
     d(api.put(`${B}/${id}`, body)),
