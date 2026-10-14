@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken, goToPortal, refreshToken } from "./session";
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/ai-drawing-control/api",
+  baseURL: import.meta.env.VITE_API_URL || "/drawing-control/api",
 });
 
 api.interceptors.request.use(async (config) => {

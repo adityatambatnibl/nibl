@@ -38,10 +38,10 @@ Write-Host "`nThrough IIS ($PublicUrl)" -ForegroundColor Cyan
 Check "Portal screen"            "$PublicUrl/"
 Check "OIPM screen"              "$PublicUrl/oipm/"
 Check "NPD screen"               "$PublicUrl/npd/"
-Check "AI Drawing screen"        "$PublicUrl/ai-drawing-control/"
+Check "Drawing screen"        "$PublicUrl/drawing-control/"
 Check "Portal API via IIS"       "$PublicUrl/portal-api/health"
 Check "NPD API via IIS"          "$PublicUrl/npd/api/health"
-Check "AI Drawing API via IIS"   "$PublicUrl/ai-drawing-control/api/health"
+Check "Drawing API via IIS"   "$PublicUrl/drawing-control/api/health"
 
 Write-Host "`nProduction safety (API pages must be hidden = 404)" -ForegroundColor Cyan
 Check "Portal /docs hidden"      "http://127.0.0.1:8010/portal-api/docs" @(404)

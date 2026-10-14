@@ -163,7 +163,7 @@ def main() -> int:
     d = data["AI Drawing"]
     d = set_key(d, "CORS_ORIGINS", pub)
     d = set_key(d, "PORTAL_URL", pub)
-    d = set_key(d, "APP_BASE_URL", f"{pub}/ai-drawing-control")
+    d = set_key(d, "APP_BASE_URL", f"{pub}/drawing-control")
     if new_pw and values(d).get("DATABASE_URL"):
         d = set_key(d, "DATABASE_URL", url_with_password(values(d)["DATABASE_URL"], new_pw))
     data["AI Drawing"] = d

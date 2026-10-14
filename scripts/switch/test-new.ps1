@@ -93,10 +93,10 @@ try {
     Check "Test portal screen"     "$t/"
     Check "Test OIPM screen"       "$t/oipm/"
     Check "Test NPD screen"        "$t/npd/"
-    Check "Test AI Drawing screen" "$t/ai-drawing-control/"
+    Check "Test Drawing screen" "$t/drawing-control/"
     Check "Test portal API"        "$t/portal-api/health"
     Check "Test NPD API"           "$t/npd/api/health"
-    Check "Test AI Drawing API"    "$t/ai-drawing-control/api/health"
+    Check "Test Drawing API"    "$t/drawing-control/api/health"
     Check "LIVE site still up"     "$($cfg.CheckUrl)/" @(200, 301, 302)
     if ($script:Bad) { Stop-With "$script:Bad check(s) failed - fix them before going live (logs: <app>\backend\logs\stderr.log)." }
 
@@ -106,7 +106,7 @@ try {
     Say "  NEW VERSION RUNNING NEXT TO THE OLD ONE.  Live site not touched." Green
     Say "  Test it from any PC:  http://$($env:COMPUTERNAME.ToLower()):$($cfg.TestPort)" Green
     Say "    - sign in with a real account and its current password" Green
-    Say "    - open OIPM, NPD and AI Drawing; look at real projects" Green
+    Say "    - open OIPM, NPD and Drawing Control; look at real projects" Green
     Say "    - anything you create here is THROWN AWAY at go-live" Green
     Say "    - no e-mails are sent from the test copy" Green
     Say "  When everything is right:  scripts\3-GO-LIVE.bat" Green

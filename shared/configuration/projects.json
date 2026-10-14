@@ -45,7 +45,7 @@
       "order": 3,
       "status": "active",
       "launch": {
-        "url": "/ai-drawing-control/"
+        "url": "/drawing-control/"
       },
       "backend": {
         "base_url": "http://127.0.0.1:8002/api",

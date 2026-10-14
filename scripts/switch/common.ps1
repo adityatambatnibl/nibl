@@ -19,7 +19,7 @@ $Apps = @(
     @{ Service = "NIBL-Portal-API";    Dir = "portal";                          LivePort = 8010; TestPort = 9010; Health = "/portal-api/health"; IisPath = "" },
     @{ Service = "NIBL-OIPM-API";      Dir = "applications\OIPM";               LivePort = 8000; TestPort = 9000; Health = "/health";            IisPath = "/oipm" },
     @{ Service = "NIBL-NPD-API";       Dir = "applications\NPD";                LivePort = 8001; TestPort = 9001; Health = "/api/health";        IisPath = "/npd" },
-    @{ Service = "NIBL-AIDrawing-API"; Dir = "applications\AI-Drawing-Control"; LivePort = 8002; TestPort = 9002; Health = "/api/health";        IisPath = "/ai-drawing-control" }
+    @{ Service = "NIBL-AIDrawing-API"; Dir = "applications\AI-Drawing-Control"; LivePort = 8002; TestPort = 9002; Health = "/api/health";        IisPath = "/drawing-control" }
 )
 $NiblDbs  = @("nibl_portal", "nibl_oipm", "nibl_npd", "nibl_drawing")
 $TestSite = "nibl-test"

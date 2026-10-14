@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = ""
     SMTP_FROM_NAME: str = "Drawing Control"
     EMAIL_ENABLED: bool = False
-    APP_BASE_URL: str = "http://nibl/ai-drawing-control"   # email buttons
+    APP_BASE_URL: str = "http://nibl/drawing-control"   # email buttons
     APP_TIMEZONE: str = "Asia/Kolkata"
 
     # Jobs

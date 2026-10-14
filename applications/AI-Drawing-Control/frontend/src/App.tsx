@@ -16,7 +16,7 @@ const AuditPage = lazy(() => import("./pages/Admin").then((m) => ({ default: m.A
 
 export default function App() {
   return (
-    <BrowserRouter basename="/ai-drawing-control">
+    <BrowserRouter basename="/drawing-control">
       <Routes>
         <Route element={<DrawingLayout />}>
           <Route index element={<Home />} />

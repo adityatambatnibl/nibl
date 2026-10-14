@@ -86,7 +86,8 @@ scripts\BUILD-ALL.bat
 | Site `nibl` (port 80, and 443 if step 4 is done) | `D:\NIBL-APPLICATION-PORTAL\portal\frontend\dist` |
 | Application `/oipm` | `...\applications\OIPM\frontend\dist` |
 | Application `/npd` | `...\applications\NPD\frontend\dist` |
-| Application `/ai-drawing-control` | `...\applications\AI-Drawing-Control\frontend\dist` |
+| Application `/drawing-control` | `...\applications\AI-Drawing-Control\frontend\dist` |
+| Application `/ai-drawing-control` (old address) | `...\shared\deployment\iis-old-drawing-url` (redirect only) |
 
 Every `dist` folder contains its own `web.config`, copied from `public\web.config`. Together they:
 
@@ -95,7 +96,7 @@ Every `dist` folder contains its own `web.config`, copied from `public\web.confi
 | `/portal-api/*` | `:8010` |
 | `/api/v1/*` | `:8000` |
 | `/npd/api/*` | `:8001` |
-| `/ai-drawing-control/api/*` | `:8002` |
+| `/drawing-control/api/*` | `:8002` |
 
 They also allow uploads up to 200 MB, add basic browser-protection headers, and stop browsers caching `index.html`, so users get new screens straight after an update without Ctrl+F5.
 
@@ -125,9 +126,9 @@ Every line must say **OK**: the four services, the four APIs, the four screens t
 |---|---|
 | Sign in with an existing account and old password | works (passwords were copied) |
 | The three cards | open for approved users |
-| A new registration | appears as pending in OIPM, NPD and AI Drawing |
+| A new registration | appears as pending in OIPM, NPD and Drawing Control |
 | Forgot password | the email arrives |
-| NPD: create a project, AI Drawing: upload a drawing | both saved; the e-mail arrives |
+| NPD: create a project, Drawing Control: upload a drawing | both saved; the e-mail arrives |
 
 ## 9. Nightly backup
 

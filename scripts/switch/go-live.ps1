@@ -60,6 +60,9 @@ try {
 
     Step "6/7  Point IIS site '$($cfg.IisSite)' at the new screens"
     foreach ($a in $Apps) { Iis-Point $cfg.IisSite $a.IisPath (Dist $a); Say ("   {0,-22} -> {1}" -f "$($cfg.IisSite)$($a.IisPath)/", (Dist $a)) "Green" }
+    # Old address /ai-drawing-control -> redirect to /drawing-control (keeps old e-mail links and bookmarks working)
+    $oldDrawing = Join-Path $Root "shared\deployment\iis-old-drawing-url"
+    Iis-Point $cfg.IisSite "/ai-drawing-control" $oldDrawing; Say ("   {0,-22} -> {1}" -f "$($cfg.IisSite)/ai-drawing-control/", "redirect to /drawing-control/") "Green"
     & $AppCmd delete site $TestSite 2>&1 | Out-Null
     Remove-NetFirewallRule -DisplayName "NIBL test site" -ErrorAction SilentlyContinue
     Start-Sleep 3

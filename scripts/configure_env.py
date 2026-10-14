@@ -106,14 +106,14 @@ def main() -> None:
         # Every application keeps its files in its own applications/<app>/data folder.
         "STORAGE_BACKEND": "local", "STORAGE_DIR": "../data",
         **{k: npd[k] for k in ("SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASSWORD", "EMAIL_ENABLED") if k in npd},
-        "SMTP_FROM_NAME": "AI Drawing Control", "APP_BASE_URL": f"{pub}/ai-drawing-control",
+        "SMTP_FROM_NAME": "Drawing Control", "APP_BASE_URL": f"{pub}/drawing-control",
         "CORS_ORIGINS": cors, "DRAWING_REMINDER_HOURS": "24",
     }
     for key, values, header in (
         ("portal", portal, "NIBL portal backend settings - never commit this file"),
         ("oipm", oipm_new, "OIPM backend settings - never commit this file"),
         ("npd", npd_new, "NPD backend settings - never commit this file"),
-        ("drawing", drawing, "AI Drawing Control backend settings - never commit this file"),
+        ("drawing", drawing, "Drawing Control backend settings - never commit this file"),
     ):
         added, kept = write_env(targets[key], values, header)
         print(f"   {str(targets[key].relative_to(ROOT)):46s} {added} added, {kept} kept")
